@@ -35,6 +35,12 @@
 
 * { box-sizing: border-box; }
 
+/* Tamaño por defecto para cualquier icono SVG inyectado sin clase específica
+   (evita que renderice al tamaño intrínseco de 300x150 del navegador). Las
+   reglas más específicas de abajo (.brand svg, .ship-avatar-wrap svg, etc.)
+   siguen ganando por especificidad y no se ven afectadas. */
+svg { width: 20px; height: 20px; display: inline-block; vertical-align: middle; flex-shrink: 0; }
+
 html, body {
   margin: 0;
   padding: 0;
@@ -858,7 +864,7 @@ th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid rgba(255
   50% { transform: skewY(10deg); }
 }
 
-/* ---------- Estela de espuma detras de los buques en movimiento ---------- */
+/* ---------- Estela de espuma detrás de los buques en movimiento ---------- */
 .regatta-lane .regatta-ship::before,
 .dock-fleet .dock-ship::before {
   content: '';
@@ -879,7 +885,49 @@ th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid rgba(255
   50% { opacity: 0.65; transform: scaleX(1.15); }
 }
 
-/* ---------- Nombre comico del buque bajo el avatar en el muelle ---------- */
+/* ---------- Instrucciones de ingreso (host + jugador) ---------- */
+.qr-card {
+  background: #fff;
+  border-radius: var(--radius-md);
+  padding: 12px;
+  display: inline-block;
+  box-shadow: var(--shadow-soft);
+  line-height: 0;
+}
+
+.qr-card svg { width: 148px; height: 148px; }
+
+.join-instructions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: left;
+}
+
+.join-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.85);
+}
+
+.join-step .step-num {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(228,0,26,0.25);
+  border: 1px solid rgba(228,0,26,0.5);
+  color: var(--color-gold);
+  font-weight: 700;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---------- Nombre cómico del buque bajo el avatar en el muelle ---------- */
 .dock-fleet .dock-ship-caption {
   position: absolute;
   bottom: -18px;
