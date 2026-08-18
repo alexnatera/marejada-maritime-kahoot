@@ -11,7 +11,7 @@
 <body>
 
 <div class="topbar">
-  <a href="index.html" class="brand"><span id="brandIcon"></span> Marejada</a>
+  <a href="index.html" class="brand"><span class="brand-mark" id="brandIcon"></span> Marejada</a>
   <div class="nav-links">
     <a href="index.html" class="btn btn-secondary">Host</a>
     <a href="admin.html" class="btn btn-secondary">Administración</a>
@@ -45,11 +45,16 @@
     </div>
 
     <div class="card mt-24">
+      <div class="eyebrow">Composición de la flota</div>
+      <div id="fleetComposition" class="flex gap-16 wrap mt-16"></div>
+    </div>
+
+    <div class="card mt-24">
       <div class="flex-between wrap gap-12">
-        <h2 style="margin:0;">Leaderboard final</h2>
+        <h2 style="margin:0;">Regata final (leaderboard)</h2>
         <button class="btn-secondary" id="btnExportCsv">Exportar CSV</button>
       </div>
-      <div id="dashLeaderboard" class="mt-16"></div>
+      <div id="dashLeaderboard" class="regatta mt-16"></div>
     </div>
 
     <div id="questionsResults" class="mt-24"></div>

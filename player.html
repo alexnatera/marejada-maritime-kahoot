@@ -11,7 +11,7 @@
 <body>
 
 <div class="topbar">
-  <a href="index.html" class="brand"><span id="brandIcon"></span> Marejada</a>
+  <a href="index.html" class="brand"><span class="brand-mark" id="brandIcon"></span> Marejada</a>
 </div>
 
 <div class="container-sm" id="app">
@@ -19,9 +19,14 @@
   <!-- UNIRSE -->
   <section id="viewJoin">
     <div class="card text-center">
+      <div class="saam-stripe"></div>
       <div class="eyebrow">Abordar</div>
       <h1>Únete a la travesía</h1>
       <div class="field mt-24">
+        <label>Elige tu buque</label>
+        <div class="avatar-picker-grid" id="avatarPicker"></div>
+      </div>
+      <div class="field">
         <label>PIN de 6 dígitos</label>
         <input type="text" id="joinPin" class="pin-input" maxlength="6" inputmode="numeric" placeholder="000000">
       </div>
@@ -37,9 +42,11 @@
   <!-- LOBBY -->
   <section id="viewLobby" class="hidden">
     <div class="center-flex">
-      <span class="pulse" id="compassIcon" style="width:64px;height:64px;color:var(--color-gold);"></span>
+      <div class="captain-mascot" id="captainMascot"></div>
       <h2 id="lobbySessionTitle"></h2>
       <p class="muted">Esperando a que el capitán zarpe...</p>
+      <div class="ship-avatar-wrap" id="myShipPreview" style="width:70px;"></div>
+      <p class="muted" id="myShipLabel" style="font-size:0.8rem;"></p>
     </div>
   </section>
 
@@ -89,7 +96,8 @@
   <!-- FIN -->
   <section id="viewEnded" class="hidden">
     <div class="center-flex">
-      <span id="trophyIcon" style="width:64px;height:64px;color:var(--color-gold);"></span>
+      <div class="ship-avatar-wrap" id="finalShip" style="width:80px;"></div>
+      <span id="trophyIcon" style="width:56px;height:56px;color:var(--color-gold);"></span>
       <h1>¡Llegaste a puerto!</h1>
       <p class="muted">Tu posición final</p>
       <div class="pin-display" id="finalRank" style="font-size:3rem;"></div>

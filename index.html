@@ -11,7 +11,7 @@
 <body>
 
 <div class="topbar">
-  <a href="index.html" class="brand"><span id="brandIcon"></span> Marejada</a>
+  <a href="index.html" class="brand"><span class="brand-mark" id="brandIcon"></span> Marejada</a>
   <div class="nav-links">
     <a href="admin.html" class="btn btn-secondary">Administración</a>
     <a href="player.html" class="btn btn-secondary">Jugador</a>
@@ -32,6 +32,7 @@
   <!-- LOBBY -->
   <section id="viewLobby" class="hidden">
     <div class="card text-center">
+      <div class="saam-stripe"></div>
       <div class="eyebrow" id="lobbyTitle"></div>
       <div class="pin-display" id="lobbyPin"></div>
       <p class="muted mt-8">Los jugadores ingresan en <strong>player.html</strong> con este PIN</p>
@@ -42,7 +43,12 @@
         </div>
         <button class="btn-primary" id="btnStartGame" disabled>Iniciar juego</button>
       </div>
-      <div class="player-chip-list" id="lobbyPlayerChips"></div>
+      <div class="dock-scene" id="dockScene">
+        <div class="dock-water"></div>
+        <div class="dock-pier"></div>
+        <div class="dock-fleet" id="dockFleet"></div>
+        <div class="dock-empty-msg" id="dockEmptyMsg">El muelle está vacío... comparte el PIN para que la flota llegue a bordo.</div>
+      </div>
     </div>
   </section>
 
@@ -75,6 +81,10 @@
         <button class="btn-primary" id="btnNextQuestion">Siguiente pregunta</button>
       </div>
     </div>
+    <div class="card mt-16">
+      <div class="eyebrow">Clasificación en vivo</div>
+      <div id="liveRegatta" class="regatta mt-16"></div>
+    </div>
   </section>
 
   <!-- LEADERBOARD FINAL -->
@@ -82,8 +92,8 @@
     <div class="card text-center">
       <span id="trophyIcon" style="color: var(--color-gold);"></span>
       <h1>¡Travesía completada!</h1>
-      <p class="muted">Tabla de posiciones final</p>
-      <div id="finalLeaderboard" class="mt-24" style="text-align:left; max-width:520px; margin:0 auto;"></div>
+      <p class="muted">La regata final</p>
+      <div id="finalLeaderboard" class="regatta mt-24" style="text-align:left; max-width:620px; margin:0 auto;"></div>
       <button class="btn-secondary mt-24" onclick="location.reload()">Presentar otra sesión</button>
     </div>
   </section>
