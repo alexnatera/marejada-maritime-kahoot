@@ -108,8 +108,8 @@ h1, h2, h3, .title-font {
 .wave-strip svg { width: 200%; height: 100%; animation: waveSlide 14s linear infinite; }
 @keyframes waveSlide { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-/* ---------- Gaviotas y boyas decorativas de fondo ---------- */
-.sky-birds {
+/* ---------- Remolcadores maniobrando y boyas decorativas de fondo ---------- */
+.bg-maneuvers {
   position: fixed;
   inset: 0;
   z-index: -1;
@@ -117,22 +117,21 @@ h1, h2, h3, .title-font {
   pointer-events: none;
 }
 
-.sky-birds .bird {
+.bg-maneuvers .maneuver-scene {
   position: absolute;
-  width: 30px;
-  opacity: 0.85;
-  animation: flyAcross linear infinite;
+  width: 260px;
+  opacity: 0.5;
+  animation: maneuverCross linear infinite;
 }
 
-.sky-birds .bird svg { width: 100%; display: block; }
-.sky-birds .bird-1 { top: 8%; animation-duration: 24s; animation-delay: 0s; }
-.sky-birds .bird-2 { top: 15%; animation-duration: 31s; animation-delay: 7s; }
-.sky-birds .bird-3 { top: 5%; animation-duration: 38s; animation-delay: 15s; }
+.bg-maneuvers .maneuver-scene svg { width: 100%; display: block; }
+.bg-maneuvers .scene-1 { top: 12%; animation-duration: 34s; animation-delay: 0s; }
+.bg-maneuvers .scene-2 { top: 62%; animation-duration: 42s; animation-delay: 9s; opacity: 0.4; }
+.bg-maneuvers .scene-3 { top: 38%; animation-duration: 50s; animation-delay: 20s; opacity: 0.45; }
 
-@keyframes flyAcross {
-  0% { transform: translateX(-10vw) translateY(0); }
-  50% { transform: translateX(50vw) translateY(-16px); }
-  100% { transform: translateX(115vw) translateY(0); }
+@keyframes maneuverCross {
+  0% { transform: translateX(-30vw) translateY(0); }
+  100% { transform: translateX(130vw) translateY(0); }
 }
 
 .deco-buoys {
@@ -160,7 +159,7 @@ h1, h2, h3, .title-font {
 }
 
 @media (max-width: 640px) {
-  .deco-buoys, .sky-birds { display: none; }
+  .deco-buoys, .bg-maneuvers { display: none; }
 }
 
 /* ---------- Layout ---------- */
@@ -852,7 +851,7 @@ th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid rgba(255
   100% { transform: translate(5px, -18px) scale(1.5); opacity: 0; }
 }
 
-/* ---------- Banderin ondeando (velero, yate, crucero) ---------- */
+/* ---------- Banderín ondeando (velero, yate, crucero) ---------- */
 .mast-flag {
   transform-box: fill-box;
   transform-origin: 0% 50%;
