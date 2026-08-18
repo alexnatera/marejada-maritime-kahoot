@@ -102,6 +102,61 @@ h1, h2, h3, .title-font {
 .wave-strip svg { width: 200%; height: 100%; animation: waveSlide 14s linear infinite; }
 @keyframes waveSlide { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
+/* ---------- Gaviotas y boyas decorativas de fondo ---------- */
+.sky-birds {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.sky-birds .bird {
+  position: absolute;
+  width: 30px;
+  opacity: 0.85;
+  animation: flyAcross linear infinite;
+}
+
+.sky-birds .bird svg { width: 100%; display: block; }
+.sky-birds .bird-1 { top: 8%; animation-duration: 24s; animation-delay: 0s; }
+.sky-birds .bird-2 { top: 15%; animation-duration: 31s; animation-delay: 7s; }
+.sky-birds .bird-3 { top: 5%; animation-duration: 38s; animation-delay: 15s; }
+
+@keyframes flyAcross {
+  0% { transform: translateX(-10vw) translateY(0); }
+  50% { transform: translateX(50vw) translateY(-16px); }
+  100% { transform: translateX(115vw) translateY(0); }
+}
+
+.deco-buoys {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.deco-buoys .deco-buoy {
+  position: absolute;
+  width: 30px;
+  opacity: 0.5;
+  animation: bobBuoy 4s ease-in-out infinite;
+}
+
+.deco-buoys .deco-buoy svg { width: 100%; display: block; }
+.deco-buoys .buoy-1 { left: 6%; bottom: 8%; animation-duration: 4.5s; }
+.deco-buoys .buoy-2 { right: 8%; bottom: 14%; animation-duration: 5.2s; animation-delay: 1s; }
+
+@keyframes bobBuoy {
+  0%, 100% { transform: translateY(0) rotate(-4deg); }
+  50% { transform: translateY(-10px) rotate(4deg); }
+}
+
+@media (max-width: 640px) {
+  .deco-buoys, .sky-birds { display: none; }
+}
+
 /* ---------- Layout ---------- */
 .container {
   max-width: 1100px;
@@ -545,9 +600,12 @@ th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid rgba(255
 /* ---------- Selector de avatar (jugador) ---------- */
 .avatar-picker-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(78px, 1fr));
+  gap: 10px;
   margin: 18px 0;
+  max-height: 360px;
+  overflow-y: auto;
+  padding-right: 4px;
 }
 
 .avatar-option {
@@ -604,10 +662,10 @@ th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid rgba(255
 .dock-fleet {
   position: absolute;
   left: 0; right: 0;
-  bottom: 20px;
+  bottom: 26px;
   display: flex;
   flex-wrap: wrap;
-  gap: 14px;
+  gap: 26px;
   padding: 0 16px;
   align-items: flex-end;
 }
@@ -667,14 +725,31 @@ th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid rgba(255
 .regatta-lane .regatta-label {
   flex: 0 0 auto;
   display: flex;
-  align-items: center;
-  gap: 8px;
+  flex-direction: column;
+  gap: 1px;
   font-weight: 700;
   font-size: 0.85rem;
-  white-space: nowrap;
   max-width: 42%;
   overflow: hidden;
+}
+
+.regatta-lane .regatta-label .regatta-label-main {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.regatta-lane .regatta-label .regatta-ship-tag {
+  font-weight: 500;
+  font-size: 0.66rem;
+  color: rgba(255,255,255,0.55);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-left: 28px;
 }
 
 .regatta-lane .regatta-rank {
@@ -751,4 +826,74 @@ th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid rgba(255
   border-radius: 3px;
   margin-bottom: 18px;
   opacity: 0.9;
+}
+
+/* ---------- Humo de chimenea (remolcador, petrolero, ferry, crucero...) ---------- */
+.funnel-smoke .puff {
+  fill: rgba(255,255,255,0.6);
+  animation: smokeRise 2.6s ease-in infinite;
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+}
+
+.funnel-smoke .puff:nth-child(1) { animation-delay: 0s; }
+.funnel-smoke .puff:nth-child(2) { animation-delay: 0.7s; }
+.funnel-smoke .puff:nth-child(3) { animation-delay: 1.4s; }
+
+@keyframes smokeRise {
+  0% { transform: translate(0, 0) scale(0.5); opacity: 0; }
+  20% { opacity: 0.75; }
+  100% { transform: translate(5px, -18px) scale(1.5); opacity: 0; }
+}
+
+/* ---------- Banderin ondeando (velero, yate, crucero) ---------- */
+.mast-flag {
+  transform-box: fill-box;
+  transform-origin: 0% 50%;
+  animation: flagWave 1.6s ease-in-out infinite;
+}
+
+@keyframes flagWave {
+  0%, 100% { transform: skewY(-10deg); }
+  50% { transform: skewY(10deg); }
+}
+
+/* ---------- Estela de espuma detras de los buques en movimiento ---------- */
+.regatta-lane .regatta-ship::before,
+.dock-fleet .dock-ship::before {
+  content: '';
+  position: absolute;
+  right: 100%;
+  top: 62%;
+  width: 22px;
+  height: 5px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.45));
+  border-radius: 50%;
+  animation: wakePulse 1.3s ease-in-out infinite;
+}
+
+.dock-fleet .dock-ship { position: relative; }
+
+@keyframes wakePulse {
+  0%, 100% { opacity: 0.25; transform: scaleX(0.75); }
+  50% { opacity: 0.65; transform: scaleX(1.15); }
+}
+
+/* ---------- Nombre comico del buque bajo el avatar en el muelle ---------- */
+.dock-fleet .dock-ship-caption {
+  position: absolute;
+  bottom: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.6rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 64px;
+  color: rgba(255,255,255,0.8);
+  background: rgba(4,18,37,0.6);
+  padding: 1px 5px;
+  border-radius: 8px;
+  z-index: 3;
 }
