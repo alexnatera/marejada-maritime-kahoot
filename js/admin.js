@@ -3,17 +3,83 @@
 let currentSessionId = null;
 let currentQuestions = [];
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   injectOceanBg();
   qs('#brandIcon').innerHTML = tugLogoSVG();
   renderOptionInputs('quiz');
-  loadSessions();
 
   qs('#btnCreateSession').addEventListener('click', createSession);
   qs('#btnCloseEditor').addEventListener('click', closeEditor);
   qs('#btnAddQuestion').addEventListener('click', addQuestion);
   qs('#qType').addEventListener('change', (e) => renderOptionInputs(e.target.value));
+
+  qs('#btnLogin').addEventListener('click', handleLogin);
+  qs('#loginPassword').addEventListener('keydown', (e) => { if (e.key === 'Enter') handleLogin(); });
+  qs('#btnLogout').addEventListener('click', handleLogout);
+
+  await initAuthGate();
 });
+
+// ---------------------------------------------------------------------------
+// Puerta de acceso: solo administradores autenticados vía Supabase Auth
+// pueden ver y usar el panel de administración.
+// ---------------------------------------------------------------------------
+async function initAuthGate() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (session) {
+    showAdminPanel();
+  } else {
+    showLoginScreen();
+  }
+
+  sb.auth.onAuthStateChange((_event, session) => {
+    if (session) {
+      showAdminPanel();
+    } else {
+      showLoginScreen();
+    }
+  });
+}
+
+function showAdminPanel() {
+  qs('#viewLogin').classList.add('hidden');
+  qs('#adminContent').classList.remove('hidden');
+  qs('#btnLogout').classList.remove('hidden');
+  loadSessions();
+}
+
+function showLoginScreen() {
+  qs('#viewLogin').classList.remove('hidden');
+  qs('#adminContent').classList.add('hidden');
+  qs('#btnLogout').classList.add('hidden');
+}
+
+async function handleLogin() {
+  const email = qs('#loginEmail').value.trim();
+  const password = qs('#loginPassword').value;
+  const errorEl = qs('#loginError');
+  errorEl.textContent = '';
+
+  if (!email || !password) {
+    errorEl.textContent = 'Ingresa tu correo y contraseña.';
+    return;
+  }
+
+  const btn = qs('#btnLogin');
+  btn.disabled = true;
+  const { error } = await sb.auth.signInWithPassword({ email, password });
+  btn.disabled = false;
+
+  if (error) {
+    errorEl.textContent = 'Credenciales incorrectas. Intenta de nuevo.';
+    return;
+  }
+  qs('#loginPassword').value = '';
+}
+
+async function handleLogout() {
+  await sb.auth.signOut();
+}
 
 async function loadSessions() {
   const { data, error } = await sb.from('sessions').select('*').order('created_at', { ascending: false });

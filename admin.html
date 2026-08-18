@@ -16,10 +16,31 @@
     <a href="index.html" class="btn btn-secondary">Host</a>
     <a href="player.html" class="btn btn-secondary">Jugador</a>
     <a href="dashboard.html" class="btn btn-secondary">Resultados</a>
+    <button class="btn btn-secondary hidden" id="btnLogout">Cerrar sesión</button>
   </div>
 </div>
 
-<div class="container">
+<!-- LOGIN -->
+<div class="container-sm" id="viewLogin">
+  <div class="card">
+    <div class="saam-stripe"></div>
+    <div class="eyebrow">Acceso restringido</div>
+    <h1>Panel de administración</h1>
+    <p class="muted">Ingresa con tu cuenta de administrador para gestionar sesiones.</p>
+    <div class="field mt-24">
+      <label>Correo</label>
+      <input type="email" id="loginEmail" placeholder="tu@correo.com" autocomplete="username">
+    </div>
+    <div class="field">
+      <label>Contraseña</label>
+      <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password">
+    </div>
+    <button class="btn-primary btn-block" id="btnLogin">Ingresar</button>
+    <p class="muted mt-16" id="loginError"></p>
+  </div>
+</div>
+
+<div class="container hidden" id="adminContent">
   <div class="eyebrow">Panel de administración</div>
   <h1>Gestiona tus sesiones marítimas</h1>
 
