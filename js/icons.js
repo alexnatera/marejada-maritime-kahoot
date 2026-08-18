@@ -21,17 +21,18 @@ const ICONS = {
 };
 
 // ---------------------------------------------------------------------------
-// Logo de marca: remolcador amarillo estilo SAAM (reemplaza el timón genérico)
+// Logo de marca: remolcador estilo SAAM (casco azul marino, banda negra de
+// defensas, caseta amarilla, mástil con antena) — reemplaza el timón genérico
 // ---------------------------------------------------------------------------
 function tugLogoSVG() {
   return `<svg viewBox="0 0 40 26" xmlns="http://www.w3.org/2000/svg">
     <path d="M2 20 Q10 17 18 20 T34 20" fill="none" stroke="#9fd3ef" stroke-width="1.6" stroke-linecap="round" opacity="0.5"/>
-    <path d="M5 17 Q5 11 12 11 L28 11 Q34 11 34 15 L34 17 Q34 20 31 20 L8 20 Q5 20 5 17 Z" fill="#F7B500"/>
-    <rect x="13" y="4" width="12" height="8" rx="1.5" fill="#FFFFFF"/>
-    <rect x="15" y="6.5" width="3.4" height="3.4" fill="#0B3559"/>
-    <rect x="20.5" y="6.5" width="3.4" height="3.4" fill="#0B3559"/>
-    <rect x="26" y="0" width="3.4" height="6" rx="1" fill="#E4001A"/>
-    <rect x="5" y="16" width="29" height="2.2" fill="#A5090F"/>
+    <rect x="4" y="16.5" width="30" height="3" rx="1.5" fill="#12181C"/>
+    <path d="M4 10 Q4 8 6 8 L30 8 Q34 8 34 12 L34 15 Q34 17 31 17 L7 17 Q4 17 4 15 Z" fill="#0B3559"/>
+    <rect x="12" y="2" width="14" height="8" rx="1.5" fill="#F7B500"/>
+    <rect x="14.3" y="4.2" width="3.6" height="3.6" fill="#FFFFFF"/>
+    <rect x="20" y="4.2" width="3.6" height="3.6" fill="#FFFFFF"/>
+    <rect x="26.5" y="0" width="2.6" height="6" fill="#E4001A"/>
   </svg>`;
 }
 
@@ -43,7 +44,8 @@ function wavesSVG() {
 }
 
 // ---------------------------------------------------------------------------
-// Elementos decorativos animados: gaviotas volando y boyas flotando
+// Elementos decorativos animados: boyas flotando (las gaviotas fueron
+// reemplazadas por las escenas de maniobras de remolcadores, más abajo)
 // ---------------------------------------------------------------------------
 function birdsSVG() {
   const bird = `<svg viewBox="0 0 24 12" xmlns="http://www.w3.org/2000/svg"><path d="M0 6 Q6 0 12 6 Q18 0 24 6" fill="none" stroke="rgba(255,255,255,0.65)" stroke-width="2" stroke-linecap="round"/></svg>`;
@@ -66,6 +68,83 @@ function buoysDecoSVG() {
   return `
     <span class="deco-buoy buoy-1">${buoyDecoSVG()}</span>
     <span class="deco-buoy buoy-2">${buoyDecoSVG()}</span>
+  `;
+}
+
+// ---------------------------------------------------------------------------
+// Remolcadores maniobrando de fondo: pequeñas escenas animadas que cruzan la
+// pantalla en loop, cada una con el remolcador realizando un tipo distinto de
+// maniobra (cobra/remolque, empuje, escolta) junto a un buque distinto.
+// ---------------------------------------------------------------------------
+function tugSilhouetteSVG() {
+  return `<g>
+    <rect x="0" y="16" width="34" height="4" rx="2" fill="#0a1216"/>
+    <path d="M0 8 Q0 5 4 5 L26 5 Q32 5 32 10 L32 14 Q32 17 27 17 L5 17 Q0 17 0 14 Z" fill="#0B3559"/>
+    <rect x="10" y="0" width="14" height="7" rx="2" fill="#F7B500"/>
+    <rect x="12.3" y="1.6" width="3.6" height="3" fill="#fff"/>
+    <rect x="17.5" y="1.6" width="3.6" height="3" fill="#fff"/>
+    <rect x="17" y="-4" width="1.6" height="5" fill="#12181C"/>
+  </g>`;
+}
+
+function targetShipSVG(kind) {
+  if (kind === 'container') {
+    return `<g>
+      <path d="M0 22 L150 22 L142 30 L10 30 Z" fill="#0B3559"/>
+      <rect x="10" y="8" width="18" height="14" fill="#E4001A"/>
+      <rect x="30" y="8" width="18" height="14" fill="#D4A843"/>
+      <rect x="50" y="8" width="18" height="14" fill="#3498DB"/>
+      <rect x="70" y="8" width="18" height="14" fill="#2ECC71"/>
+      <rect x="90" y="8" width="18" height="14" fill="#E4001A"/>
+      <rect x="120" y="2" width="20" height="20" rx="2" fill="#fff"/>
+    </g>`;
+  }
+  if (kind === 'cruise') {
+    return `<g>
+      <path d="M0 24 L160 24 L150 32 L12 32 Z" fill="#0B3559"/>
+      <rect x="10" y="12" width="130" height="12" rx="2" fill="#fff"/>
+      <rect x="24" y="2" width="90" height="11" rx="2" fill="#fff"/>
+      <rect x="120" y="0" width="8" height="8" fill="#E4001A"/>
+    </g>`;
+  }
+  // tanker / bulker (por defecto)
+  return `<g>
+    <path d="M0 24 Q0 18 10 18 L140 18 Q150 18 150 24 L150 26 Q150 30 142 30 L8 30 Q0 30 0 26 Z" fill="#5C6B73"/>
+    <rect x="10" y="12" width="120" height="6" fill="#3A4750"/>
+    <rect x="132" y="0" width="18" height="20" rx="2" fill="#fff"/>
+  </g>`;
+}
+
+/** kind: 'tow' (cobra un buque con espía), 'push' (empuja de costado), 'escort' (navega junto a él). */
+function tugManeuverSVG(kind) {
+  const shipKind = kind === 'push' ? 'container' : kind === 'escort' ? 'cruise' : 'tanker';
+  const ship = targetShipSVG(shipKind);
+
+  if (kind === 'push') {
+    return `<svg viewBox="0 0 260 40" xmlns="http://www.w3.org/2000/svg">
+      <g transform="translate(46 8)">${tugSilhouetteSVG()}</g>
+      <g transform="translate(76 -4)">${ship}</g>
+    </svg>`;
+  }
+  if (kind === 'escort') {
+    return `<svg viewBox="0 0 260 40" xmlns="http://www.w3.org/2000/svg">
+      <g transform="translate(0 20)">${tugSilhouetteSVG()}</g>
+      <g transform="translate(50 -6)">${ship}</g>
+    </svg>`;
+  }
+  // tow: remolcador cobrando desde proa con línea de remolque punteada
+  return `<svg viewBox="0 0 260 40" xmlns="http://www.w3.org/2000/svg">
+    <g transform="translate(0 8)">${tugSilhouetteSVG()}</g>
+    <path d="M34 20 L104 16" stroke="#33414a" stroke-width="1.2" stroke-dasharray="2 3"/>
+    <g transform="translate(104 -2)">${ship}</g>
+  </svg>`;
+}
+
+function tugManeuversBgSVG() {
+  return `
+    <div class="maneuver-scene scene-1">${tugManeuverSVG('tow')}</div>
+    <div class="maneuver-scene scene-2">${tugManeuverSVG('push')}</div>
+    <div class="maneuver-scene scene-3">${tugManeuverSVG('escort')}</div>
   `;
 }
 
@@ -97,13 +176,16 @@ const SHIP_AVATARS = {
     label: 'Remolcador',
     svg: `<svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
       ${MINI_WAVE}
-      <path d="M14 44 Q14 32 26 32 L82 32 Q92 32 92 40 L92 44 Q92 48 88 48 L18 48 Q14 48 14 44 Z" fill="#F7B500"/>
-      <rect x="36" y="14" width="34" height="20" rx="3" fill="#FFFFFF"/>
-      <rect x="41" y="19" width="8" height="8" rx="1.5" fill="#124A7D"/>
-      <rect x="54" y="19" width="8" height="8" rx="1.5" fill="#124A7D"/>
-      <rect x="72" y="6" width="8" height="14" rx="2" fill="#E4001A"/>
-      ${funnelSmoke(76, 4)}
-      <rect x="14" y="42" width="78" height="4" fill="#A5090F"/>
+      <rect x="10" y="42" width="84" height="5" rx="2.5" fill="#12181C"/>
+      <path d="M10 32 Q10 28 15 28 L88 28 Q96 28 96 34 L96 40 Q96 44 90 44 L16 44 Q10 44 10 40 Z" fill="#0B3559"/>
+      <rect x="32" y="10" width="42" height="20" rx="3" fill="#F7B500"/>
+      <rect x="37" y="15" width="10" height="8" rx="1.5" fill="#FFFFFF"/>
+      <rect x="51" y="15" width="10" height="8" rx="1.5" fill="#FFFFFF"/>
+      <rect x="65" y="15" width="7" height="10" rx="1.5" fill="#D99A00"/>
+      <rect x="70" y="4" width="5" height="10" rx="1.5" fill="#E4001A"/>
+      ${funnelSmoke(72, 2)}
+      <rect x="46" y="2" width="2" height="10" fill="#12181C"/>
+      <path d="M40 4 L54 4" stroke="#12181C" stroke-width="1.6" stroke-linecap="round"/>
     </svg>`
   },
   container: {

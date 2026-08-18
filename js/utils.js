@@ -165,10 +165,10 @@ function injectOceanBg() {
   bg.className = 'ocean-bg';
   document.body.prepend(bg);
 
-  const birds = document.createElement('div');
-  birds.className = 'sky-birds';
-  birds.innerHTML = birdsSVG();
-  document.body.prepend(birds);
+  const maneuvers = document.createElement('div');
+  maneuvers.className = 'bg-maneuvers';
+  maneuvers.innerHTML = tugManeuversBgSVG();
+  document.body.prepend(maneuvers);
 
   const buoys = document.createElement('div');
   buoys.className = 'deco-buoys';
