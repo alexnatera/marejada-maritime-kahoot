@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Host · Marejada</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="topbar">
+  <a href="index.html" class="brand"><span id="brandIcon"></span> Marejada</a>
+  <div class="nav-links">
+    <a href="admin.html" class="btn btn-secondary">Administración</a>
+    <a href="player.html" class="btn btn-secondary">Jugador</a>
+    <a href="dashboard.html" class="btn btn-secondary">Resultados</a>
+  </div>
+</div>
+
+<div class="container" id="app">
+
+  <!-- SELECCIÓN DE SESIÓN -->
+  <section id="viewSelect">
+    <div class="eyebrow">Zarpar</div>
+    <h1>Elige una sesión para presentar</h1>
+    <p class="muted">Selecciona una sesión creada en el panel de administración y comienza la travesía.</p>
+    <div id="hostSessionsList" class="panel-grid mt-24"><p class="muted">Cargando sesiones...</p></div>
+  </section>
+
+  <!-- LOBBY -->
+  <section id="viewLobby" class="hidden">
+    <div class="card text-center">
+      <div class="eyebrow" id="lobbyTitle"></div>
+      <div class="pin-display" id="lobbyPin"></div>
+      <p class="muted mt-8">Los jugadores ingresan en <strong>player.html</strong> con este PIN</p>
+      <div class="flex-between wrap gap-12 mt-24" style="align-items:center;">
+        <div class="flex gap-8" style="align-items:center;">
+          <span id="usersIcon"></span>
+          <strong id="playerCount">0</strong> tripulantes a bordo
+        </div>
+        <button class="btn-primary" id="btnStartGame" disabled>Iniciar juego</button>
+      </div>
+      <div class="player-chip-list" id="lobbyPlayerChips"></div>
+    </div>
+  </section>
+
+  <!-- PREGUNTA ACTIVA -->
+  <section id="viewQuestion" class="hidden">
+    <div class="card">
+      <div class="flex-between wrap gap-12">
+        <div class="eyebrow" id="qProgress"></div>
+        <div class="flex gap-8" style="align-items:center;">
+          <span id="usersIcon2"></span> <span id="answeredCount">0</span>/<span id="totalPlayers">0</span> respondieron
+        </div>
+      </div>
+      <h2 id="qText" class="mt-16"></h2>
+      <div class="timer-bar-track"><div class="timer-bar-fill" id="timerBar" style="width:100%"></div></div>
+      <div id="qOptionsPreview" class="options-grid"></div>
+      <div class="flex-between mt-24">
+        <button class="btn-secondary" id="btnEndQuestion">Terminar pregunta ahora</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULTADOS DE PREGUNTA -->
+  <section id="viewResults" class="hidden">
+    <div class="card">
+      <div class="eyebrow" id="resultsProgress"></div>
+      <h2 id="resultsQText" class="mt-16"></h2>
+      <div id="resultsContent" class="mt-24"></div>
+      <div class="flex-between mt-24">
+        <div></div>
+        <button class="btn-primary" id="btnNextQuestion">Siguiente pregunta</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- LEADERBOARD FINAL -->
+  <section id="viewEnded" class="hidden">
+    <div class="card text-center">
+      <span id="trophyIcon" style="color: var(--color-gold);"></span>
+      <h1>¡Travesía completada!</h1>
+      <p class="muted">Tabla de posiciones final</p>
+      <div id="finalLeaderboard" class="mt-24" style="text-align:left; max-width:520px; margin:0 auto;"></div>
+      <button class="btn-secondary mt-24" onclick="location.reload()">Presentar otra sesión</button>
+    </div>
+  </section>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+<script src="js/icons.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/config.js"></script>
+<script src="js/host.js"></script>
+</body>
+</html>

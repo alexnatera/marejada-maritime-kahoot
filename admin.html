@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel de Administración · Marejada</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="topbar">
+  <a href="index.html" class="brand"><span id="brandIcon"></span> Marejada</a>
+  <div class="nav-links">
+    <a href="index.html" class="btn btn-secondary">Host</a>
+    <a href="player.html" class="btn btn-secondary">Jugador</a>
+    <a href="dashboard.html" class="btn btn-secondary">Resultados</a>
+  </div>
+</div>
+
+<div class="container">
+  <div class="eyebrow">Panel de administración</div>
+  <h1>Gestiona tus sesiones marítimas</h1>
+
+  <div class="panel-grid cols-2 mt-24">
+    <!-- Crear sesión -->
+    <div class="card">
+      <h3>Nueva sesión</h3>
+      <div class="field">
+        <label>Título de la sesión</label>
+        <input type="text" id="newSessionTitle" placeholder="Ej: Seguridad en cubierta">
+      </div>
+      <button class="btn-primary w-full" id="btnCreateSession">Crear sesión</button>
+    </div>
+
+    <!-- Lista de sesiones -->
+    <div class="card">
+      <h3>Tus sesiones</h3>
+      <div id="sessionsList" class="mt-16"><p class="muted">Cargando...</p></div>
+    </div>
+  </div>
+
+  <!-- Editor de preguntas -->
+  <div class="card mt-24 hidden" id="editorPanel">
+    <div class="flex-between wrap gap-12">
+      <div>
+        <div class="eyebrow" id="editorPin"></div>
+        <h2 id="editorTitle" style="margin:4px 0;"></h2>
+      </div>
+      <button class="btn-secondary" id="btnCloseEditor">Cerrar editor</button>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="panel-grid cols-2">
+      <div>
+        <h3>Agregar pregunta</h3>
+        <div class="field">
+          <label>Tipo de pregunta</label>
+          <select id="qType">
+            <option value="quiz">Quiz (opción múltiple, con correcta)</option>
+            <option value="survey">Encuesta (opción múltiple, sin correcta)</option>
+            <option value="scale">Escala (1 a 10)</option>
+            <option value="text">Texto libre</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Texto de la pregunta</label>
+          <textarea id="qText" rows="2" placeholder="Escribe tu pregunta..."></textarea>
+        </div>
+
+        <div id="optionsBlock">
+          <label>Opciones</label>
+          <div id="optionsInputs"></div>
+        </div>
+
+        <div class="field mt-16">
+          <label>Tiempo límite</label>
+          <select id="qTime">
+            <option value="10">10 segundos</option>
+            <option value="15">15 segundos</option>
+            <option value="30" selected>30 segundos</option>
+            <option value="60">60 segundos</option>
+          </select>
+        </div>
+
+        <button class="btn-primary w-full mt-8" id="btnAddQuestion">Agregar pregunta</button>
+      </div>
+
+      <div>
+        <h3>Preguntas de la sesión</h3>
+        <div id="questionsList" class="mt-16"><p class="muted">Sin preguntas aún.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="js/icons.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/config.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>

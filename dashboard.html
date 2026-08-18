@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard de Resultados · Marejada</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="topbar">
+  <a href="index.html" class="brand"><span id="brandIcon"></span> Marejada</a>
+  <div class="nav-links">
+    <a href="index.html" class="btn btn-secondary">Host</a>
+    <a href="admin.html" class="btn btn-secondary">Administración</a>
+    <a href="player.html" class="btn btn-secondary">Jugador</a>
+  </div>
+</div>
+
+<div class="container">
+  <div class="eyebrow">Bitácora de resultados</div>
+  <h1>Dashboard de resultados</h1>
+
+  <div class="card mt-16">
+    <label>Selecciona una sesión</label>
+    <select id="sessionSelect"><option value="">Cargando sesiones...</option></select>
+  </div>
+
+  <div id="dashboardContent" class="hidden mt-24">
+    <div class="panel-grid cols-3">
+      <div class="card text-center">
+        <div class="eyebrow">Preguntas</div>
+        <div class="pin-display" style="font-size:2.4rem;" id="statQuestions">0</div>
+      </div>
+      <div class="card text-center">
+        <div class="eyebrow">Jugadores</div>
+        <div class="pin-display" style="font-size:2.4rem;" id="statPlayers">0</div>
+      </div>
+      <div class="card text-center">
+        <div class="eyebrow">% Aciertos (quiz)</div>
+        <div class="pin-display" style="font-size:2.4rem;" id="statAccuracy">0%</div>
+      </div>
+    </div>
+
+    <div class="card mt-24">
+      <div class="flex-between wrap gap-12">
+        <h2 style="margin:0;">Leaderboard final</h2>
+        <button class="btn-secondary" id="btnExportCsv">Exportar CSV</button>
+      </div>
+      <div id="dashLeaderboard" class="mt-16"></div>
+    </div>
+
+    <div id="questionsResults" class="mt-24"></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/wordcloud@1.2.2/src/wordcloud2.js"></script>
+<script src="js/icons.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/config.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Jugador · Marejada</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="topbar">
+  <a href="index.html" class="brand"><span id="brandIcon"></span> Marejada</a>
+</div>
+
+<div class="container-sm" id="app">
+
+  <!-- UNIRSE -->
+  <section id="viewJoin">
+    <div class="card text-center">
+      <div class="eyebrow">Abordar</div>
+      <h1>Únete a la travesía</h1>
+      <div class="field mt-24">
+        <label>PIN de 6 dígitos</label>
+        <input type="text" id="joinPin" class="pin-input" maxlength="6" inputmode="numeric" placeholder="000000">
+      </div>
+      <div class="field">
+        <label>Tu nombre</label>
+        <input type="text" id="joinName" maxlength="24" placeholder="Nombre de tripulante">
+      </div>
+      <button class="btn-primary btn-block" id="btnJoin">Unirse</button>
+      <p class="muted mt-16" id="joinError"></p>
+    </div>
+  </section>
+
+  <!-- LOBBY -->
+  <section id="viewLobby" class="hidden">
+    <div class="center-flex">
+      <span class="pulse" id="compassIcon" style="width:64px;height:64px;color:var(--color-gold);"></span>
+      <h2 id="lobbySessionTitle"></h2>
+      <p class="muted">Esperando a que el capitán zarpe...</p>
+    </div>
+  </section>
+
+  <!-- PREGUNTA -->
+  <section id="viewQuestion" class="hidden">
+    <div class="eyebrow" id="pqProgress"></div>
+    <div class="timer-bar-track"><div class="timer-bar-fill" id="pTimerBar" style="width:100%"></div></div>
+    <h2 id="pqText" class="mt-8"></h2>
+
+    <div id="quizBlock" class="hidden">
+      <div class="options-grid" id="quizOptions"></div>
+    </div>
+
+    <div id="scaleBlock" class="hidden card-light mt-16 text-center">
+      <div class="scale-emoji" id="scaleEmojiDisplay">😐</div>
+      <div style="font-size:2rem; font-weight:700;" id="scaleValue">5</div>
+      <input type="range" min="1" max="10" value="5" class="scale-slider mt-16" id="scaleSlider">
+      <button class="btn-primary btn-block mt-16" id="btnSubmitScale">Enviar respuesta</button>
+    </div>
+
+    <div id="textBlock" class="hidden card-light mt-16">
+      <textarea id="textAnswer" rows="4" placeholder="Escribe tu respuesta..."></textarea>
+      <button class="btn-primary btn-block mt-16" id="btnSubmitText">Enviar respuesta</button>
+    </div>
+  </section>
+
+  <!-- ESPERANDO / CONFIRMACIÓN -->
+  <section id="viewWaiting" class="hidden">
+    <div class="center-flex">
+      <div class="confirm-check"><span id="checkIcon"></span></div>
+      <h2>¡Respondido!</h2>
+      <p class="muted">Esperando a los demás tripulantes...</p>
+      <div class="mt-16" id="scoreDisplay"></div>
+    </div>
+  </section>
+
+  <!-- RESULTADOS DE PREGUNTA (revelación) -->
+  <section id="viewReveal" class="hidden">
+    <div class="center-flex">
+      <div id="revealIcon"></div>
+      <h2 id="revealText"></h2>
+      <p class="muted" id="revealPoints"></p>
+      <p class="muted mt-8" id="totalScoreLine"></p>
+    </div>
+  </section>
+
+  <!-- FIN -->
+  <section id="viewEnded" class="hidden">
+    <div class="center-flex">
+      <span id="trophyIcon" style="width:64px;height:64px;color:var(--color-gold);"></span>
+      <h1>¡Llegaste a puerto!</h1>
+      <p class="muted">Tu posición final</p>
+      <div class="pin-display" id="finalRank" style="font-size:3rem;"></div>
+      <p class="muted" id="finalScoreLine"></p>
+    </div>
+  </section>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="js/icons.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/config.js"></script>
+<script src="js/player.js"></script>
+</body>
+</html>
