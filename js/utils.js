@@ -38,6 +38,37 @@ function typeTag(type) {
 const OPTION_LABELS = ['A', 'B', 'C', 'D'];
 const OPTION_SHAPES = ['▲', '◆', '●', '■'];
 
+// ---------------------------------------------------------------------------
+// Apodos cómicos de buque: "Remolcador Intrépido", "Petrolero Salvaje", etc.
+// Se derivan de forma determinística del id del jugador + su tipo de buque,
+// para que dos tripulantes con el mismo avatar queden bien diferenciados sin
+// necesidad de guardar nada nuevo en la base de datos.
+// ---------------------------------------------------------------------------
+const SHIP_ADJECTIVES = [
+  'Intrépido', 'Salvaje', 'Legendario', 'Atrevido', 'Veloz', 'Temerario', 'Majestuoso', 'Pícaro',
+  'Feroz', 'Glorioso', 'Aventurero', 'Indomable', 'Audaz', 'Trueno', 'Relámpago', 'Fantasma',
+  'Invencible', 'Bribón', 'Zarpado', 'Chiflado', 'Bandido', 'Rebelde', 'Descarado', 'Colosal',
+  'Misterioso', 'Imparable', 'Turbulento', 'Huracanado', 'Épico', 'Insolente', 'Vagabundo', 'Bullicioso'
+];
+
+function hashString(str) {
+  let h = 0;
+  const s = String(str || '');
+  for (let i = 0; i < s.length; i++) {
+    h = (h * 31 + s.charCodeAt(i)) >>> 0;
+  }
+  return h;
+}
+
+/** Devuelve el nombre cómico del buque de un jugador, ej. "Ferry Descarado". */
+function shipTitle(player) {
+  if (!player) return '';
+  const avatarKey = player.avatar || 'tug';
+  const base = (SHIP_AVATARS[avatarKey] || SHIP_AVATARS.tug).label;
+  const idx = hashString(String(player.id || '') + avatarKey) % SHIP_ADJECTIVES.length;
+  return `${base} "${SHIP_ADJECTIVES[idx]}"`;
+}
+
 function scaleEmoji(v) {
   if (v <= 2) return '😡';
   if (v <= 4) return '🙁';
@@ -78,6 +109,17 @@ function injectOceanBg() {
   const bg = document.createElement('div');
   bg.className = 'ocean-bg';
   document.body.prepend(bg);
+
+  const birds = document.createElement('div');
+  birds.className = 'sky-birds';
+  birds.innerHTML = birdsSVG();
+  document.body.prepend(birds);
+
+  const buoys = document.createElement('div');
+  buoys.className = 'deco-buoys';
+  buoys.innerHTML = buoysDecoSVG();
+  document.body.prepend(buoys);
+
   const strip = document.createElement('div');
   strip.className = 'wave-strip';
   strip.innerHTML = wavesSVG();
