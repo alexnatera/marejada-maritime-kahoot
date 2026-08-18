@@ -3,13 +3,19 @@
    ========================================================================== */
 
 :root {
-  --color-deep: #0A1628;
-  --color-navy: #1B3A5C;
+  /* Paleta inspirada en SAAM Towage: rojo remolcador + azul naval profundo */
+  --saam-red: #E4001A;
+  --saam-red-dark: #A50014;
+  --saam-red-light: #FF3B4E;
+
+  --color-deep: #041225;
+  --color-navy: #0B3559;
+  --color-navy-2: #124A7D;
   --color-gold: #D4A843;
   --color-bg-light: #F0F4F8;
-  --color-bg-dark: #0A1628;
+  --color-bg-dark: #041225;
   --color-text-on-dark: #FFFFFF;
-  --color-text-on-light: #1B3A5C;
+  --color-text-on-light: #0B3559;
 
   --opt-a: #E74C3C;
   --opt-b: #3498DB;
@@ -19,8 +25,9 @@
   --radius-sm: 10px;
   --radius-md: 16px;
   --radius-lg: 24px;
-  --shadow-soft: 0 8px 24px rgba(10, 22, 40, 0.18);
-  --shadow-soft-lg: 0 16px 48px rgba(10, 22, 40, 0.28);
+  --shadow-soft: 0 8px 24px rgba(4, 18, 37, 0.25);
+  --shadow-soft-lg: 0 16px 48px rgba(4, 18, 37, 0.35);
+  --shadow-red: 0 8px 22px rgba(228, 0, 26, 0.4);
 
   --font-title: 'Playfair Display', serif;
   --font-body: 'Inter', sans-serif;
@@ -53,7 +60,7 @@ h1, h2, h3, .title-font {
   position: fixed;
   inset: 0;
   z-index: -2;
-  background: linear-gradient(160deg, var(--color-deep) 0%, var(--color-navy) 55%, #10314f 100%);
+  background: linear-gradient(160deg, var(--color-deep) 0%, var(--color-navy) 55%, #0d4470 100%);
   overflow: hidden;
 }
 
@@ -65,14 +72,14 @@ h1, h2, h3, .title-font {
   width: 200%;
   height: 200%;
   bottom: -120%;
-  background: radial-gradient(circle at 50% 50%, rgba(212,168,67,0.10) 0%, transparent 60%);
+  background: radial-gradient(circle at 50% 50%, rgba(228,0,26,0.10) 0%, transparent 60%);
   border-radius: 45%;
   animation: waveRotate 22s linear infinite;
 }
 
 .ocean-bg::after {
   bottom: -130%;
-  background: radial-gradient(circle at 50% 50%, rgba(52,152,219,0.10) 0%, transparent 60%);
+  background: radial-gradient(circle at 50% 50%, rgba(212,168,67,0.09) 0%, transparent 60%);
   animation: waveRotate 30s linear infinite reverse;
 }
 
@@ -123,9 +130,12 @@ h1, h2, h3, .title-font {
   gap: 10px;
   font-family: var(--font-title);
   font-size: 1.4rem;
-  color: var(--color-gold);
+  color: #fff;
   text-decoration: none;
 }
+
+.brand .brand-mark { color: var(--saam-red); display: flex; }
+.brand .brand-mark svg { width: 34px; height: 34px; }
 
 .brand svg { width: 32px; height: 32px; }
 
@@ -133,8 +143,8 @@ h1, h2, h3, .title-font {
 
 /* ---------- Cards & Panels ---------- */
 .card {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(212,168,67,0.18);
+  background: rgba(255,255,255,0.045);
+  border: 1px solid rgba(228,0,26,0.22);
   backdrop-filter: blur(6px);
   border-radius: var(--radius-lg);
   padding: 28px;
@@ -163,8 +173,8 @@ h1, h2, h3, .title-font {
   text-transform: uppercase;
   letter-spacing: 0.14em;
   font-size: 0.72rem;
-  color: var(--color-gold);
-  font-weight: 600;
+  color: var(--saam-red-light);
+  font-weight: 700;
 }
 
 .muted { color: rgba(255,255,255,0.6); }
@@ -199,11 +209,18 @@ button:active { transform: scale(0.97); }
 button:disabled { opacity: 0.5; cursor: not-allowed; }
 
 .btn-primary {
+  background: linear-gradient(135deg, var(--saam-red), var(--saam-red-light));
+  color: #fff;
+  box-shadow: var(--shadow-red);
+}
+.btn-primary:hover:not(:disabled) { box-shadow: 0 10px 28px rgba(228,0,26,0.55); transform: translateY(-1px); }
+
+.btn-gold {
   background: linear-gradient(135deg, var(--color-gold), #e8c169);
   color: var(--color-deep);
   box-shadow: 0 6px 18px rgba(212,168,67,0.35);
 }
-.btn-primary:hover:not(:disabled) { box-shadow: 0 8px 24px rgba(212,168,67,0.5); }
+.btn-gold:hover:not(:disabled) { box-shadow: 0 8px 24px rgba(212,168,67,0.5); }
 
 .btn-secondary {
   background: rgba(255,255,255,0.08);
@@ -507,3 +524,231 @@ th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid rgba(255
 ::-webkit-scrollbar { width: 10px; }
 ::-webkit-scrollbar-thumb { background: rgba(212,168,67,0.4); border-radius: 10px; }
 ::-webkit-scrollbar-track { background: transparent; }
+
+/* ==========================================================================
+   Avatares de buques, mascota capitán, muelle animado y regata
+   ========================================================================== */
+
+.ship-avatar-wrap {
+  display: inline-flex;
+  animation: shipBob 3.2s ease-in-out infinite;
+  transform-origin: 50% 80%;
+}
+
+.ship-avatar-wrap svg { display: block; }
+
+@keyframes shipBob {
+  0%, 100% { transform: translateY(0) rotate(-1.5deg); }
+  50% { transform: translateY(-6px) rotate(1.5deg); }
+}
+
+/* ---------- Selector de avatar (jugador) ---------- */
+.avatar-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  gap: 12px;
+  margin: 18px 0;
+}
+
+.avatar-option {
+  background: rgba(255,255,255,0.06);
+  border: 2px solid rgba(255,255,255,0.14);
+  border-radius: var(--radius-md);
+  padding: 12px 8px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease, transform 0.15s ease;
+}
+
+.avatar-option:hover { transform: translateY(-2px); background: rgba(255,255,255,0.1); }
+.avatar-option.selected { border-color: var(--saam-red); background: rgba(228,0,26,0.14); box-shadow: var(--shadow-red); }
+.avatar-option .ship-avatar-wrap { width: 52px; height: 40px; }
+.avatar-option .ship-avatar-wrap svg { width: 100%; height: 100%; }
+.avatar-option span.avatar-label { font-size: 0.7rem; font-weight: 600; text-align: center; color: rgba(255,255,255,0.8); }
+
+/* ---------- Muelle / lobby animado ---------- */
+.dock-scene {
+  position: relative;
+  height: 170px;
+  border-radius: var(--radius-md);
+  margin-top: 20px;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(18,74,125,0.35) 0%, rgba(11,53,89,0.55) 55%, rgba(4,18,37,0.85) 100%);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.dock-scene .dock-water {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 60%;
+  background: repeating-linear-gradient(100deg, rgba(255,255,255,0.05) 0 2px, transparent 2px 40px);
+  animation: dockWaterShift 6s linear infinite;
+}
+
+@keyframes dockWaterShift {
+  from { background-position-x: 0; }
+  to { background-position-x: -400px; }
+}
+
+.dock-scene .dock-pier {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 14px;
+  background: linear-gradient(180deg, #6b4a2f, #4a3220);
+  box-shadow: 0 -2px 0 rgba(255,255,255,0.08);
+}
+
+.dock-fleet {
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding: 0 16px;
+  align-items: flex-end;
+}
+
+.dock-fleet .dock-ship {
+  width: 46px;
+  animation: shipBob 3s ease-in-out infinite, dockArrive 0.6s cubic-bezier(.2,1.6,.4,1) both;
+}
+
+.dock-fleet .dock-ship svg { width: 100%; height: auto; }
+
+@keyframes dockArrive {
+  from { transform: translateX(60px) translateY(0); opacity: 0; }
+  to { transform: translateX(0) translateY(0); opacity: 1; }
+}
+
+.dock-empty-msg {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.5);
+  font-size: 0.85rem;
+  text-align: center;
+  padding: 0 20px;
+}
+
+/* ---------- Capitán mascota ---------- */
+.captain-mascot {
+  width: 90px;
+  margin: 0 auto;
+  animation: shipBob 3.4s ease-in-out infinite;
+}
+
+.captain-mascot svg { width: 100%; height: auto; }
+
+/* ---------- Regata / leaderboard con buques ---------- */
+.regatta {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.regatta-lane {
+  position: relative;
+  background: rgba(255,255,255,0.05);
+  border-radius: 999px;
+  min-height: 46px;
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 5px 16px;
+}
+
+.regatta-lane .regatta-label {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  max-width: 42%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.regatta-lane .regatta-rank {
+  color: var(--color-gold);
+  font-family: var(--font-title);
+  width: 20px;
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.regatta-lane .regatta-track-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 60px;
+  height: 36px;
+}
+
+.regatta-lane .regatta-track {
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  top: 50%;
+  height: 3px;
+  background: repeating-linear-gradient(90deg, rgba(255,255,255,0.25) 0 8px, transparent 8px 16px);
+  transform: translateY(-50%);
+}
+
+.regatta-lane .regatta-ship {
+  position: absolute;
+  top: 50%;
+  transform: translate(-6px, -55%);
+  width: 40px;
+  transition: left 1s cubic-bezier(.3,.8,.4,1);
+  z-index: 2;
+  filter: drop-shadow(0 3px 4px rgba(0,0,0,0.4));
+}
+
+.regatta-lane .regatta-ship svg { width: 100%; height: auto; }
+
+.regatta-lane.lane-1 { background: linear-gradient(90deg, rgba(212,168,67,0.22), rgba(212,168,67,0.04)); border: 1px solid rgba(212,168,67,0.4); }
+.regatta-lane.lane-2 { background: rgba(255,255,255,0.08); }
+.regatta-lane.lane-3 { background: rgba(255,255,255,0.06); }
+
+/* ---------- Confeti / boyas al acertar ---------- */
+.buoy-burst {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 999;
+  overflow: hidden;
+}
+
+.buoy-burst span {
+  position: absolute;
+  top: -40px;
+  font-size: 1.6rem;
+  animation: buoyFall linear forwards;
+}
+
+@keyframes buoyFall {
+  to { transform: translateY(110vh) rotate(360deg); opacity: 0.2; }
+}
+
+/* ---------- Chip de avatar pequeño (listas, lobby, resultados) ---------- */
+.player-chip.with-avatar { display: inline-flex; align-items: center; gap: 8px; padding-left: 6px; }
+.player-chip .chip-avatar { width: 26px; height: 20px; display: inline-flex; }
+.player-chip .chip-avatar svg { width: 100%; height: 100%; }
+
+/* ---------- Franja SAAM (detalle de marca) ---------- */
+.saam-stripe {
+  height: 5px;
+  width: 100%;
+  background: linear-gradient(90deg, var(--saam-red) 0%, var(--saam-red) 60%, var(--color-gold) 60%, var(--color-gold) 100%);
+  border-radius: 3px;
+  margin-bottom: 18px;
+  opacity: 0.9;
+}

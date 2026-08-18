@@ -22,7 +22,104 @@ const ICONS = {
 
 function wavesSVG() {
   return `<svg viewBox="0 0 1600 200" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M0,100 C200,150 400,50 600,100 C800,150 1000,50 1200,100 C1400,150 1500,100 1600,100 L1600,200 L0,200 Z" fill="#D4A843" opacity="0.5"/>
-    <path d="M0,120 C200,80 400,160 600,120 C800,80 1000,160 1200,120 C1400,80 1500,120 1600,120 L1600,200 L0,200 Z" fill="#3498DB" opacity="0.3"/>
+    <path d="M0,100 C200,150 400,50 600,100 C800,150 1000,50 1200,100 C1400,150 1500,100 1600,100 L1600,200 L0,200 Z" fill="#E4001A" opacity="0.35"/>
+    <path d="M0,120 C200,80 400,160 600,120 C800,80 1000,160 1200,120 C1400,80 1500,120 1600,120 L1600,200 L0,200 Z" fill="#D4A843" opacity="0.3"/>
+  </svg>`;
+}
+
+// ---------------------------------------------------------------------------
+// Flota de avatares: cada jugador elige un tipo de buque como identidad visual
+// ---------------------------------------------------------------------------
+const MINI_WAVE = `<path d="M2 46 Q10 42 18 46 T34 46 T50 46 T66 46 T82 46 T98 46 T114 46 T118 46" fill="none" stroke="#9fd3ef" stroke-width="2.5" stroke-linecap="round" opacity="0.55"/>`;
+
+const SHIP_AVATARS = {
+  tug: {
+    label: 'Remolcador',
+    svg: `<svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+      ${MINI_WAVE}
+      <path d="M14 44 Q14 32 26 32 L82 32 Q92 32 92 40 L92 44 Q92 48 88 48 L18 48 Q14 48 14 44 Z" fill="#E4001A"/>
+      <rect x="36" y="14" width="34" height="20" rx="3" fill="#FFFFFF"/>
+      <rect x="41" y="19" width="8" height="8" rx="1.5" fill="#124A7D"/>
+      <rect x="54" y="19" width="8" height="8" rx="1.5" fill="#124A7D"/>
+      <rect x="72" y="6" width="8" height="14" rx="2" fill="#D4A843"/>
+      <rect x="14" y="42" width="78" height="4" fill="#0B3559"/>
+    </svg>`
+  },
+  container: {
+    label: 'Portacontenedores',
+    svg: `<svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+      ${MINI_WAVE}
+      <path d="M6 40 L112 40 L104 48 L14 48 Z" fill="#0B3559"/>
+      <rect x="14" y="22" width="16" height="14" fill="#E4001A"/>
+      <rect x="32" y="22" width="16" height="14" fill="#D4A843"/>
+      <rect x="50" y="22" width="16" height="14" fill="#3498DB"/>
+      <rect x="68" y="22" width="16" height="14" fill="#2ECC71"/>
+      <rect x="14" y="10" width="16" height="10" fill="#D4A843"/>
+      <rect x="32" y="10" width="16" height="10" fill="#E4001A"/>
+      <rect x="50" y="10" width="16" height="10" fill="#2ECC71"/>
+      <rect x="90" y="16" width="16" height="24" rx="2" fill="#FFFFFF"/>
+      <rect x="94" y="20" width="4" height="4" fill="#124A7D"/>
+      <rect x="100" y="20" width="4" height="4" fill="#124A7D"/>
+    </svg>`
+  },
+  tanker: {
+    label: 'Petrolero',
+    svg: `<svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+      ${MINI_WAVE}
+      <path d="M8 40 Q8 30 20 30 L98 30 Q108 30 108 38 L108 40 Q108 46 100 46 L16 46 Q8 46 8 40 Z" fill="#3A4750"/>
+      <rect x="20" y="24" width="72" height="8" fill="#5C6B73"/>
+      <circle cx="36" cy="22" r="5" fill="#D4A843"/>
+      <circle cx="52" cy="22" r="5" fill="#D4A843"/>
+      <circle cx="68" cy="22" r="5" fill="#D4A843"/>
+      <rect x="90" y="10" width="18" height="20" rx="2" fill="#FFFFFF"/>
+      <rect x="94" y="14" width="5" height="5" fill="#124A7D"/>
+      <rect x="102" y="14" width="5" height="5" fill="#124A7D"/>
+    </svg>`
+  },
+  ferry: {
+    label: 'Ferry',
+    svg: `<svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+      ${MINI_WAVE}
+      <path d="M10 44 Q10 34 22 34 L98 34 Q110 34 110 42 L110 44 Q110 48 104 48 L16 48 Q10 48 10 44 Z" fill="#E4001A"/>
+      <rect x="18" y="20" width="84" height="16" rx="2" fill="#FFFFFF"/>
+      <rect x="24" y="24" width="6" height="6" fill="#124A7D"/>
+      <rect x="36" y="24" width="6" height="6" fill="#124A7D"/>
+      <rect x="48" y="24" width="6" height="6" fill="#124A7D"/>
+      <rect x="60" y="24" width="6" height="6" fill="#124A7D"/>
+      <rect x="72" y="24" width="6" height="6" fill="#124A7D"/>
+      <rect x="84" y="24" width="6" height="6" fill="#124A7D"/>
+      <rect x="40" y="8" width="24" height="12" rx="2" fill="#0B3559"/>
+      <rect x="70" y="4" width="6" height="16" fill="#D4A843"/>
+    </svg>`
+  },
+  sailboat: {
+    label: 'Velero',
+    svg: `<svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+      ${MINI_WAVE}
+      <path d="M22 44 Q60 54 98 44 L92 48 Q60 56 28 48 Z" fill="#0B3559"/>
+      <rect x="58" y="6" width="3" height="40" fill="#5C6B73"/>
+      <path d="M61 8 L61 40 L88 40 Z" fill="#FFFFFF"/>
+      <path d="M58 14 L58 40 L36 40 Z" fill="#E4001A"/>
+    </svg>`
+  }
+};
+
+function shipAvatarSVG(key) {
+  const entry = SHIP_AVATARS[key] || SHIP_AVATARS.tug;
+  return entry.svg;
+}
+
+function captainMascotSVG() {
+  return `<svg viewBox="0 0 140 90" xmlns="http://www.w3.org/2000/svg">
+    <path d="M6 66 Q14 60 22 66 T38 66 T54 66 T70 66 T86 66 T102 66 T118 66 T134 66" fill="none" stroke="#9fd3ef" stroke-width="3" stroke-linecap="round" opacity="0.55"/>
+    <path d="M16 58 Q16 42 32 42 L104 42 Q118 42 118 52 L118 58 Q118 64 112 64 L22 64 Q16 64 16 58 Z" fill="#E4001A"/>
+    <rect x="46" y="16" width="44" height="28" rx="4" fill="#FFFFFF"/>
+    <circle cx="60" cy="30" r="5" fill="#0B3559"/>
+    <circle cx="76" cy="30" r="5" fill="#0B3559"/>
+    <circle cx="61.5" cy="28.5" r="1.6" fill="#fff"/>
+    <circle cx="77.5" cy="28.5" r="1.6" fill="#fff"/>
+    <path d="M58 38 Q68 44 78 38" fill="none" stroke="#0B3559" stroke-width="2.4" stroke-linecap="round"/>
+    <rect x="94" y="6" width="10" height="18" rx="2" fill="#D4A843"/>
+    <rect x="16" y="56" width="102" height="6" fill="#0B3559"/>
   </svg>`;
 }
