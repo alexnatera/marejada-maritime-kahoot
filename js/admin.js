@@ -32,8 +32,8 @@ async function loadSessions() {
         </div>
         <div class="flex gap-8 wrap">
           <button class="btn-secondary" data-action="edit" data-id="${s.id}">Editar preguntas</button>
-          <button class="btn-secondary" data-action="duplicate" data-id="${s.id}" title="Duplicar">${ICONS.copy}</button>
-          <button class="btn-danger" data-action="delete" data-id="${s.id}" title="Eliminar">${ICONS.trash}</button>
+          <button class="btn-secondary btn-icon" data-action="duplicate" data-id="${s.id}" title="Duplicar">${ICONS.copy}</button>
+          <button class="btn-danger btn-icon" data-action="delete" data-id="${s.id}" title="Eliminar">${ICONS.trash}</button>
         </div>
       </div>
     </div>
