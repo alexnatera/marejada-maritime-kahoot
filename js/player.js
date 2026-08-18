@@ -6,13 +6,15 @@ let pCurrentQuestion = null;
 let pAnsweredThisQuestion = false;
 let pTimerInterval = null;
 let pSessionChannel = null;
+let pSelectedAvatar = 'tug';
 
 document.addEventListener('DOMContentLoaded', () => {
   injectOceanBg();
   qs('#brandIcon').innerHTML = ICONS.wheel;
-  qs('#compassIcon').innerHTML = ICONS.compass;
   qs('#checkIcon').innerHTML = ICONS.check;
   qs('#trophyIcon').innerHTML = ICONS.trophy;
+  qs('#captainMascot').innerHTML = captainMascotSVG();
+  renderAvatarPicker();
 
   qs('#joinPin').addEventListener('input', (e) => { e.target.value = e.target.value.replace(/\D/g, '').slice(0, 6); });
   qs('#btnJoin').addEventListener('click', joinSession);
@@ -22,6 +24,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
   restoreSession();
 });
+
+function renderAvatarPicker() {
+  const grid = qs('#avatarPicker');
+  grid.innerHTML = Object.keys(SHIP_AVATARS).map(key => `
+    <div class="avatar-option ${key === pSelectedAvatar ? 'selected' : ''}" data-avatar="${key}">
+      <div class="ship-avatar-wrap">${shipAvatarSVG(key)}</div>
+      <span class="avatar-label">${SHIP_AVATARS[key].label}</span>
+    </div>
+  `).join('');
+  qsa('.avatar-option', grid).forEach(el => el.addEventListener('click', () => {
+    pSelectedAvatar = el.dataset.avatar;
+    qsa('.avatar-option', grid).forEach(o => o.classList.toggle('selected', o.dataset.avatar === pSelectedAvatar));
+  }));
+}
 
 function showView(name) {
   ['Join', 'Lobby', 'Question', 'Waiting', 'Reveal', 'Ended'].forEach(v => {
@@ -43,6 +59,7 @@ async function restoreSession() {
     if (session && player && session.status !== 'ended') {
       pSession = session;
       pPlayer = player;
+      pSelectedAvatar = player.avatar || 'tug';
       subscribeSession();
       handleSessionStatus(session);
     }
@@ -61,7 +78,7 @@ async function joinSession() {
   if (error || !session) { errEl.textContent = 'No se encontró ninguna sesión con ese PIN.'; return; }
   if (session.status === 'ended') { errEl.textContent = 'Esta sesión ya finalizó.'; return; }
 
-  const { data: player, error: pErr } = await sb.from('players').insert({ session_id: session.id, name, score: 0 }).select().single();
+  const { data: player, error: pErr } = await sb.from('players').insert({ session_id: session.id, name, score: 0, avatar: pSelectedAvatar }).select().single();
   if (pErr) { errEl.textContent = 'Error al unirse: ' + pErr.message; return; }
 
   pSession = session;
@@ -84,6 +101,8 @@ function subscribeSession() {
 async function handleSessionStatus(session) {
   if (session.status === 'lobby') {
     qs('#lobbySessionTitle').textContent = session.title;
+    qs('#myShipPreview').innerHTML = shipAvatarSVG(pPlayer.avatar || 'tug');
+    qs('#myShipLabel').textContent = `Tu buque: ${(SHIP_AVATARS[pPlayer.avatar] || SHIP_AVATARS.tug).label} · ${pPlayer.name}`;
     showView('Lobby');
   } else if (session.status === 'question') {
     const { data: q } = await sb.from('questions').select('*').eq('session_id', session.id).eq('position', session.current_question_index).single();
@@ -206,6 +225,22 @@ async function addScore(points) {
   pPlayer.score = newScore;
 }
 
+function launchBuoyBurst() {
+  const wrap = document.createElement('div');
+  wrap.className = 'buoy-burst';
+  const emojis = ['🛟', '⚓', '🌊', '⭐'];
+  for (let i = 0; i < 18; i++) {
+    const span = document.createElement('span');
+    span.textContent = emojis[i % emojis.length];
+    span.style.left = Math.random() * 100 + 'vw';
+    span.style.animationDuration = (1.6 + Math.random() * 1.2) + 's';
+    span.style.animationDelay = (Math.random() * 0.3) + 's';
+    wrap.appendChild(span);
+  }
+  document.body.appendChild(wrap);
+  setTimeout(() => wrap.remove(), 3200);
+}
+
 async function renderReveal(q) {
   if (q.type === 'quiz') {
     const { data: myResponse } = await sb.from('responses').select('*').eq('question_id', q.id).eq('player_id', pPlayer.id).maybeSingle();
@@ -218,6 +253,7 @@ async function renderReveal(q) {
       : 'No respondiste a tiempo';
     qs('#revealPoints').textContent = myResponse && myResponse.points ? `+${myResponse.points} puntos` : '';
     qs('#totalScoreLine').textContent = `Puntaje total: ${pPlayer.score}`;
+    if (correct) launchBuoyBurst();
   } else {
     qs('#revealIcon').innerHTML = `<div class="confirm-check">${ICONS.check}</div>`;
     qs('#revealText').textContent = 'Gracias por tu respuesta';
@@ -231,4 +267,6 @@ async function renderFinal() {
   const rank = (players || []).findIndex(p => p.id === pPlayer.id) + 1;
   qs('#finalRank').textContent = rank > 0 ? `#${rank}` : '—';
   qs('#finalScoreLine').textContent = `${pPlayer.score} puntos de ${(players || []).length} tripulantes`;
+  qs('#finalShip').innerHTML = shipAvatarSVG(pPlayer.avatar || 'tug');
+  if (rank === 1) launchBuoyBurst();
 }

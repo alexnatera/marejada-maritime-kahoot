@@ -107,7 +107,35 @@ function enterLobby() {
 function updateLobbyUI() {
   qs('#playerCount').textContent = hPlayersCache.length;
   qs('#btnStartGame').disabled = hPlayersCache.length === 0;
-  qs('#lobbyPlayerChips').innerHTML = hPlayersCache.map(p => `<span class="player-chip">${escapeHtml(p.name)}</span>`).join('');
+  qs('#dockEmptyMsg').classList.toggle('hidden', hPlayersCache.length > 0);
+  qs('#dockFleet').innerHTML = hPlayersCache.map(p => `
+    <div class="dock-ship" title="${escapeHtml(p.name)}">
+      ${shipAvatarSVG(p.avatar || 'tug')}
+    </div>
+  `).join('');
+}
+
+/**
+ * Dibuja el leaderboard como una regata: cada jugador es un buque que
+ * avanza por una pista proporcional a su puntaje.
+ */
+function renderRegatta(containerId, players) {
+  const el = qs(containerId);
+  if (!players.length) { el.innerHTML = `<p class="muted">Aún no hay puntajes.</p>`; return; }
+  const maxScore = Math.max(...players.map(p => p.score), 1);
+  el.innerHTML = players.map((p, i) => {
+    const pct = 4 + (p.score / maxScore) * 88;
+    const laneClass = i === 0 ? 'lane-1' : i === 1 ? 'lane-2' : i === 2 ? 'lane-3' : '';
+    return `
+      <div class="regatta-lane ${laneClass}">
+        <div class="regatta-label"><span class="regatta-rank">${i + 1}</span> ${escapeHtml(p.name)} · ${p.score} pts</div>
+        <div class="regatta-track-wrap">
+          <div class="regatta-track"></div>
+          <div class="regatta-ship" style="left:${pct}%;">${shipAvatarSVG(p.avatar || 'tug')}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
 }
 
 async function goToQuestion(idx) {
@@ -235,17 +263,15 @@ async function renderResultsView(q) {
       `).join('')}</div>`;
     }
   }
+
+  const { data: players } = await sb.from('players').select('*').eq('session_id', hSession.id).order('score', { ascending: false });
+  hPlayersCache = players || hPlayersCache;
+  renderRegatta('#liveRegatta', players || []);
 }
 
 async function endGame() {
   await sb.from('sessions').update({ status: 'ended' }).eq('id', hSession.id);
   const { data: players } = await sb.from('players').select('*').eq('session_id', hSession.id).order('score', { ascending: false });
   showView('Ended');
-  qs('#finalLeaderboard').innerHTML = (players || []).map((p, i) => `
-    <div class="leaderboard-row ${i === 0 ? 'top-1' : i === 1 ? 'top-2' : i === 2 ? 'top-3' : ''}">
-      <div class="rank">${i + 1}</div>
-      <div class="leaderboard-name">${escapeHtml(p.name)}</div>
-      <div class="leaderboard-score">${p.score} pts</div>
-    </div>
-  `).join('');
+  renderRegatta('#finalLeaderboard', players || []);
 }

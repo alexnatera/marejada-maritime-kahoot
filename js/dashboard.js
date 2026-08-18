@@ -64,11 +64,28 @@ function renderSummary() {
 function renderLeaderboard() {
   const el = qs('#dashLeaderboard');
   if (!dPlayers.length) { el.innerHTML = `<p class="muted">Sin jugadores.</p>`; return; }
-  el.innerHTML = dPlayers.map((p, i) => `
-    <div class="leaderboard-row ${i === 0 ? 'top-1' : i === 1 ? 'top-2' : i === 2 ? 'top-3' : ''}">
-      <div class="rank">${i + 1}</div>
-      <div class="leaderboard-name">${escapeHtml(p.name)}</div>
-      <div class="leaderboard-score">${p.score} pts</div>
+  const maxScore = Math.max(...dPlayers.map(p => p.score), 1);
+  el.innerHTML = dPlayers.map((p, i) => {
+    const pct = 4 + (p.score / maxScore) * 88;
+    const laneClass = i === 0 ? 'lane-1' : i === 1 ? 'lane-2' : i === 2 ? 'lane-3' : '';
+    return `
+      <div class="regatta-lane ${laneClass}">
+        <div class="regatta-label"><span class="regatta-rank">${i + 1}</span> ${escapeHtml(p.name)} · ${p.score} pts</div>
+        <div class="regatta-track-wrap">
+          <div class="regatta-track"></div>
+          <div class="regatta-ship" style="left:${pct}%;">${shipAvatarSVG(p.avatar || 'tug')}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  const fleetCounts = {};
+  dPlayers.forEach(p => { const a = p.avatar || 'tug'; fleetCounts[a] = (fleetCounts[a] || 0) + 1; });
+  qs('#fleetComposition').innerHTML = Object.keys(SHIP_AVATARS).map(key => `
+    <div class="text-center" style="min-width:80px;">
+      <div class="ship-avatar-wrap" style="width:56px; margin:0 auto;">${shipAvatarSVG(key)}</div>
+      <div class="muted" style="font-size:0.75rem; margin-top:4px;">${SHIP_AVATARS[key].label}</div>
+      <div style="font-weight:700; color:var(--color-gold);">${fleetCounts[key] || 0}</div>
     </div>
   `).join('');
 }
