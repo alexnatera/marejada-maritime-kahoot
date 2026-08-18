@@ -31,11 +31,24 @@
 
   <!-- LOBBY -->
   <section id="viewLobby" class="hidden">
-    <div class="card text-center">
+    <div class="card">
       <div class="saam-stripe"></div>
-      <div class="eyebrow" id="lobbyTitle"></div>
-      <div class="pin-display" id="lobbyPin"></div>
-      <p class="muted mt-8">Los jugadores ingresan en <strong>player.html</strong> con este PIN</p>
+      <div class="panel-grid cols-2" style="align-items:center;">
+        <div class="text-center">
+          <div class="eyebrow" id="lobbyTitle"></div>
+          <div class="pin-display" id="lobbyPin"></div>
+          <p class="muted mt-8">Entra a <strong>player.html</strong> y escribe este PIN, o escanea el código →</p>
+          <div class="join-instructions mt-16">
+            <div class="join-step"><span class="step-num">1</span> Escanea el QR con tu celular (o abre la web)</div>
+            <div class="join-step"><span class="step-num">2</span> Ingresa el PIN de la sesión</div>
+            <div class="join-step"><span class="step-num">3</span> Elige tu buque, escribe tu nombre y ¡zarpa!</div>
+          </div>
+        </div>
+        <div class="text-center">
+          <div class="qr-card" id="joinQR"></div>
+          <p class="muted mt-8" style="font-size:0.8rem;">Escanea para unirte desde tu celular</p>
+        </div>
+      </div>
       <div class="flex-between wrap gap-12 mt-24" style="align-items:center;">
         <div class="flex gap-8" style="align-items:center;">
           <span id="usersIcon"></span>
@@ -90,7 +103,7 @@
   <!-- LEADERBOARD FINAL -->
   <section id="viewEnded" class="hidden">
     <div class="card text-center">
-      <span id="trophyIcon" style="color: var(--color-gold);"></span>
+      <span id="trophyIcon" style="width:48px;height:48px;color: var(--color-gold);"></span>
       <h1>¡Travesía completada!</h1>
       <p class="muted">La regata final</p>
       <div id="finalLeaderboard" class="regatta mt-24" style="text-align:left; max-width:620px; margin:0 auto;"></div>
@@ -102,6 +115,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
 <script src="js/icons.js"></script>
 <script src="js/utils.js"></script>
 <script src="js/config.js"></script>
