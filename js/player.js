@@ -10,7 +10,7 @@ let pSelectedAvatar = 'tug';
 
 document.addEventListener('DOMContentLoaded', () => {
   injectOceanBg();
-  qs('#brandIcon').innerHTML = ICONS.wheel;
+  qs('#brandIcon').innerHTML = tugLogoSVG();
   qs('#checkIcon').innerHTML = ICONS.check;
   qs('#trophyIcon').innerHTML = ICONS.trophy;
   qs('#captainMascot').innerHTML = captainMascotSVG();
@@ -102,7 +102,7 @@ async function handleSessionStatus(session) {
   if (session.status === 'lobby') {
     qs('#lobbySessionTitle').textContent = session.title;
     qs('#myShipPreview').innerHTML = shipAvatarSVG(pPlayer.avatar || 'tug');
-    qs('#myShipLabel').textContent = `Tu buque: ${(SHIP_AVATARS[pPlayer.avatar] || SHIP_AVATARS.tug).label} · ${pPlayer.name}`;
+    qs('#myShipLabel').textContent = `Tu buque: ${shipTitle(pPlayer)} · Capitán/a ${pPlayer.name}`;
     showView('Lobby');
   } else if (session.status === 'question') {
     const { data: q } = await sb.from('questions').select('*').eq('session_id', session.id).eq('position', session.current_question_index).single();
@@ -268,5 +268,6 @@ async function renderFinal() {
   qs('#finalRank').textContent = rank > 0 ? `#${rank}` : '—';
   qs('#finalScoreLine').textContent = `${pPlayer.score} puntos de ${(players || []).length} tripulantes`;
   qs('#finalShip').innerHTML = shipAvatarSVG(pPlayer.avatar || 'tug');
+  qs('#finalShipLabel').textContent = shipTitle(pPlayer);
   if (rank === 1) launchBuoyBurst();
 }

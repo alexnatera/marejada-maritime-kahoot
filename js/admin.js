@@ -5,7 +5,7 @@ let currentQuestions = [];
 
 document.addEventListener('DOMContentLoaded', () => {
   injectOceanBg();
-  qs('#brandIcon').innerHTML = ICONS.wheel;
+  qs('#brandIcon').innerHTML = tugLogoSVG();
   renderOptionInputs('quiz');
   loadSessions();
 

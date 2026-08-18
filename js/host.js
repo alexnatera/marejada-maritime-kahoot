@@ -13,7 +13,7 @@ let hAnsweredCount = 0;
 
 document.addEventListener('DOMContentLoaded', () => {
   injectOceanBg();
-  qs('#brandIcon').innerHTML = ICONS.wheel;
+  qs('#brandIcon').innerHTML = tugLogoSVG();
   qs('#usersIcon').innerHTML = ICONS.users;
   qs('#usersIcon2').innerHTML = ICONS.users;
   qs('#trophyIcon').innerHTML = ICONS.trophy;
@@ -109,8 +109,9 @@ function updateLobbyUI() {
   qs('#btnStartGame').disabled = hPlayersCache.length === 0;
   qs('#dockEmptyMsg').classList.toggle('hidden', hPlayersCache.length > 0);
   qs('#dockFleet').innerHTML = hPlayersCache.map(p => `
-    <div class="dock-ship" title="${escapeHtml(p.name)}">
-      ${shipAvatarSVG(p.avatar || 'tug')}
+    <div class="dock-ship" title="${escapeHtml(p.name)} · ${escapeHtml(shipTitle(p))}">
+      <div class="ship-avatar-wrap">${shipAvatarSVG(p.avatar || 'tug')}</div>
+      <span class="dock-ship-caption">${escapeHtml(p.name)}</span>
     </div>
   `).join('');
 }
@@ -128,7 +129,10 @@ function renderRegatta(containerId, players) {
     const laneClass = i === 0 ? 'lane-1' : i === 1 ? 'lane-2' : i === 2 ? 'lane-3' : '';
     return `
       <div class="regatta-lane ${laneClass}">
-        <div class="regatta-label"><span class="regatta-rank">${i + 1}</span> ${escapeHtml(p.name)} · ${p.score} pts</div>
+        <div class="regatta-label">
+          <div class="regatta-label-main"><span class="regatta-rank">${i + 1}</span> ${escapeHtml(p.name)} · ${p.score} pts</div>
+          <div class="regatta-ship-tag">${escapeHtml(shipTitle(p))}</div>
+        </div>
         <div class="regatta-track-wrap">
           <div class="regatta-track"></div>
           <div class="regatta-ship" style="left:${pct}%;">${shipAvatarSVG(p.avatar || 'tug')}</div>

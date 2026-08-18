@@ -8,7 +8,7 @@ let dResponsesByQuestion = {};
 
 document.addEventListener('DOMContentLoaded', () => {
   injectOceanBg();
-  qs('#brandIcon').innerHTML = ICONS.wheel;
+  qs('#brandIcon').innerHTML = tugLogoSVG();
   loadSessions();
   qs('#sessionSelect').addEventListener('change', (e) => {
     if (e.target.value) loadSessionResults(e.target.value);
@@ -70,7 +70,10 @@ function renderLeaderboard() {
     const laneClass = i === 0 ? 'lane-1' : i === 1 ? 'lane-2' : i === 2 ? 'lane-3' : '';
     return `
       <div class="regatta-lane ${laneClass}">
-        <div class="regatta-label"><span class="regatta-rank">${i + 1}</span> ${escapeHtml(p.name)} · ${p.score} pts</div>
+        <div class="regatta-label">
+          <div class="regatta-label-main"><span class="regatta-rank">${i + 1}</span> ${escapeHtml(p.name)} · ${p.score} pts</div>
+          <div class="regatta-ship-tag">${escapeHtml(shipTitle(p))}</div>
+        </div>
         <div class="regatta-track-wrap">
           <div class="regatta-track"></div>
           <div class="regatta-ship" style="left:${pct}%;">${shipAvatarSVG(p.avatar || 'tug')}</div>
