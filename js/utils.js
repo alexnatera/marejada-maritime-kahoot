@@ -105,6 +105,61 @@ function downloadCSV(filename, rows) {
 function qs(sel, root = document) { return root.querySelector(sel); }
 function qsa(sel, root = document) { return Array.from(root.querySelectorAll(sel)); }
 
+// ---------------------------------------------------------------------------
+// Sonidos marítimos sintetizados con Web Audio (sin archivos externos, así
+// funcionan sin conexión y no dependen de ningún CDN).
+// ---------------------------------------------------------------------------
+let _audioCtx = null;
+function getAudioCtx() {
+  try {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return null;
+    if (!_audioCtx) _audioCtx = new AC();
+    if (_audioCtx.state === 'suspended') _audioCtx.resume();
+    return _audioCtx;
+  } catch (e) { return null; }
+}
+
+/** Bocina de remolcador: grave y prolongada. Úsala al iniciar/terminar el juego. */
+function playShipHorn(long) {
+  const ctx = getAudioCtx();
+  if (!ctx) return;
+  const now = ctx.currentTime;
+  const dur = long ? 1.7 : 0.6;
+  [98, 130.81].forEach((freq, i) => {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.value = freq;
+    const peak = i === 0 ? 0.22 : 0.13;
+    gain.gain.setValueAtTime(0, now);
+    gain.gain.linearRampToValueAtTime(peak, now + 0.09);
+    gain.gain.setValueAtTime(peak, now + Math.max(0.1, dur - 0.3));
+    gain.gain.linearRampToValueAtTime(0, now + dur);
+    osc.connect(gain).connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + dur + 0.05);
+  });
+}
+
+/** Campana corta: para confirmaciones (unirse, respuesta correcta). */
+function playShipBell() {
+  const ctx = getAudioCtx();
+  if (!ctx) return;
+  const now = ctx.currentTime;
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(1100, now);
+  osc.frequency.exponentialRampToValueAtTime(660, now + 0.4);
+  gain.gain.setValueAtTime(0.001, now);
+  gain.gain.exponentialRampToValueAtTime(0.25, now + 0.02);
+  gain.gain.exponentialRampToValueAtTime(0.001, now + 0.55);
+  osc.connect(gain).connect(ctx.destination);
+  osc.start(now);
+  osc.stop(now + 0.6);
+}
+
 function injectOceanBg() {
   const bg = document.createElement('div');
   bg.className = 'ocean-bg';
