@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
   qs('#trophyIcon').innerHTML = ICONS.trophy;
 
   loadHostSessions();
-  qs('#btnStartGame').addEventListener('click', () => goToQuestion(0));
+  qs('#btnStartGame').addEventListener('click', () => { playShipHorn(true); goToQuestion(0); });
   qs('#btnEndQuestion').addEventListener('click', endQuestion);
   qs('#btnNextQuestion').addEventListener('click', () => {
     if (hQuestionIndex + 1 < hQuestions.length) goToQuestion(hQuestionIndex + 1);
@@ -102,6 +102,23 @@ function enterLobby() {
   qs('#lobbyPin').textContent = hSession.pin;
   showView('Lobby');
   updateLobbyUI();
+  renderJoinQR(hSession.pin);
+}
+
+/** Genera un código QR (SVG) que apunta a player.html con el PIN precargado. */
+function renderJoinQR(pin) {
+  const el = qs('#joinQR');
+  if (!el) return;
+  try {
+    const base = location.href.replace(/index\.html.*$/, '').replace(/\/?$/, '/');
+    const joinUrl = `${base}player.html?pin=${pin}`;
+    const qr = qrcode(0, 'M');
+    qr.addData(joinUrl);
+    qr.make();
+    el.innerHTML = qr.createSvgTag(4, 8);
+  } catch (e) {
+    el.innerHTML = '';
+  }
 }
 
 function updateLobbyUI() {
@@ -278,4 +295,5 @@ async function endGame() {
   const { data: players } = await sb.from('players').select('*').eq('session_id', hSession.id).order('score', { ascending: false });
   showView('Ended');
   renderRegatta('#finalLeaderboard', players || []);
+  playShipHorn(true);
 }
