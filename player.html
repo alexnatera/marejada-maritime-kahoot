@@ -37,6 +37,16 @@
       <button class="btn-primary btn-block" id="btnJoin">Unirse</button>
       <p class="muted mt-16" id="joinError"></p>
     </div>
+
+    <div class="card mt-16" id="howToPlayCard">
+      <div class="eyebrow">Cómo jugar</div>
+      <div class="join-instructions mt-8">
+        <div class="join-step"><span class="step-num">1</span> Mira la pantalla principal para ver el PIN de 6 dígitos</div>
+        <div class="join-step"><span class="step-num">2</span> Elige tu buque, escribe tu nombre y presiona "Unirse"</div>
+        <div class="join-step"><span class="step-num">3</span> Responde cada pregunta lo más rápido posible: entre más rápido y certero, más puntos sumas</div>
+        <div class="join-step"><span class="step-num">4</span> Mantén el sonido activado 🔊 para escuchar la bocina del remolcador en cada ronda</div>
+      </div>
+    </div>
   </section>
 
   <!-- LOBBY -->
@@ -47,6 +57,8 @@
       <p class="muted">Esperando a que el capitán zarpe...</p>
       <div class="ship-avatar-wrap" id="myShipPreview" style="width:70px;"></div>
       <p class="muted" id="myShipLabel" style="font-size:0.8rem;"></p>
+      <div class="qr-card" id="inviteQR" style="margin-top:8px;"></div>
+      <p class="muted" style="font-size:0.72rem;">Invita a más tripulantes: que escaneen este código</p>
     </div>
   </section>
 
@@ -109,6 +121,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
 <script src="js/icons.js"></script>
 <script src="js/utils.js"></script>
 <script src="js/config.js"></script>
