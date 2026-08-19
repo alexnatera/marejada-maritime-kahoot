@@ -395,13 +395,170 @@ function showAdminPanel() {
   qs('#viewLogin').classList.add('hidden');
   qs('#adminContent').classList.remove('hidden');
   qs('#btnLogout').classList.remove('hidden');
+  qs('#btnHelpGuide')?.classList.remove('hidden');
+  qs('#btnFloatingHelp')?.classList.remove('hidden');
+  
   loadSessions();
+  setupOnboardingTour();
+  checkAutoOnboarding();
 }
 
 function showLoginScreen() {
   qs('#viewLogin').classList.remove('hidden');
   qs('#adminContent').classList.add('hidden');
   qs('#btnLogout').classList.add('hidden');
+  qs('#btnHelpGuide')?.classList.add('hidden');
+  qs('#btnFloatingHelp')?.classList.add('hidden');
+  closeOnboarding();
+}
+
+// ===========================================================================
+// Bitácora del Capitán: Controlador de Onboarding & Guía de Ayuda
+// ===========================================================================
+let currentOnboardingSlide = 1;
+const TOTAL_ONBOARDING_SLIDES = 5;
+
+const SLIDE_METADATA = [
+  { icon: '🧭', title: 'Bitácora del Capitán', subtitle: 'Paso 1 de 5 · Arquitectura & Flujo General' },
+  { icon: '🚢', title: 'Plantillas 1-Click', subtitle: 'Paso 2 de 5 · Listas para Lanzar al Mar' },
+  { icon: '🎮', title: 'Dinámicas & Mecánicas', subtitle: 'Paso 3 de 5 · Los 6 Formatos & Marea Alta 2x' },
+  { icon: '📺', title: 'El Día de la Travesía', subtitle: 'Paso 4 de 5 · Proyección & Control en Vivo' },
+  { icon: '📊', title: 'Centro de Analítica', subtitle: 'Paso 5 de 5 · Métricas, CSV y Diplomas' }
+];
+
+function setupOnboardingTour() {
+  // Botones para abrir guía
+  qs('#btnHelpGuide')?.addEventListener('click', () => openOnboarding(1));
+  qs('#btnStartTour')?.addEventListener('click', () => openOnboarding(1));
+  qs('#btnFloatingHelp')?.addEventListener('click', () => openOnboarding(1));
+
+  // Botón cerrar
+  qs('#btnCloseOnboarding')?.addEventListener('click', closeOnboarding);
+
+  // Overlay click para cerrar
+  const overlay = qs('#onboardingOverlay');
+  if (overlay) {
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) closeOnboarding();
+    });
+  }
+
+  // Navegación de slides
+  qs('#btnNextSlide')?.addEventListener('click', () => {
+    if (currentOnboardingSlide < TOTAL_ONBOARDING_SLIDES) {
+      goToOnboardingSlide(currentOnboardingSlide + 1);
+    }
+  });
+
+  qs('#btnPrevSlide')?.addEventListener('click', () => {
+    if (currentOnboardingSlide > 1) {
+      goToOnboardingSlide(currentOnboardingSlide - 1);
+    }
+  });
+
+  qs('#btnFinishOnboarding')?.addEventListener('click', () => {
+    try {
+      localStorage.setItem('marejada_admin_onboarded', 'true');
+    } catch (e) {}
+    closeOnboarding();
+  });
+
+  // Clicks en los puntos (dots)
+  qsa('.onboarding-dot').forEach(dot => {
+    dot.addEventListener('click', () => {
+      const step = parseInt(dot.dataset.step, 10);
+      if (step >= 1 && step <= TOTAL_ONBOARDING_SLIDES) {
+        goToOnboardingSlide(step);
+      }
+    });
+  });
+
+  // Toggle de la guía rápida FAQ
+  const btnQuickToggle = qs('#btnQuickGuideToggle');
+  const quickContent = qs('#quickGuideContent');
+  if (btnQuickToggle && quickContent) {
+    btnQuickToggle.addEventListener('click', () => {
+      const isHidden = quickContent.classList.toggle('hidden');
+      btnQuickToggle.textContent = isHidden ? '📖 Ver Guía Rápida' : '✕ Ocultar Guía';
+    });
+  }
+
+  // Teclado (Escape / Flechas)
+  document.addEventListener('keydown', (e) => {
+    const overlayEl = qs('#onboardingOverlay');
+    if (!overlayEl || overlayEl.classList.contains('hidden')) return;
+
+    if (e.key === 'Escape') {
+      closeOnboarding();
+    } else if (e.key === 'ArrowRight' && currentOnboardingSlide < TOTAL_ONBOARDING_SLIDES) {
+      goToOnboardingSlide(currentOnboardingSlide + 1);
+    } else if (e.key === 'ArrowLeft' && currentOnboardingSlide > 1) {
+      goToOnboardingSlide(currentOnboardingSlide - 1);
+    }
+  });
+}
+
+function openOnboarding(startSlide = 1) {
+  const overlay = qs('#onboardingOverlay');
+  if (!overlay) return;
+  overlay.classList.remove('hidden');
+  goToOnboardingSlide(startSlide);
+}
+
+function closeOnboarding() {
+  const overlay = qs('#onboardingOverlay');
+  if (overlay) overlay.classList.add('hidden');
+}
+
+function goToOnboardingSlide(slideNum) {
+  currentOnboardingSlide = Math.max(1, Math.min(TOTAL_ONBOARDING_SLIDES, slideNum));
+  const meta = SLIDE_METADATA[currentOnboardingSlide - 1] || SLIDE_METADATA[0];
+
+  // Actualizar Header
+  const iconEl = qs('#onboardingHeaderIcon');
+  const titleEl = qs('#onboardingHeaderTitle');
+  const subEl = qs('#onboardingHeaderSubtitle');
+  if (iconEl) iconEl.textContent = meta.icon;
+  if (titleEl) titleEl.textContent = meta.title;
+  if (subEl) subEl.textContent = meta.subtitle;
+
+  // Actualizar visibilidad de slides
+  qsa('.onboarding-slide').forEach(slide => {
+    const sIdx = parseInt(slide.dataset.slide, 10);
+    slide.classList.toggle('active', sIdx === currentOnboardingSlide);
+  });
+
+  // Actualizar dots
+  qsa('.onboarding-dot').forEach(dot => {
+    const dStep = parseInt(dot.dataset.step, 10);
+    dot.classList.toggle('active', dStep === currentOnboardingSlide);
+  });
+
+  // Actualizar Botones de Navegación
+  const btnPrev = qs('#btnPrevSlide');
+  const btnNext = qs('#btnNextSlide');
+  const btnFinish = qs('#btnFinishOnboarding');
+
+  if (btnPrev) btnPrev.disabled = currentOnboardingSlide === 1;
+  
+  if (currentOnboardingSlide === TOTAL_ONBOARDING_SLIDES) {
+    if (btnNext) btnNext.classList.add('hidden');
+    if (btnFinish) btnFinish.classList.remove('hidden');
+  } else {
+    if (btnNext) btnNext.classList.remove('hidden');
+    if (btnFinish) btnFinish.classList.add('hidden');
+  }
+}
+
+function checkAutoOnboarding() {
+  try {
+    const hasSeen = localStorage.getItem('marejada_admin_onboarded');
+    if (!hasSeen) {
+      setTimeout(() => openOnboarding(1), 400);
+    }
+  } catch (e) {
+    // Si localStorage no está disponible, no auto-abrir
+  }
 }
 
 async function handleLogin() {
