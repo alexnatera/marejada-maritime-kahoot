@@ -3,61 +3,579 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard de Resultados · Zarpa</title>
+<title>Centro de Analítica & Product Discovery · Marejada 2.0</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
+<style>
+/* Estilos específicos y complementarios para el Dashboard de Analítica & Discovery */
+.dash-tabs-bar {
+  display: flex;
+  gap: 12px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.12);
+  margin-bottom: 28px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.dash-tab-btn {
+  background: rgba(11, 53, 89, 0.35);
+  border: 1px solid rgba(52, 152, 219, 0.25);
+  border-bottom: none;
+  color: rgba(255, 255, 255, 0.75);
+  padding: 14px 22px;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.dash-tab-btn:hover {
+  background: rgba(11, 53, 89, 0.65);
+  color: #ffffff;
+  border-color: rgba(212, 168, 67, 0.4);
+}
+
+.dash-tab-btn.active {
+  background: linear-gradient(180deg, rgba(18, 74, 125, 0.8) 0%, rgba(11, 53, 89, 0.95) 100%);
+  color: #FFF2A1;
+  border: 1.5px solid var(--color-gold);
+  border-bottom: 2px solid #0B3559;
+  box-shadow: 0 -4px 18px rgba(212, 168, 67, 0.25);
+}
+
+.dash-tab-badge {
+  background: rgba(212, 168, 67, 0.25);
+  border: 1px solid var(--color-gold);
+  color: var(--color-gold);
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-weight: 800;
+}
+
+.dash-tab-btn.active .dash-tab-badge {
+  background: var(--color-gold);
+  color: var(--color-deep);
+}
+
+/* KPI Cards */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.kpi-card {
+  background: rgba(11, 53, 89, 0.4);
+  border: 1px solid rgba(52, 152, 219, 0.25);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.kpi-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-gold);
+}
+
+.kpi-card.highlight-gold {
+  border-color: rgba(212, 168, 67, 0.45);
+  background: linear-gradient(145deg, rgba(18, 74, 125, 0.5), rgba(4, 18, 37, 0.75));
+}
+
+.kpi-card.highlight-red {
+  border-color: rgba(228, 0, 26, 0.4);
+  background: linear-gradient(145deg, rgba(228, 0, 26, 0.12), rgba(4, 18, 37, 0.75));
+}
+
+.kpi-label {
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.kpi-value {
+  font-family: var(--font-title);
+  font-size: 2.3rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 10px 0 6px;
+  line-height: 1.1;
+}
+
+.kpi-sub {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.35;
+}
+
+/* Question Breakdown Cards */
+.dash-q-card {
+  background: rgba(11, 53, 89, 0.35);
+  border: 1px solid rgba(52, 152, 219, 0.2);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin-bottom: 20px;
+  backdrop-filter: blur(10px);
+  transition: border-color 0.2s ease;
+}
+
+.dash-q-card:hover {
+  border-color: rgba(212, 168, 67, 0.35);
+}
+
+.dash-q-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.dash-q-title {
+  margin: 0;
+  font-size: 1.15rem;
+  font-family: var(--font-body);
+  font-weight: 700;
+  color: #ffffff;
+  flex: 1;
+  min-width: 260px;
+}
+
+.security-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.security-badge.safe { background: rgba(46, 204, 113, 0.2); color: #2ECC71; border: 1px solid rgba(46, 204, 113, 0.4); }
+.security-badge.warning { background: rgba(243, 156, 18, 0.2); color: #F39C12; border: 1px solid rgba(243, 156, 18, 0.4); }
+.security-badge.critical { background: rgba(228, 0, 26, 0.22); color: #FF6B7A; border: 1px solid rgba(228, 0, 26, 0.5); }
+
+/* Feature Prioritization Progress Bars */
+.feature-rank-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.feature-rank-item {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  position: relative;
+  overflow: hidden;
+}
+
+.feature-rank-progress {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, rgba(52, 152, 219, 0.35) 0%, rgba(212, 168, 67, 0.35) 100%);
+  z-index: 0;
+  transition: width 0.8s cubic-bezier(0.2, 0.8, 0.3, 1);
+  border-radius: var(--radius-md);
+}
+
+.feature-rank-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* UX Gauge & Rating */
+.ux-eval-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.ux-gauge-box {
+  background: rgba(4, 18, 37, 0.6);
+  border: 1px solid rgba(212, 168, 67, 0.3);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.ux-gauge-emoji {
+  font-size: 3.2rem;
+  line-height: 1;
+  margin-bottom: 8px;
+  animation: floatSlow 3s ease-in-out infinite;
+}
+
+.ux-gauge-num {
+  font-family: var(--font-title);
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: var(--color-gold);
+  line-height: 1;
+}
+
+/* Feedback Wall */
+.feedback-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.feedback-card {
+  background: rgba(11, 53, 89, 0.45);
+  border: 1px solid rgba(212, 168, 67, 0.25);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 14px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(8px);
+}
+
+.feedback-body {
+  font-size: 0.95rem;
+  color: #ffffff;
+  line-height: 1.45;
+  font-style: italic;
+}
+
+.feedback-author {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.feedback-avatar {
+  width: 32px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.feedback-author-name {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-gold);
+}
+
+.feedback-author-role {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* Session Info Strip */
+.session-info-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-top: 16px;
+  margin-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.session-info-tags {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.session-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Print Styles */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #041225 !important;
+  }
+  .ocean-bg, .bg-maneuvers, .deco-buoys, .wave-strip, .topbar, .audio-floating-btn, .session-actions, #sessionSelect, #sessionSearch, .dash-tabs-bar {
+    display: none !important;
+  }
+  .container {
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+  .card, .glass-card, .dash-q-card, .kpi-card {
+    background: #ffffff !important;
+    border: 1px solid #dcdcdc !important;
+    color: #041225 !important;
+    box-shadow: none !important;
+    break-inside: avoid;
+  }
+  h1, h2, h3, .title-font, .kpi-value {
+    color: #0B3559 !important;
+  }
+  .muted, .kpi-sub {
+    color: #555555 !important;
+  }
+  #tabPanelSummit, #tabPanelDiscovery {
+    display: block !important;
+  }
+}
+</style>
 </head>
 <body>
 
+<!-- Botón Flotante de Audio Procedural -->
+<button id="audioToggleBtn" class="audio-floating-btn" title="Silenciar / Activar Sonido" aria-label="Silenciar o Activar Sonido">
+  <span class="audio-wave-bars">
+    <span class="audio-wave-bar"></span>
+    <span class="audio-wave-bar"></span>
+    <span class="audio-wave-bar"></span>
+  </span>
+</button>
+
 <div class="topbar">
-  <a href="index.html" class="brand"><span class="brand-mark" id="brandIcon"></span> Zarpa</a>
+  <a href="index.html" class="brand"><span class="brand-mark" id="brandIcon"></span> Marejada</a>
   <div class="nav-links">
     <a href="index.html" class="btn btn-secondary">Host</a>
     <a href="admin.html" class="btn btn-secondary">Administración</a>
     <a href="player.html" class="btn btn-secondary">Jugador</a>
+    <a href="dashboard.html" class="btn btn-secondary" style="border-color:var(--color-gold); color:var(--color-gold);">Analítica & Discovery</a>
   </div>
 </div>
 
 <div class="container">
-  <div class="eyebrow">Bitácora de resultados</div>
-  <h1>Dashboard de resultados</h1>
-
-  <div class="card mt-16">
-    <label>Selecciona una sesión</label>
-    <select id="sessionSelect"><option value="">Cargando sesiones...</option></select>
+  <div class="flex-between wrap gap-12" style="align-items:flex-end;">
+    <div>
+      <div class="eyebrow">Bitácora de analítica naval & product discovery</div>
+      <h1 style="margin:4px 0 0;">Centro de Control & Analítica Marítima</h1>
+      <p class="muted mt-8" style="margin-bottom:0;">Métricas de seguridad del Summit, clasificación de tripulantes, priorización de roadmap y sondeos UX.</p>
+    </div>
   </div>
 
+  <!-- Selector de Sesión con Búsqueda y Acciones Rápidas -->
+  <div class="card glass-card mt-24">
+    <div class="panel-grid cols-2" style="align-items:center; gap:16px;">
+      <div>
+        <label for="sessionSearch">🔍 Buscar o filtrar sesión</label>
+        <input type="text" id="sessionSearch" placeholder="Escribe título, PIN o estado para filtrar...">
+      </div>
+      <div>
+        <label for="sessionSelect">⚓ Seleccionar sesión activa</label>
+        <select id="sessionSelect">
+          <option value="">Cargando sesiones náuticas...</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Tira de Información de la Sesión y Botones de Exportación -->
+    <div id="sessionInfoStrip" class="session-info-strip hidden">
+      <div class="session-info-tags">
+        <span id="infoPinBadge" class="badge badge-question">PIN: --</span>
+        <span id="infoStatusBadge" class="badge">--</span>
+        <span id="infoDateText" class="muted" style="font-size:0.85rem;">--</span>
+      </div>
+      <div class="session-actions">
+        <button type="button" class="btn btn-secondary" id="btnExportGeneral" title="Descargar CSV con todas las respuestas y aciertos">
+          <span>📊 Reporte General CSV</span>
+        </button>
+        <button type="button" class="btn btn-gold" id="btnExportDiscovery" title="Descargar CSV estructurado para el equipo de Producto">
+          <span>💡 Insights Discovery CSV</span>
+        </button>
+        <button type="button" class="btn btn-secondary" id="btnPrint" title="Imprimir o guardar como PDF">
+          <span>🖨️ Imprimir</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contenido Principal del Dashboard -->
   <div id="dashboardContent" class="hidden mt-24">
-    <div class="panel-grid cols-3">
-      <div class="card text-center">
-        <div class="eyebrow">Preguntas</div>
-        <div class="pin-display" style="font-size:2.4rem;" id="statQuestions">0</div>
-      </div>
-      <div class="card text-center">
-        <div class="eyebrow">Jugadores</div>
-        <div class="pin-display" style="font-size:2.4rem;" id="statPlayers">0</div>
-      </div>
-      <div class="card text-center">
-        <div class="eyebrow">% Aciertos (quiz)</div>
-        <div class="pin-display" style="font-size:2.4rem;" id="statAccuracy">0%</div>
-      </div>
+    
+    <!-- Pestañas de Navegación Dual -->
+    <div class="dash-tabs-bar">
+      <button type="button" id="tabBtnSummit" class="dash-tab-btn active">
+        <span>🏆</span> 1. Summit & Competencia Naval
+        <span id="badgeSummitCount" class="dash-tab-badge">0</span>
+      </button>
+      <button type="button" id="tabBtnDiscovery" class="dash-tab-btn">
+        <span>📊</span> 2. Product Discovery & Sondeos
+        <span id="badgeDiscoveryCount" class="dash-tab-badge">0</span>
+      </button>
     </div>
 
-    <div class="card mt-24">
-      <div class="eyebrow">Composición de la flota</div>
-      <div id="fleetComposition" class="flex gap-16 wrap mt-16"></div>
-    </div>
-
-    <div class="card mt-24">
-      <div class="flex-between wrap gap-12">
-        <h2 style="margin:0;">Regata final (leaderboard)</h2>
-        <button class="btn-secondary" id="btnExportCsv">Exportar CSV</button>
+    <!-- ================================================================= -->
+    <!-- PESTAÑA 1: 🏆 SUMMIT & COMPETENCIA NAVAL -->
+    <!-- ================================================================= -->
+    <div id="tabPanelSummit">
+      
+      <!-- Resumen Ejecutivo KPI -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label"><span>👥</span> Total Tripulantes</div>
+          <div class="kpi-value" id="statSummitPlayers">0</div>
+          <div class="kpi-sub" id="statSummitPlayersSub">Capitanes a bordo en la sesión</div>
+        </div>
+        <div class="kpi-card highlight-gold">
+          <div class="kpi-label"><span>🎯</span> Tasa Global de Aciertos</div>
+          <div class="kpi-value" id="statSummitAccuracy">0%</div>
+          <div class="kpi-sub" id="statSummitAccuracySub">Efectividad en maniobras y trivia</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label"><span>⏱️</span> Tiempo Promedio</div>
+          <div class="kpi-value" id="statSummitAvgTime">0s</div>
+          <div class="kpi-sub">Agilidad de respuesta por pregunta</div>
+        </div>
+        <div class="kpi-card highlight-red">
+          <div class="kpi-label"><span>⚠️</span> Maniobra Más Crítica</div>
+          <div class="kpi-value" id="statSummitCriticalRate" style="font-size:1.8rem;">--</div>
+          <div class="kpi-sub" id="statSummitCriticalText" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Sin datos de trivia</div>
+        </div>
       </div>
-      <div id="dashLeaderboard" class="regatta mt-16"></div>
+
+      <!-- Composición de la Flota -->
+      <div class="card glass-card mt-24">
+        <div class="flex-between wrap gap-8">
+          <div>
+            <div class="eyebrow">Despliegue Naval</div>
+            <h3 style="margin:4px 0 0;">Composición de la Flota</h3>
+          </div>
+          <div class="muted" style="font-size:0.85rem;">Distribución de avatares seleccionados por la tripulación</div>
+        </div>
+        <div id="fleetComposition" class="flex gap-16 wrap mt-16" style="justify-content:space-around;"></div>
+      </div>
+
+      <!-- Regata Final / Leaderboard -->
+      <div class="card glass-card mt-24">
+        <div class="flex-between wrap gap-12">
+          <div>
+            <div class="eyebrow">Podio y Clasificación</div>
+            <h2 style="margin:4px 0 0;">🏆 Regata Final (Leaderboard de Capitanes)</h2>
+          </div>
+          <div class="muted" style="font-size:0.85rem;">Ordenado por puntaje total acumulado</div>
+        </div>
+        <div id="dashLeaderboard" class="mt-16"></div>
+      </div>
+
+      <!-- Desglose por Pregunta de Seguridad & Maniobras -->
+      <div class="mt-24">
+        <div class="eyebrow">Análisis Detallado</div>
+        <h2>⚓ Desglose de Preguntas de Seguridad & Maniobras</h2>
+        <div id="summitQuestionsResults" class="mt-16"></div>
+      </div>
+
     </div>
 
-    <div id="questionsResults" class="mt-24"></div>
+    <!-- ================================================================= -->
+    <!-- PESTAÑA 2: 📊 PRODUCT DISCOVERY & SONDEOS -->
+    <!-- ================================================================= -->
+    <div id="tabPanelDiscovery" class="hidden">
+      
+      <!-- Resumen Ejecutivo Discovery KPI -->
+      <div class="kpi-grid">
+        <div class="kpi-card highlight-gold">
+          <div class="kpi-label"><span>🗳️</span> Total Votos en Features</div>
+          <div class="kpi-value" id="statDiscoveryVotes">0</div>
+          <div class="kpi-sub">Votos de prioridad emitidos por la flota</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label"><span>⭐</span> Satisfacción UX Promedio</div>
+          <div class="kpi-value" id="statDiscoveryUxRating">0.0</div>
+          <div class="kpi-sub" id="statDiscoveryUxSub">Escala de 1 a 10 en pantallas evaluadas</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label"><span>💬</span> Sugerencias Recibidas</div>
+          <div class="kpi-value" id="statDiscoveryFeedbackCount">0</div>
+          <div class="kpi-sub">Propuestas de mejora registradas</div>
+        </div>
+      </div>
+
+      <!-- 1. Priorización de Funcionalidades -->
+      <div class="card glass-card mt-24">
+        <div class="flex-between wrap gap-8">
+          <div>
+            <div class="eyebrow">Roadmap de Producto</div>
+            <h2 style="margin:4px 0 0;">🗳️ Priorización de Funcionalidades & Módulos</h2>
+          </div>
+          <div class="badge badge-lobby">Sondeo de Preferencias</div>
+        </div>
+        <p class="muted mt-8">Ranking de interés y herramientas más solicitadas por capitanes y operadores náuticos.</p>
+        <div id="discoveryPollChoiceResults" class="mt-16"></div>
+      </div>
+
+      <!-- 2. Evaluación de Pantallas & UX -->
+      <div class="card glass-card mt-24">
+        <div class="flex-between wrap gap-8">
+          <div>
+            <div class="eyebrow">Experiencia de Usuario</div>
+            <h2 style="margin:4px 0 0;">⭐ Valoración de Pantallas y Ergonomía (1 a 10)</h2>
+          </div>
+          <div class="badge badge-question">Evaluación UX</div>
+        </div>
+        <p class="muted mt-8">Calificaciones cuantitativas y distribución de notas por módulo de la aplicación.</p>
+        <div id="discoveryPollRatingResults" class="mt-16"></div>
+      </div>
+
+      <!-- 3. Muro de Sugerencias & Feedback Abierto -->
+      <div class="card glass-card mt-24">
+        <div class="flex-between wrap gap-12">
+          <div>
+            <div class="eyebrow">Voz de la Tripulación</div>
+            <h2 style="margin:4px 0 0;">💬 Muro de Sugerencias y Propuestas</h2>
+          </div>
+          <div style="min-width:240px;">
+            <input type="text" id="feedbackSearchInput" placeholder="🔍 Filtrar comentarios o autores..." style="padding:8px 14px; font-size:0.9rem;">
+          </div>
+        </div>
+        <p class="muted mt-8">Ideas, comentarios cualitativos y oportunidades de mejora aportadas en tiempo real.</p>
+        
+        <!-- Nube o Lista de Palabras Frecuentes -->
+        <div id="discoveryKeywordsContainer" class="mt-16 hidden">
+          <div class="eyebrow" style="font-size:0.7rem;">Conceptos & Términos Frecuentes</div>
+          <div id="discoveryKeywordsList" class="flex gap-8 wrap mt-8"></div>
+        </div>
+
+        <div id="discoveryFeedbackWall" class="feedback-grid mt-16"></div>
+      </div>
+
+    </div>
+
   </div>
 </div>
 
@@ -65,6 +583,9 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/wordcloud@1.2.2/src/wordcloud2.js"></script>
 <script src="js/icons.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/canvas-fx.js"></script>
+<script src="js/mechanics.js"></script>
 <script src="js/utils.js"></script>
 <script src="js/config.js"></script>
 <script src="js/dashboard.js"></script>
