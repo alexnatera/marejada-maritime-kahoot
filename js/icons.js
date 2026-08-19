@@ -111,6 +111,30 @@ function tugLogoSVG() {
   </svg>`;
 }
 
+// ---------------------------------------------------------------------------
+// Maniobras de remolcador de fondo (diagrama sutil decorativo)
+// ---------------------------------------------------------------------------
+function tugManeuversBgSVG() {
+  return `
+    <svg viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg" style="opacity:0.04">
+      <!-- Trayectoria de escolta a popa -->
+      <path d="M100,350 C100,250 200,200 300,200 C400,200 500,250 500,150"
+            stroke="#00D2FF" stroke-width="2" fill="none" stroke-dasharray="8,6"/>
+      <circle cx="100" cy="350" r="6" fill="#00D2FF"/>
+      <circle cx="500" cy="150" r="6" fill="#00D2FF"/>
+      <!-- Maniobra de giro asistido -->
+      <path d="M450,380 Q350,300 350,200 Q350,100 250,80"
+            stroke="#D4A843" stroke-width="1.5" fill="none" stroke-dasharray="6,8"/>
+      <circle cx="450" cy="380" r="4" fill="#D4A843"/>
+      <circle cx="250" cy="80" r="4" fill="#D4A843"/>
+      <!-- Línea de remolque -->
+      <path d="M80,100 L520,100" stroke="rgba(255,255,255,0.3)" stroke-width="1" stroke-dasharray="4,12"/>
+      <!-- Balizas -->
+      <circle cx="150" cy="100" r="3" fill="#E4001A" opacity="0.6"/>
+      <circle cx="450" cy="100" r="3" fill="#10B981" opacity="0.6"/>
+    </svg>`;
+}
+
 function wavesSVG() {
   return `<svg viewBox="0 0 1600 160" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
     <defs>

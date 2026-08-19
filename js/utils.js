@@ -161,22 +161,30 @@ function playShipBell() {
 }
 
 function injectOceanBg() {
-  const bg = document.createElement('div');
-  bg.className = 'ocean-bg';
-  document.body.prepend(bg);
+  try {
+    const bg = document.createElement('div');
+    bg.className = 'ocean-bg';
+    document.body.prepend(bg);
+  } catch (e) { console.warn('ocean-bg:', e); }
 
-  const maneuvers = document.createElement('div');
-  maneuvers.className = 'bg-maneuvers';
-  maneuvers.innerHTML = tugManeuversBgSVG();
-  document.body.prepend(maneuvers);
+  try {
+    const maneuvers = document.createElement('div');
+    maneuvers.className = 'bg-maneuvers';
+    maneuvers.innerHTML = tugManeuversBgSVG();
+    document.body.prepend(maneuvers);
+  } catch (e) { console.warn('bg-maneuvers:', e); }
 
-  const buoys = document.createElement('div');
-  buoys.className = 'deco-buoys';
-  buoys.innerHTML = buoysDecoSVG();
-  document.body.prepend(buoys);
+  try {
+    const buoys = document.createElement('div');
+    buoys.className = 'deco-buoys';
+    buoys.innerHTML = buoysDecoSVG();
+    document.body.prepend(buoys);
+  } catch (e) { console.warn('deco-buoys:', e); }
 
-  const strip = document.createElement('div');
-  strip.className = 'wave-strip';
-  strip.innerHTML = wavesSVG();
-  document.body.appendChild(strip);
+  try {
+    const strip = document.createElement('div');
+    strip.className = 'wave-strip';
+    strip.innerHTML = wavesSVG();
+    document.body.appendChild(strip);
+  } catch (e) { console.warn('wave-strip:', e); }
 }
