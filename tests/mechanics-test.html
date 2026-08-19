@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marejada 2.0 — Game Mechanics & Question Formats Test</title>
+  <style>
+    :root {
+      --bg: #0B192C;
+      --card-bg: rgba(30, 62, 98, 0.65);
+      --card-border: rgba(255, 255, 255, 0.18);
+      --accent: #D4A843;
+      --accent-red: #E4001A;
+      --accent-blue: #3498DB;
+      --accent-green: #2ECC71;
+      --text: #F4F6F8;
+      --text-muted: #8FA2B6;
+      --success: #2ECC71;
+      --fail: #E74C3C;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body {
+      background: radial-gradient(circle at 50% 20%, #1E3E62 0%, #0B192C 80%);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 2rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .container {
+      max-width: 960px;
+      width: 100%;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    h1 {
+      font-size: 2.1rem;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+    }
+    p.subtitle {
+      color: var(--text-muted);
+      font-size: 1rem;
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      backdrop-filter: blur(10px);
+    }
+    .card h2 {
+      font-size: 1.25rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+    .btn {
+      background: #1E3E62;
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 8px;
+      padding: 0.75rem 1.25rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .btn:hover {
+      background: #2b5687;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    .btn-gold {
+      background: linear-gradient(135deg, #D4A843 0%, #B3862A 100%);
+      color: #0B192C;
+      border: none;
+    }
+    .btn-gold:hover {
+      background: linear-gradient(135deg, #e6bc5a 0%, #c49432 100%);
+    }
+    .streak-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.35rem 0.85rem;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .streak-level-1 { border-color: rgba(255,255,255,0.3); color: #F4F6F8; }
+    .streak-level-2 { border-color: #E67E22; color: #FFA07A; box-shadow: 0 0 10px rgba(230,126,34,0.4); }
+    .streak-level-3 { border-color: #F1C40F; color: #FFE600; box-shadow: 0 0 15px rgba(241,196,15,0.5); }
+    .streak-level-4 { border-color: #E4001A; color: #FF6B81; box-shadow: 0 0 20px rgba(228,0,26,0.6); animation: pulse 1.5s infinite alternate; }
+
+    /* Interactive components styling */
+    .mechanics-options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.85rem;
+      margin: 1rem 0;
+    }
+    .btn-option {
+      padding: 1.25rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border-radius: 10px;
+      border: none;
+      color: white;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      transition: transform 0.15s, opacity 0.15s;
+    }
+    .btn-option:hover { transform: scale(1.02); }
+    .btn-opt-0 { background: #E4001A; }
+    .btn-opt-1 { background: #2980B9; }
+    .btn-opt-2 { background: #D4A843; color: #0B192C; }
+    .btn-opt-3 { background: #27AE60; }
+    .btn-option.selected { outline: 4px solid #fff; box-shadow: 0 0 20px rgba(255,255,255,0.8); }
+
+    .mechanics-binary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+    .btn-binary {
+      padding: 1.5rem;
+      font-size: 1.2rem;
+      font-weight: 800;
+      border-radius: 12px;
+      border: none;
+      color: white;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .btn-tf-true { background: linear-gradient(135deg, #2ECC71 0%, #27AE60 100%); }
+    .btn-tf-false { background: linear-gradient(135deg, #E74C3C 0%, #C0392B 100%); }
+
+    .mechanics-sequence-list {
+      list-style: none;
+      margin: 1rem 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .sequence-item {
+      background: rgba(11, 25, 44, 0.8);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 8px;
+      padding: 0.85rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .sequence-rank {
+      background: var(--accent);
+      color: #0B192C;
+      font-weight: 800;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+    }
+    .sequence-text { flex: 1; font-weight: 500; }
+    .sequence-controls { display: flex; gap: 0.3rem; }
+    .btn-seq-move {
+      background: rgba(255,255,255,0.15);
+      border: none;
+      color: white;
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .btn-confirm-sequence, .btn-submit-text {
+      width: 100%;
+      background: var(--accent);
+      color: #0B192C;
+      font-weight: 800;
+      padding: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      margin-top: 0.5rem;
+    }
+
+    .mechanics-rating-grid {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 0.4rem;
+      margin: 1rem 0;
+    }
+    .btn-rating-num {
+      padding: 0.85rem 0.2rem;
+      font-size: 1.1rem;
+      font-weight: 800;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 8px;
+      background: rgba(255,255,255,0.08);
+      color: white;
+      cursor: pointer;
+    }
+    .btn-rating-num.high { background: rgba(46, 204, 113, 0.25); border-color: #2ECC71; }
+    .btn-rating-num.mid { background: rgba(241, 196, 15, 0.25); border-color: #F1C40F; }
+    .btn-rating-num.low { background: rgba(231, 76, 60, 0.25); border-color: #E74C3C; }
+    .btn-rating-num.selected { outline: 3px solid #fff; background: var(--accent); color: #0B192C; }
+
+    .input-feedback-text {
+      width: 100%;
+      background: rgba(11, 25, 44, 0.7);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 8px;
+      color: white;
+      padding: 0.75rem;
+      font-size: 1rem;
+      resize: vertical;
+    }
+    .text-char-count { font-size: 0.8rem; color: var(--text-muted); text-align: right; margin-top: 0.3rem; }
+
+    .test-log {
+      background: #060e18;
+      border-radius: 8px;
+      padding: 1rem;
+      font-family: monospace;
+      font-size: 0.9rem;
+      max-height: 250px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+    .test-log .pass { color: var(--success); }
+    .test-log .fail { color: var(--fail); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>⚓ Motor de Mecánicas y Rachas (Marejada 2.0)</h1>
+      <p class="subtitle">Verificación interactiva de cálculo de puntajes, rachas "A Toda Máquina", marea alta y formatos</p>
+    </header>
+
+    <!-- Test Suite Runner -->
+    <section class="card">
+      <h2>🧪 Suite de Pruebas Unitarias Automáticas</h2>
+      <div style="display:flex; gap:1rem; align-items:center; margin-bottom:1rem;">
+        <button id="btnRunTests" class="btn btn-gold">▶ Ejecutar Todas las Pruebas</button>
+        <span id="testSummaryBadge" style="font-weight:700;">Listo para iniciar</span>
+      </div>
+      <div id="testConsole" class="test-log">Presiona "Ejecutar Todas las Pruebas" para validar...</div>
+    </section>
+
+    <!-- Live Score & Streak Calculator -->
+    <section class="card">
+      <h2>🎛️ Simulador de Puntajes y Multiplicadores</h2>
+      <div class="grid-2">
+        <div>
+          <label style="display:block; margin-bottom:0.4rem;">Tiempo restante (segundos): <strong id="timeVal">20</strong>s / 20s</label>
+          <input type="range" id="inputTime" min="0" max="20" value="20" step="0.5" style="width:100%;">
+          
+          <label style="display:block; margin-top:1rem; margin-bottom:0.4rem;">Racha consecutiva: <strong id="streakVal">0</strong></label>
+          <input type="range" id="inputStreak" min="0" max="10" value="0" step="1" style="width:100%;">
+
+          <div style="margin-top:1rem; display:flex; align-items:center; gap:0.5rem;">
+            <input type="checkbox" id="checkHighTide" style="width:18px; height:18px; cursor:pointer;">
+            <label for="checkHighTide" style="cursor:pointer; font-weight:700; color:var(--accent);">🌊 Ronda de Marea Alta (High Tide x2.0)</label>
+          </div>
+        </div>
+
+        <div style="background:rgba(11,25,44,0.6); padding:1rem; border-radius:10px; border:1px solid rgba(255,255,255,0.1); display:flex; flex-direction:column; justify-content:center;">
+          <div style="font-size:0.9rem; color:var(--text-muted);">Puntaje Calculado:</div>
+          <div id="displayScore" style="font-size:2.5rem; font-weight:800; color:var(--accent); margin:0.2rem 0;">1000 pts</div>
+          <div id="displayStreakBadge" class="streak-badge streak-level-1">⚓ Rumbo Estable (x1.0)</div>
+          <div id="displayFormula" style="font-size:0.8rem; color:var(--text-muted); margin-top:0.8rem;">Base: 1000 · Multiplicador: x1.0 · Marea: x1</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Format Renderer Showcase -->
+    <section class="card">
+      <h2>🎮 Renderizado de Formatos Interactivos</h2>
+      <div style="display:flex; flex-wrap:wrap; gap:0.5rem; margin-bottom:1rem;">
+        <button class="btn" onclick="renderDemo('multiple_choice')">Opción Múltiple</button>
+        <button class="btn" onclick="renderDemo('true_false')">Verdadero / Falso</button>
+        <button class="btn" onclick="renderDemo('sequence')">Secuencia Náutica</button>
+        <button class="btn" onclick="renderDemo('poll_choice')">Votación Features</button>
+        <button class="btn" onclick="renderDemo('poll_rating')">Escala UX (1-10)</button>
+        <button class="btn" onclick="renderDemo('poll_text')">Feedback Libre</button>
+      </div>
+
+      <div style="background:rgba(11,25,44,0.5); padding:1.25rem; border-radius:10px; border:1px solid var(--card-border);">
+        <h3 id="demoQuestionText" style="margin-bottom:0.5rem;">Cargando demo...</h3>
+        <div id="demoContainer"></div>
+      </div>
+      <div id="demoResultBox" style="margin-top:1rem; font-size:0.95rem; color:var(--accent);"></div>
+    </section>
+  </div>
+
+  <script src="../js/mechanics.js"></script>
+  <script src="mechanics-test.js"></script>
+  <script>
+    // Live Score Simulator
+    const inputTime = document.getElementById('inputTime');
+    const inputStreak = document.getElementById('inputStreak');
+    const checkHighTide = document.getElementById('checkHighTide');
+    const timeVal = document.getElementById('timeVal');
+    const streakVal = document.getElementById('streakVal');
+    const displayScore = document.getElementById('displayScore');
+    const displayStreakBadge = document.getElementById('displayStreakBadge');
+    const displayFormula = document.getElementById('displayFormula');
+
+    function updateCalculator() {
+      const time = parseFloat(inputTime.value);
+      const streak = parseInt(inputStreak.value, 10);
+      const isHighTide = checkHighTide.checked;
+
+      timeVal.textContent = time;
+      streakVal.textContent = streak;
+
+      const score = Mechanics.calculateScore(time, 20, streak, isHighTide);
+      const info = Mechanics.getStreakInfo(streak);
+
+      displayScore.textContent = `${score.toLocaleString()} pts`;
+      displayStreakBadge.className = `streak-badge ${info.cssClass}`;
+      displayStreakBadge.textContent = `${info.badge} (x${info.multiplier.toFixed(1)})`;
+
+      const ratio = time / 20;
+      const base = Math.round(500 + 500 * ratio);
+      displayFormula.textContent = `Base (${time}s/20s): ${base} pts · Racha: x${info.multiplier.toFixed(1)} · Marea Alta: ${isHighTide ? 'x2.0' : 'x1.0'}`;
+    }
+
+    inputTime.addEventListener('input', updateCalculator);
+    inputStreak.addEventListener('input', updateCalculator);
+    checkHighTide.addEventListener('change', updateCalculator);
+    updateCalculator();
+
+    // Unit Tests Runner
+    document.getElementById('btnRunTests').addEventListener('click', () => {
+      const consoleEl = document.getElementById('testConsole');
+      consoleEl.innerHTML = '';
+
+      const { passed, failed, total, results } = window.runMechanicsTests();
+      results.forEach(r => {
+        const line = document.createElement('div');
+        line.className = r.status === 'PASS' ? 'pass' : 'fail';
+        line.textContent = `${r.status === 'PASS' ? '✅ PASS' : '❌ FAIL'}: ${r.message}`;
+        consoleEl.appendChild(line);
+      });
+
+      const summaryBadge = document.getElementById('testSummaryBadge');
+      if (failed === 0) {
+        summaryBadge.style.color = 'var(--success)';
+        summaryBadge.textContent = `🎉 Todas las pruebas pasaron (${passed}/${total})`;
+      } else {
+        summaryBadge.style.color = 'var(--fail)';
+        summaryBadge.textContent = `⚠️ Fallaron ${failed} de ${total} pruebas`;
+      }
+    });
+
+    // Formats Demo
+    const sampleQuestions = {
+      multiple_choice: {
+        type: 'multiple_choice',
+        question_text: '¿Cuál es la señal acústica reglamentaria de un buque navegando con niebla?',
+        options: ['Un pitido largo cada 2 minutos', 'Tres pitidos cortos continuos', 'Dos pitidos largos y uno corto', 'Campanadas alternadas'],
+        correct_index: 0,
+        time_limit: 20
+      },
+      true_false: {
+        type: 'true_false',
+        question_text: '¿Es obligatorio llevar encendidas las luces de navegación desde la puesta hasta la salida del sol?',
+        options: ['Seguro (Verdadero)', 'Riesgo (Falso)'],
+        correct_index: 0,
+        time_limit: 20
+      },
+      sequence: {
+        type: 'sequence',
+        question_text: 'Ordena cronológicamente la maniobra de fondeo seguro:',
+        options: ['Evaluar fondo y marea', 'Filtrar cadena al agua', 'Dar atrás suavemente para clavar ancla', 'Comprobar enfilaciones'],
+        correct_order: [0, 1, 2, 3],
+        time_limit: 30
+      },
+      poll_choice: {
+        type: 'poll_choice',
+        question_text: '¿Qué funcionalidad prioritaria debería incluir la próxima versión del sistema de puente?',
+        options: ['Alertas automáticas de colisión CPA/TCPA', 'Integración con cartas de corrientes en vivo', 'Checklist interactivo de zarpe', 'Bitácora digital sincronizada']
+      },
+      poll_rating: {
+        type: 'poll_rating',
+        question_text: 'Califica la legibilidad del modo noche en pantallas de puente (1 a 10):'
+      },
+      poll_text: {
+        type: 'poll_text',
+        question_text: 'Envía tus observaciones o sugerencias para optimizar las maniobras de práctico:'
+      }
+    };
+
+    function renderDemo(type) {
+      const q = sampleQuestions[type];
+      const container = document.getElementById('demoContainer');
+      const textEl = document.getElementById('demoQuestionText');
+      const resultBox = document.getElementById('demoResultBox');
+
+      textEl.textContent = `${Mechanics.getQuestionTypeIcon(type)} ${q.question_text}`;
+      resultBox.textContent = 'Selecciona o envía tu respuesta...';
+
+      Mechanics.renderQuestionInput(q, container, (answerPayload) => {
+        const validation = Mechanics.validateAnswer(q, answerPayload, {
+          timeRemaining: parseFloat(inputTime.value),
+          streak: parseInt(inputStreak.value, 10),
+          isHighTide: checkHighTide.checked
+        });
+
+        if (validation.is_correct === true) {
+          resultBox.innerHTML = `✅ <strong>¡Correcto!</strong> +${validation.points} pts | Nueva Racha: ${validation.streak} (${validation.streakInfo.name})`;
+        } else if (validation.is_correct === false) {
+          resultBox.innerHTML = `❌ <strong>Incorrecto.</strong> 0 pts | Racha reiniciada a 0.`;
+        } else {
+          resultBox.innerHTML = `📊 <strong>Respuesta de sondeo registrada:</strong> ${JSON.stringify(answerPayload)}`;
+        }
+      });
+    }
+
+    renderDemo('multiple_choice');
+  </script>
+</body>
+</html>
