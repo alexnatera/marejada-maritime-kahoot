@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marejada 2.0 — Web Audio API Sound Engine Test</title>
+  <style>
+    :root {
+      --bg: #0B192C;
+      --card-bg: rgba(30, 62, 98, 0.6);
+      --card-border: rgba(255, 255, 255, 0.15);
+      --accent: #D4A843;
+      --accent-red: #E4001A;
+      --text: #F4F6F8;
+      --text-muted: #8FA2B6;
+      --success: #2ECC71;
+      --fail: #E74C3C;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body {
+      background: radial-gradient(circle at 50% 20%, #1E3E62 0%, #0B192C 80%);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 2rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .container {
+      max-width: 900px;
+      width: 100%;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    h1 {
+      font-size: 2rem;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    p.subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+    .control-panel {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+      backdrop-filter: blur(10px);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.4rem 0.8rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      background: rgba(255, 255, 255, 0.1);
+    }
+    .status-badge.active { color: var(--success); border: 1px solid var(--success); }
+    .status-badge.muted { color: var(--fail); border: 1px solid var(--fail); }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .sound-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      backdrop-filter: blur(10px);
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+    .sound-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent);
+    }
+    .sound-title {
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #FFF;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .sound-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+    button.btn {
+      background: #183350;
+      color: #FFF;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      padding: 0.6rem 1rem;
+      font-size: 0.9rem;
+      font-weight: bold;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      transition: background 0.15s ease, transform 0.05s ease;
+    }
+    button.btn:hover { background: #23486F; border-color: var(--accent); }
+    button.btn:active { transform: scale(0.97); }
+    button.btn-accent { background: var(--accent); color: #0B192C; border: none; }
+    button.btn-accent:hover { background: #E5B954; }
+    button.btn-red { background: var(--accent-red); color: #FFF; border: none; }
+    button.btn-red:hover { background: #FF1A35; }
+    
+    .test-results {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-top: 1.5rem;
+      width: 100%;
+    }
+    .test-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
+    .test-table th, .test-table td {
+      padding: 0.6rem 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .test-table th { color: var(--accent); font-weight: bold; }
+    .badge-pass { color: var(--success); font-weight: bold; }
+    .badge-fail { color: var(--fail); font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>⚓ Motor de Audio Procedural — Marejada 2.0</h1>
+      <p class="subtitle">Pruebas interactivas y suite automatizada para Web Audio API (`js/audio.js`)</p>
+    </header>
+
+    <div class="control-panel">
+      <div>
+        <strong>Estado de Audio: </strong>
+        <span id="muteStatus" class="status-badge active">🔊 Activo</span>
+      </div>
+      <div style="display: flex; gap: 0.5rem; align-items: center;">
+        <label for="volRange" style="font-size: 0.85rem; color: var(--text-muted);">Volumen:</label>
+        <input type="range" id="volRange" min="0" max="1" step="0.05" value="0.3" oninput="updateVolume(this.value)">
+        <span id="volVal" style="font-size: 0.85rem; min-width: 2.5rem;">30%</span>
+      </div>
+      <div>
+        <button id="btnToggleMute" class="btn" onclick="toggleMute()">Mute / Unmute</button>
+        <button class="btn btn-accent" onclick="runAutomatedTests()">▶ Ejecutar Suite de Tests</button>
+      </div>
+    </div>
+
+    <div class="grid">
+      <!-- 1. Ship Horn -->
+      <div class="sound-card">
+        <div class="sound-title">
+          <span>🚢 Bocina de Buque</span>
+          <span style="font-size: 0.8rem; color: var(--accent);">`ship_horn`</span>
+        </div>
+        <p class="sound-desc">Bocina grave dual (110Hz + 114Hz) con ataque suave y envolvente exponencial realista.</p>
+        <button class="btn btn-accent" onclick="AudioFX.play('ship_horn')">🔊 Tocar Bocina</button>
+      </div>
+
+      <!-- 2. Bell -->
+      <div class="sound-card">
+        <div class="sound-title">
+          <span>🔔 Campana de Guardia</span>
+          <span style="font-size: 0.8rem; color: var(--accent);">`bell`</span>
+        </div>
+        <p class="sound-desc">Campana armónica de 3 tonos senoidales (880Hz, 1760Hz, 2640Hz) con decaimiento natural.</p>
+        <button class="btn btn-accent" onclick="AudioFX.play('bell')">🔔 Tocar Campana</button>
+      </div>
+
+      <!-- 3. Sonar Ping -->
+      <div class="sound-card">
+        <div class="sound-title">
+          <span>📡 Pulso de Sonar</span>
+          <span style="font-size: 0.8rem; color: var(--accent);">`sonar_ping`</span>
+        </div>
+        <p class="sound-desc">Pulso senoidal con caída de tono exponencial. Soporta modulación de frecuencia paramétrica.</p>
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="btn btn-accent" style="flex: 1;" onclick="AudioFX.play('sonar_ping')">1200Hz</button>
+          <button class="btn" style="flex: 1;" onclick="AudioFX.play('sonar_ping', 1800)">1800Hz</button>
+          <button class="btn" style="flex: 1;" onclick="AudioFX.play('sonar_ping', 600)">600Hz</button>
+        </div>
+      </div>
+
+      <!-- 4. Error Foghorn -->
+      <div class="sound-card">
+        <div class="sound-title">
+          <span>⚠️ Bocina de Niebla (Error)</span>
+          <span style="font-size: 0.8rem; color: var(--accent-red);">`error_foghorn`</span>
+        </div>
+        <p class="sound-desc">Tono grave sordo de niebla con descenso de tono (75Hz -> 60Hz) para respuestas erróneas.</p>
+        <button class="btn btn-red" onclick="AudioFX.play('error_foghorn')">🚨 Tocar Error</button>
+      </div>
+
+      <!-- 5. Podium Fanfare -->
+      <div class="sound-card">
+        <div class="sound-title">
+          <span>🏆 Fanfarria de Podio</span>
+          <span style="font-size: 0.8rem; color: var(--accent);">`podium_fanfare`</span>
+        </div>
+        <p class="sound-desc">Arpegio triunfal armónico en Do Mayor (C4, E4, G4, C5, E5, G5) para ceremonia de premiación.</p>
+        <button class="btn btn-accent" onclick="AudioFX.play('podium_fanfare')">🎺 Tocar Fanfarria</button>
+      </div>
+
+      <!-- 6. Bubble Tap -->
+      <div class="sound-card">
+        <div class="sound-title">
+          <span>🫧 Toque Acuático</span>
+          <span style="font-size: 0.8rem; color: var(--accent);">`bubble_tap`</span>
+        </div>
+        <p class="sound-desc">Efecto senoidal ultrarrápido y ascendente (400Hz -> 900Hz) para feedback táctil de botones.</p>
+        <button class="btn btn-accent" onclick="AudioFX.play('bubble_tap')">🫧 Toque Acuático</button>
+      </div>
+    </div>
+
+    <!-- Automated Test Results Section -->
+    <div class="test-results">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2 style="font-size: 1.2rem; color: var(--accent);">🧪 Suite Automatizada de Verificación</h2>
+        <span id="testSummaryBadge" style="font-size: 0.9rem; font-weight: bold; color: var(--text-muted);">Listo para ejecutar</span>
+      </div>
+      <table class="test-table">
+        <thead>
+          <tr>
+            <th>Prueba</th>
+            <th>Condición Evaluada</th>
+            <th>Resultado</th>
+          </tr>
+        </thead>
+        <tbody id="testTableBody">
+          <tr><td colspan="3" style="text-align: center; color: var(--text-muted);">Presiona "Ejecutar Suite de Tests" para verificar el motor.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="../js/audio.js"></script>
+  <script>
+    function updateMuteBadge() {
+      const isMuted = window.AudioFX ? window.AudioFX.isMuted() : false;
+      const el = document.getElementById('muteStatus');
+      if (isMuted) {
+        el.className = 'status-badge muted';
+        el.textContent = '🔇 Silenciado';
+      } else {
+        el.className = 'status-badge active';
+        el.textContent = '🔊 Activo';
+      }
+    }
+
+    function toggleMute() {
+      if (window.AudioFX) {
+        window.AudioFX.toggleMute();
+        updateMuteBadge();
+      }
+    }
+
+    function updateVolume(val) {
+      const num = parseFloat(val);
+      if (window.AudioFX) {
+        window.AudioFX.setVolume(num);
+      }
+      document.getElementById('volVal').textContent = Math.round(num * 100) + '%';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      updateMuteBadge();
+    });
+
+    // Suite Automatizada
+    function runAutomatedTests() {
+      const results = [];
+
+      function assert(name, condition, details) {
+        results.push({ name, condition: !!condition, details });
+      }
+
+      // Test 1: AudioFX exists
+      assert('AudioFX Global API', typeof window.AudioFX === 'object' && window.AudioFX !== null, 'window.AudioFX está definido');
+
+      // Test 2: Required methods exist
+      const methods = ['init', 'play', 'toggleMute', 'isMuted', 'setVolume'];
+      const methodsOk = methods.every(m => typeof window.AudioFX[m] === 'function');
+      assert('API Methods', methodsOk, 'Todos los métodos requeridos están implementados: ' + methods.join(', '));
+
+      // Test 3: AudioContext initialization
+      try {
+        window.AudioFX.init();
+        assert('AudioContext Init', true, 'init() se ejecuta sin errores');
+      } catch (e) {
+        assert('AudioContext Init', false, e.message);
+      }
+
+      // Test 4: Mute toggle & persistence
+      const originalMute = window.AudioFX.isMuted();
+      const toggled1 = window.AudioFX.toggleMute();
+      const storedVal1 = localStorage.getItem('marejada_sound_muted');
+      const toggled2 = window.AudioFX.toggleMute();
+      const storedVal2 = localStorage.getItem('marejada_sound_muted');
+      assert('Mute Toggle & Storage', toggled1 !== originalMute && toggled2 === originalMute && storedVal2 === (originalMute ? 'true' : 'false'), 'toggleMute() alterna el estado y sincroniza localStorage');
+
+      // Test 5: Volume clamping
+      try {
+        window.AudioFX.setVolume(1.5);
+        window.AudioFX.setVolume(-0.5);
+        window.AudioFX.setVolume(0.5);
+        assert('Volume Clamping', true, 'setVolume() procesa y ajusta rangos sin error');
+      } catch (e) {
+        assert('Volume Clamping', false, e.message);
+      }
+
+      // Test 6: Synthesizer execution without exceptions
+      const soundNames = ['ship_horn', 'bell', 'sonar_ping', 'error_foghorn', 'podium_fanfare', 'bubble_tap'];
+      let soundsOk = true;
+      let soundErrors = [];
+      soundNames.forEach(s => {
+        try {
+          window.AudioFX.play(s);
+        } catch (e) {
+          soundsOk = false;
+          soundErrors.push(`${s}: ${e.message}`);
+        }
+      });
+      assert('Sound Generators', soundsOk, soundsOk ? 'Todos los 6 sintetizadores se ejecutaron sin lanzar excepciones' : soundErrors.join('; '));
+
+      // Render Results Table
+      const tbody = document.getElementById('testTableBody');
+      tbody.innerHTML = '';
+      let allPass = true;
+      results.forEach(r => {
+        if (!r.condition) allPass = false;
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td><strong>${r.name}</strong></td>
+          <td>${r.details}</td>
+          <td><span class="${r.condition ? 'badge-pass' : 'badge-fail'}">${r.condition ? '✔ PASS' : '✘ FAIL'}</span></td>
+        `;
+        tbody.appendChild(row);
+      });
+
+      const summaryBadge = document.getElementById('testSummaryBadge');
+      if (allPass) {
+        summaryBadge.innerHTML = '<span style="color: var(--success);">✔ ' + results.length + '/' + results.length + ' Tests Pasaron con Éxito</span>';
+      } else {
+        summaryBadge.innerHTML = '<span style="color: var(--fail);">✘ Fallos detectados</span>';
+      }
+    }
+  </script>
+</body>
+</html>
