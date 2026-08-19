@@ -2,119 +2,528 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Jugador · Zarpa</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Jugador · Marejada 2.0</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/animations.css">
+<style>
+  /* Optimizaciones Mobile-First para Vista Jugador */
+  .player-hud {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    background: rgba(4, 18, 37, 0.85);
+    border: 1px solid rgba(52, 152, 219, 0.3);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: var(--radius-md);
+    padding: 10px 14px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    animation: fadeIn 0.3s ease;
+  }
+  .player-hud-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+  .player-hud-avatar {
+    width: 34px;
+    height: 24px;
+    display: inline-flex;
+    flex-shrink: 0;
+  }
+  .player-hud-avatar svg { width: 100%; height: 100%; }
+  .player-hud-info {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .player-hud-name {
+    font-weight: 700;
+    font-size: 0.92rem;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .player-hud-title {
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.65);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .player-hud-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .player-hud-score {
+    font-weight: 800;
+    font-size: 1.15rem;
+    color: var(--color-gold);
+    text-shadow: 0 0 10px rgba(212, 168, 67, 0.4);
+  }
+  .streak-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: var(--radius-full);
+    font-size: 0.78rem;
+    font-weight: 800;
+    border: 1.5px solid transparent;
+    transition: all 0.25s ease;
+  }
+  .streak-badge.streak-level-1 {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.85);
+  }
+  .streak-badge.streak-level-2 {
+    background: rgba(243, 156, 18, 0.2);
+    border-color: var(--color-amber);
+    color: #f5b041;
+    box-shadow: 0 0 12px rgba(243, 156, 18, 0.35);
+  }
+  .streak-badge.streak-level-3 {
+    background: rgba(228, 0, 26, 0.22);
+    border-color: var(--saam-red);
+    color: #ff7675;
+    box-shadow: 0 0 16px rgba(228, 0, 26, 0.5);
+    animation: pulse 1.6s ease-in-out infinite;
+  }
+  .streak-badge.streak-level-4 {
+    background: linear-gradient(135deg, rgba(212, 168, 67, 0.35), rgba(228, 0, 26, 0.35));
+    border-color: var(--color-gold);
+    color: #FFF2A1;
+    box-shadow: 0 0 20px rgba(212, 168, 67, 0.7);
+    animation: streakBurn 1.4s ease-in-out infinite;
+  }
+
+  /* Contenedor dinámico de opciones táctiles */
+  .mechanics-options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 16px;
+  }
+  @media (max-width: 480px) {
+    .mechanics-options-grid { grid-template-columns: 1fr; }
+  }
+  .btn-option {
+    border-radius: var(--radius-md);
+    padding: 18px 16px;
+    color: #fff;
+    font-size: 1.05rem;
+    font-weight: 700;
+    text-align: left;
+    min-height: 76px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: var(--shadow-soft);
+    border: 2px solid transparent;
+    backdrop-filter: blur(8px);
+    cursor: pointer;
+    transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .btn-option:active:not(:disabled) { transform: scale(0.96); }
+  .btn-option.selected {
+    border-color: #ffffff;
+    transform: scale(0.98);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+  }
+  .btn-opt-0 { background: var(--opt-a); }
+  .btn-opt-1 { background: var(--opt-b); }
+  .btn-opt-2 { background: var(--opt-c); }
+  .btn-opt-3 { background: var(--opt-d); }
+  .btn-shape { font-size: 1.4rem; flex-shrink: 0; }
+  .btn-text { flex-grow: 1; }
+
+  /* V/F Náutico */
+  .mechanics-binary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 16px;
+  }
+  .btn-binary {
+    min-height: 120px;
+    font-size: 1.15rem;
+    font-weight: 800;
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 2px solid transparent;
+    color: #fff;
+    cursor: pointer;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .btn-binary.btn-tf-true {
+    background: linear-gradient(135deg, #11998e, #38ef7d);
+    box-shadow: 0 8px 24px rgba(46, 204, 113, 0.35);
+  }
+  .btn-binary.btn-tf-false {
+    background: linear-gradient(135deg, var(--saam-red-dark), var(--saam-red));
+    box-shadow: 0 8px 24px rgba(228, 0, 26, 0.4);
+  }
+  .btn-binary:active:not(:disabled) { transform: scale(0.95); }
+  .btn-binary.selected {
+    border-color: #fff;
+    transform: scale(0.98);
+    box-shadow: 0 0 22px rgba(255, 255, 255, 0.8);
+  }
+
+  /* Secuencia de Maniobras */
+  .mechanics-sequence-wrapper { margin-top: 16px; }
+  .sequence-instruction {
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 12px;
+    text-align: center;
+  }
+  .mechanics-sequence-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 16px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .mechanics-sequence-list .sequence-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 12px 14px;
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    color: #fff;
+    user-select: none;
+  }
+  .sequence-rank {
+    font-family: var(--font-title);
+    color: var(--color-gold);
+    font-weight: 700;
+    font-size: 1.1rem;
+    width: 22px;
+    flex-shrink: 0;
+  }
+  .sequence-text {
+    flex-grow: 1;
+    font-size: 0.92rem;
+    font-weight: 600;
+  }
+  .sequence-controls {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+  .btn-seq-move {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    font-size: 0.85rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .btn-seq-move:disabled { opacity: 0.3; cursor: not-allowed; }
+  .btn-confirm-sequence, .btn-submit-text {
+    width: 100%;
+    background: linear-gradient(135deg, var(--saam-red), var(--saam-red-light));
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.05rem;
+    padding: 15px 20px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-red);
+    cursor: pointer;
+  }
+
+  /* Escala 1-10 */
+  .mechanics-rating-wrapper { margin-top: 16px; text-align: center; }
+  .rating-current-value {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--color-gold);
+    margin-bottom: 12px;
+  }
+  .mechanics-rating-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .btn-rating-num {
+    height: 48px;
+    font-size: 1.15rem;
+    font-weight: 800;
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1.5px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease;
+  }
+  .btn-rating-num.selected {
+    background: var(--color-gold);
+    color: var(--color-deep);
+    border-color: #fff;
+    box-shadow: 0 0 16px rgba(212, 168, 67, 0.7);
+    transform: scale(1.06);
+  }
+  .rating-scale-legend {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin-top: 6px;
+  }
+
+  /* Feedback de texto */
+  .mechanics-text-wrapper { margin-top: 16px; }
+  .input-feedback-text {
+    width: 100%;
+    border-radius: var(--radius-md);
+    padding: 12px 14px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1.5px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    font-size: 0.95rem;
+    font-family: var(--font-body);
+    resize: vertical;
+    min-height: 100px;
+    outline: none;
+  }
+  .input-feedback-text:focus {
+    border-color: var(--color-gold);
+    box-shadow: 0 0 12px rgba(212, 168, 67, 0.3);
+  }
+  .text-char-count {
+    text-align: right;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 4px 0 12px;
+  }
+
+  /* Diploma Box */
+  .diploma-card-box {
+    background: rgba(11, 53, 89, 0.45);
+    border: 2px solid var(--color-gold);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    margin: 20px 0;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+  }
+  .diploma-badge-title {
+    font-family: var(--font-title);
+    font-size: 1.25rem;
+    color: var(--color-gold-light);
+    margin: 8px 0;
+  }
+</style>
 </head>
 <body>
 
+<!-- Botón Flotante de Audio Procedural -->
+<button id="audioToggleBtn" class="audio-floating-btn" title="Silenciar / Activar Sonido" aria-label="Silenciar o Activar Sonido">
+  <span class="audio-wave-bars">
+    <span class="audio-wave-bar"></span>
+    <span class="audio-wave-bar"></span>
+    <span class="audio-wave-bar"></span>
+  </span>
+</button>
+
 <div class="topbar">
-  <a href="index.html" class="brand"><span class="brand-mark" id="brandIcon"></span> Zarpa</a>
+  <a href="index.html" class="brand"><span class="brand-mark" id="brandIcon"></span> Marejada</a>
 </div>
 
 <div class="container-sm" id="app">
 
-  <!-- UNIRSE -->
+  <!-- HUD del Jugador (visible cuando está a bordo) -->
+  <div id="playerHud" class="player-hud hidden">
+    <div class="player-hud-left">
+      <div class="player-hud-avatar" id="hudAvatar"></div>
+      <div class="player-hud-info">
+        <div class="player-hud-name" id="hudName">Tripulante</div>
+        <div class="player-hud-title" id="hudTitle">En travesía</div>
+      </div>
+    </div>
+    <div class="player-hud-right">
+      <div class="streak-badge streak-level-1" id="hudStreak">⚓ x1.0</div>
+      <div class="player-hud-score" id="hudScore">0</div>
+    </div>
+  </div>
+
+  <!-- 1. VISTA: UNIRSE A LA SESIÓN -->
   <section id="viewJoin">
-    <div class="card text-center">
+    <div class="card text-center glass-card">
       <div class="saam-stripe"></div>
       <div class="eyebrow">Abordar</div>
       <h1>Únete a la travesía</h1>
-      <div class="field mt-24">
+      <p class="muted">Elige tu buque, escribe tu nombre y prepárate para zarpar.</p>
+
+      <div class="field mt-24 text-left">
         <label>Elige tu buque</label>
         <div class="avatar-picker-grid" id="avatarPicker"></div>
       </div>
-      <div class="field">
+
+      <div class="field text-left">
         <label>PIN de 6 dígitos</label>
         <input type="text" id="joinPin" class="pin-input" maxlength="6" inputmode="numeric" placeholder="000000">
       </div>
-      <div class="field">
-        <label>Tu nombre</label>
-        <input type="text" id="joinName" maxlength="24" placeholder="Nombre de tripulante">
+
+      <div class="field text-left">
+        <label>Tu nombre de tripulante</label>
+        <input type="text" id="joinName" maxlength="24" placeholder="Ej: Capitán Juan Pérez">
       </div>
-      <button class="btn-primary btn-block" id="btnJoin">Unirse</button>
-      <p class="muted mt-16" id="joinError"></p>
+
+      <button class="btn-primary btn-block" id="btnJoin"><span>⚓ Unirse a la Flota</span></button>
+      <p class="muted mt-16" id="joinError" style="color:var(--saam-red-light); font-weight:600;"></p>
     </div>
 
-    <div class="card mt-16" id="howToPlayCard">
+    <div class="card mt-16 glass-card" id="howToPlayCard">
       <div class="eyebrow">Cómo jugar</div>
       <div class="join-instructions mt-8">
-        <div class="join-step"><span class="step-num">1</span> Mira la pantalla principal para ver el PIN de 6 dígitos</div>
+        <div class="join-step"><span class="step-num">1</span> Mira la pantalla grande para ver el PIN de 6 dígitos</div>
         <div class="join-step"><span class="step-num">2</span> Elige tu buque, escribe tu nombre y presiona "Unirse"</div>
-        <div class="join-step"><span class="step-num">3</span> Responde cada pregunta lo más rápido posible: entre más rápido y certero, más puntos sumas</div>
-        <div class="join-step"><span class="step-num">4</span> Mantén el sonido activado 🔊 para escuchar la bocina del remolcador en cada ronda</div>
+        <div class="join-step"><span class="step-num">3</span> Responde rápido y certero para activar rachas "A Toda Máquina" (hasta x2.0)</div>
+        <div class="join-step"><span class="step-num">4</span> ¡Al llegar a puerto podrás descargar tu Diploma Oficial de Capitán! 📜</div>
       </div>
     </div>
   </section>
 
-  <!-- LOBBY -->
+  <!-- 2. VISTA: LOBBY / SALA DE ESPERA -->
   <section id="viewLobby" class="hidden">
-    <div class="center-flex">
+    <div class="card glass-card text-center">
       <div class="captain-mascot" id="captainMascot"></div>
-      <h2 id="lobbySessionTitle"></h2>
-      <p class="muted">Esperando a que el capitán zarpe...</p>
-      <div class="ship-avatar-wrap" id="myShipPreview" style="width:70px;"></div>
-      <p class="muted" id="myShipLabel" style="font-size:0.8rem;"></p>
+      <h2 id="lobbySessionTitle" class="mt-8"></h2>
+      <p class="muted">Esperando a que el capitán inicie la travesía...</p>
+
+      <div class="mt-16 mb-16">
+        <div class="ship-avatar-wrap" id="myShipPreview" style="width:76px; height:50px;"></div>
+        <p class="muted mt-8" id="myShipLabel" style="font-size:0.9rem; font-weight:700; color:var(--color-gold-light);"></p>
+      </div>
+
+      <div class="divider"></div>
       <div class="qr-card" id="inviteQR" style="margin-top:8px;"></div>
-      <p class="muted" style="font-size:0.72rem;">Invita a más tripulantes: que escaneen este código</p>
+      <p class="muted mt-8" style="font-size:0.75rem;">Invita a más tripulantes compartiendo este código QR</p>
     </div>
   </section>
 
-  <!-- PREGUNTA -->
+  <!-- 3. VISTA: PREGUNTA ACTIVA CON SOPORTE COMPLETO PARA LOS 6 FORMATOS -->
   <section id="viewQuestion" class="hidden">
-    <div class="eyebrow" id="pqProgress"></div>
-    <div class="timer-bar-track"><div class="timer-bar-fill" id="pTimerBar" style="width:100%"></div></div>
-    <h2 id="pqText" class="mt-8"></h2>
+    <div class="card glass-card">
+      <div class="flex-between wrap gap-8" style="align-items:center;">
+        <div class="flex gap-8 wrap" style="align-items:center;">
+          <div class="eyebrow" id="pqProgress">Pregunta 1 de 5</div>
+          <span class="type-tag" id="pqTypeBadge">Opción Múltiple</span>
+        </div>
+        <div class="streak-badge streak-level-1" id="qStreakIndicator">⚓ x1.0</div>
+      </div>
 
-    <div id="quizBlock" class="hidden">
-      <div class="options-grid" id="quizOptions"></div>
-    </div>
+      <!-- Banner de Marea Alta (High Tide) -->
+      <div id="pHighTideBanner" class="high-tide-banner mt-8 hidden w-full text-center" style="justify-content:center;">
+        🌊 Marea Alta · ¡Puntaje Doble!
+      </div>
 
-    <div id="scaleBlock" class="hidden card-light mt-16 text-center">
-      <div class="scale-emoji" id="scaleEmojiDisplay">😐</div>
-      <div style="font-size:2rem; font-weight:700;" id="scaleValue">5</div>
-      <input type="range" min="1" max="10" value="5" class="scale-slider mt-16" id="scaleSlider">
-      <button class="btn-primary btn-block mt-16" id="btnSubmitScale">Enviar respuesta</button>
-    </div>
+      <!-- Barra de Temporizador -->
+      <div class="timer-bar-track mt-16"><div class="timer-bar-fill" id="pTimerBar" style="width:100%"></div></div>
 
-    <div id="textBlock" class="hidden card-light mt-16">
-      <textarea id="textAnswer" rows="4" placeholder="Escribe tu respuesta..."></textarea>
-      <button class="btn-primary btn-block mt-16" id="btnSubmitText">Enviar respuesta</button>
+      <!-- Enunciado de la Pregunta -->
+      <h2 id="pqText" class="mt-16 text-center" style="font-size:clamp(1.15rem, 3.5vw, 1.5rem);"></h2>
+
+      <!-- Contenedor Dinámico para los 6 Tipos de Pregunta -->
+      <div id="dynamicQuestionContainer" class="mt-16"></div>
     </div>
   </section>
 
-  <!-- ESPERANDO / CONFIRMACIÓN -->
+  <!-- 4. VISTA: ESPERANDO / RESPUESTA CONFIRMADA -->
   <section id="viewWaiting" class="hidden">
-    <div class="center-flex">
-      <div class="confirm-check"><span id="checkIcon"></span></div>
-      <h2>¡Respondido!</h2>
-      <p class="muted">Esperando a los demás tripulantes...</p>
-      <div class="mt-16" id="scoreDisplay"></div>
+    <div class="card glass-card text-center">
+      <div class="confirm-check" style="margin:0 auto 12px;"><span id="checkIcon"></span></div>
+      <h2>¡Respuesta Registrada!</h2>
+      <p class="muted">Esperando a que toda la tripulación complete la maniobra...</p>
+
+      <div class="mt-20" id="waitingScoreSummary">
+        <div class="streak-container" id="waitingStreakBadge">
+          <span class="streak-flame" id="waitingFlame">⚓</span>
+          <span class="streak-multiplier" id="waitingMultiplierText">Racha x1.0</span>
+        </div>
+        <p class="muted mt-8" id="waitingScoreText">Puntaje acumulado: <strong style="color:var(--color-gold); font-size:1.1rem;">0</strong></p>
+      </div>
     </div>
   </section>
 
-  <!-- RESULTADOS DE PREGUNTA (revelación) -->
+  <!-- 5. VISTA: RESULTADOS DE PREGUNTA (REVELACIÓN) -->
   <section id="viewReveal" class="hidden">
-    <div class="center-flex">
-      <div id="revealIcon"></div>
-      <h2 id="revealText"></h2>
-      <p class="muted" id="revealPoints"></p>
-      <p class="muted mt-8" id="totalScoreLine"></p>
+    <div class="card glass-card text-center">
+      <div id="revealIcon" style="margin:0 auto 12px;"></div>
+      <h2 id="revealText" style="font-size:1.6rem;"></h2>
+      <div id="revealPointsBanner" class="mt-8" style="font-size:1.3rem; font-weight:800; color:var(--color-gold);"></div>
+      <p class="muted mt-8" id="revealStreakMsg"></p>
+      <div class="divider"></div>
+      <p class="muted" id="totalScoreLine" style="font-size:1.05rem; font-weight:600;"></p>
     </div>
   </section>
 
-  <!-- FIN -->
+  <!-- 6. VISTA: FIN DE JUEGO, PODIO Y DIPLOMA DIGITAL NÁUTICO -->
   <section id="viewEnded" class="hidden">
-    <div class="center-flex">
-      <div class="ship-avatar-wrap" id="finalShip" style="width:80px;"></div>
-      <p class="muted" id="finalShipLabel" style="font-weight:700; margin:4px 0 0;"></p>
-      <span id="trophyIcon" style="width:56px;height:56px;color:var(--color-gold);"></span>
-      <h1>¡Llegaste a puerto!</h1>
-      <p class="muted">Tu posición final</p>
-      <div class="pin-display" id="finalRank" style="font-size:3rem;"></div>
-      <p class="muted" id="finalScoreLine"></p>
+    <div class="card glass-card text-center">
+      <div class="ship-avatar-wrap" id="finalShip" style="width:84px; height:54px; margin:0 auto 8px;"></div>
+      <p class="muted" id="finalShipLabel" style="font-weight:700; color:var(--color-gold-light); margin:4px 0 0;"></p>
+      <div id="trophyIcon" style="width:56px; height:56px; color:var(--color-gold); margin:12px auto 6px; display:inline-block;"></div>
+      <h1 style="font-size:clamp(1.6rem, 4vw, 2.2rem);">¡Llegaste a Puerto!</h1>
+      <p class="muted">La travesía ha concluido con éxito.</p>
+
+      <div class="diploma-card-box">
+        <div class="eyebrow">Posición Final en la Flota</div>
+        <div class="pin-display" id="finalRank" style="font-size:3.2rem; margin:6px 0;">#1</div>
+        <div class="diploma-badge-title" id="finalRankTitle">Capitán de Alta Mar</div>
+        <p class="muted" id="finalScoreLine" style="font-weight:600; font-size:0.95rem;"></p>
+        
+        <div class="flex gap-8 wrap mt-16" style="justify-content:center;">
+          <span class="badge badge-question" id="finalCorrectBadge">✓ 0 aciertos</span>
+          <span class="badge badge-results" id="finalMaxStreakBadge">🔥 Racha máx: x1.0</span>
+        </div>
+
+        <div class="divider"></div>
+
+        <button class="btn-gold btn-block mt-8" id="btnDownloadDiploma">
+          <span>📜 Descargar Diploma Náutico (PNG)</span>
+        </button>
+      </div>
+
+      <!-- Canvas Oculto para Generación del Diploma -->
+      <canvas id="diplomaCanvas" width="1400" height="950" style="display:none;"></canvas>
+
+      <div class="flex gap-12 mt-20" style="justify-content:center;">
+        <button class="btn-secondary" onclick="location.reload()">Zarpar de nuevo</button>
+      </div>
     </div>
   </section>
 
@@ -123,6 +532,9 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
 <script src="js/icons.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/canvas-fx.js"></script>
+<script src="js/mechanics.js"></script>
 <script src="js/utils.js"></script>
 <script src="js/config.js"></script>
 <script src="js/player.js"></script>
