@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marejada 2.0 — CanvasFX Particle & Visual Effects Engine Test</title>
+  <style>
+    :root {
+      --bg: #0B192C;
+      --card-bg: rgba(30, 62, 98, 0.65);
+      --card-border: rgba(255, 255, 255, 0.18);
+      --accent: #D4A843;
+      --accent-red: #E4001A;
+      --accent-blue: #3498DB;
+      --accent-green: #2ECC71;
+      --text: #F4F6F8;
+      --text-muted: #8FA2B6;
+      --success: #2ECC71;
+      --fail: #E74C3C;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body {
+      background: radial-gradient(circle at 50% 20%, #1E3E62 0%, #0B192C 80%);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 2rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-x: hidden;
+    }
+    .container {
+      max-width: 960px;
+      width: 100%;
+      z-index: 10;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    h1 {
+      font-size: 2.1rem;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    }
+    p.subtitle {
+      color: var(--text-muted);
+      font-size: 1rem;
+    }
+    .stats-bar {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+      margin-bottom: 1.5rem;
+      backdrop-filter: blur(10px);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+    }
+    .stat-value {
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: #FFF;
+    }
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.4rem 0.8rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: bold;
+    }
+    .status-badge.active { color: var(--success); border: 1px solid var(--success); background: rgba(46, 204, 113, 0.15); }
+    .status-badge.sleeping { color: var(--text-muted); border: 1px solid var(--text-muted); background: rgba(255, 255, 255, 0.05); }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+    .fx-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 1.25rem;
+      backdrop-filter: blur(10px);
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    .fx-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent);
+    }
+    .fx-title {
+      font-size: 1.15rem;
+      font-weight: bold;
+      color: #FFF;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .fx-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+      flex-grow: 1;
+    }
+    .btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    button {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #FFF;
+      padding: 0.55rem 1rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.15s ease;
+    }
+    button:hover {
+      background: rgba(255, 255, 255, 0.22);
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+    button:active {
+      transform: translateY(0);
+    }
+    button.primary {
+      background: var(--accent);
+      color: #0B192C;
+      border-color: var(--accent);
+    }
+    button.primary:hover {
+      background: #E5B955;
+    }
+    button.danger {
+      background: rgba(228, 0, 26, 0.2);
+      border-color: var(--accent-red);
+      color: #FF7B8A;
+    }
+    button.danger:hover {
+      background: var(--accent-red);
+      color: #FFF;
+    }
+    button.emerald {
+      background: rgba(46, 204, 113, 0.2);
+      border-color: var(--accent-green);
+      color: #A9DFBF;
+    }
+    button.emerald:hover {
+      background: var(--accent-green);
+      color: #0B192C;
+    }
+
+    .interactive-zone {
+      background: rgba(11, 25, 44, 0.7);
+      border: 2px dashed rgba(212, 168, 67, 0.4);
+      border-radius: 12px;
+      padding: 2.5rem 1rem;
+      text-align: center;
+      margin-bottom: 2rem;
+      cursor: crosshair;
+      position: relative;
+      user-select: none;
+      transition: border-color 0.2s;
+    }
+    .interactive-zone:hover {
+      border-color: var(--accent);
+    }
+    .interactive-zone p {
+      font-size: 1rem;
+      color: var(--text-muted);
+    }
+    .interactive-zone strong {
+      color: var(--accent);
+    }
+
+    .test-suite {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      backdrop-filter: blur(10px);
+      margin-bottom: 2rem;
+    }
+    .test-suite h2 {
+      font-size: 1.3rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .test-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.9rem;
+    }
+    .test-item:last-child {
+      border-bottom: none;
+    }
+    .badge {
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: bold;
+    }
+    .badge.pass { background: rgba(46, 204, 113, 0.2); color: var(--success); border: 1px solid var(--success); }
+    .badge.fail { background: rgba(231, 76, 60, 0.2); color: var(--fail); border: 1px solid var(--fail); }
+
+    /* Simulated ship sailing across */
+    #simulatedShip {
+      position: fixed;
+      width: 40px;
+      height: 40px;
+      pointer-events: none;
+      z-index: 100;
+      display: none;
+      transform: translate(-50%, -50%);
+    }
+  </style>
+</head>
+<body>
+  <!-- Virtual ship for wake simulation -->
+  <div id="simulatedShip">
+    <svg viewBox="0 0 48 48" width="40" height="40">
+      <path d="M6 34 L12 42 L36 42 L42 34 Z" fill="#D4A843" stroke="#FFF" stroke-width="1.5"/>
+      <path d="M16 34 L16 16 L24 22 L24 34 Z" fill="#FFF"/>
+      <path d="M26 34 L26 10 L38 20 L38 34 Z" fill="#E4001A"/>
+    </svg>
+  </div>
+
+  <div class="container">
+    <header>
+      <h1>🌊 Marejada 2.0 CanvasFX Engine</h1>
+      <p class="subtitle">Motor de Partículas 2D Náutico a 60fps con Detección de Inactividad y Auto-Sleep</p>
+    </header>
+
+    <div class="stats-bar">
+      <div class="stat-item">
+        <span class="stat-label">Partículas Vivas</span>
+        <span class="stat-value" id="valParticles">0</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">FPS Estimado</span>
+        <span class="stat-value" id="valFPS">60.0</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Estado del Motor</span>
+        <span class="status-badge sleeping" id="badgeEngineState">⏸ INACTIVO (Auto-Sleep)</span>
+      </div>
+      <div class="btn-group">
+        <button class="danger" onclick="CanvasFX.clear()">🧹 Limpiar Todo</button>
+      </div>
+    </div>
+
+    <div class="interactive-zone" id="clickZone" onclick="handleZoneClick(event)">
+      <p>🎯 <strong>Zona Interactiva:</strong> Haz clic en cualquier lugar para disparar efectos en esas coordenadas.</p>
+      <p style="font-size: 0.8rem; margin-top: 0.4rem; color: #8FA2B6;">
+        Modo actual de clic: <span id="currentClickMode" style="color: var(--accent); font-weight: bold;">Bengala Roja</span>
+      </p>
+    </div>
+
+    <div class="grid">
+      <!-- Water Wake -->
+      <div class="fx-card">
+        <div class="fx-title">💧 Estelas de Agua (waterWake)</div>
+        <div class="fx-desc">Burbujas de espuma marina vivas que se expanden y desvanecen con rozamiento fluido.</div>
+        <div class="btn-group">
+          <button class="primary" onclick="triggerWake()">🌊 Generar Estela</button>
+          <button id="btnShipSim" onclick="toggleShipSimulation()">🚢 Simular Buque Navegando</button>
+        </div>
+      </div>
+
+      <!-- Signal Flares -->
+      <div class="fx-card">
+        <div class="fx-title">🎇 Bengalas Náuticas (launchFlare)</div>
+        <div class="fx-desc">Cohetes de señales de emergencia con chispas de colores incandescentes, gravedad y humo.</div>
+        <div class="btn-group">
+          <button class="danger" onclick="CanvasFX.launchFlare(undefined, undefined, '#E4001A')">🚨 Roja (Alerta)</button>
+          <button class="primary" onclick="CanvasFX.launchFlare(undefined, undefined, '#D4A843')">🏆 Dorada (Summit)</button>
+          <button class="emerald" onclick="CanvasFX.launchFlare(undefined, undefined, '#2ECC71')">🟢 Esmeralda (OK)</button>
+        </div>
+      </div>
+
+      <!-- Nautical Confetti -->
+      <div class="fx-card">
+        <div class="fx-title">⚓ Confeti Náutico (launchNauticalConfetti)</div>
+        <div class="fx-desc">Lluvia festiva con cintas en 3D, anclas vectoriales ⚓, salvavidas ⭕ y estrellas ⭐.</div>
+        <div class="btn-group">
+          <button class="primary" onclick="CanvasFX.launchNauticalConfetti()">🎉 Lluvia Festiva</button>
+          <button onclick="CanvasFX.launchNauticalConfetti({ burst: true, originX: window.innerWidth/2, originY: window.innerHeight/2 })">💥 Estallido Podio</button>
+          <button id="btnConfettiLoop" onclick="toggleConfettiLoop()">🔄 Lluvia Continua</button>
+        </div>
+      </div>
+
+      <!-- Sonar Waves -->
+      <div class="fx-card">
+        <div class="fx-title">📡 Ondas de Sonar (sonarRing)</div>
+        <div class="fx-desc">Pulsos de sonar circulares expansivos con brillo resplandeciente para el temporizador náutico.</div>
+        <div class="btn-group">
+          <button class="primary" onclick="CanvasFX.sonarRing()">📡 Pulso Sonar</button>
+          <button class="danger" onclick="CanvasFX.sonarRing(undefined, undefined, '#E4001A')">🚨 Sonar Crítico</button>
+          <button id="btnSonarLoop" onclick="toggleSonarLoop()">⏱ Sonar Temporizador</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Automated Unit/Integration Test Suite -->
+    <div class="test-suite">
+      <h2>
+        <span>🧪 Suite de Verificación Automatizada CanvasFX</span>
+        <button class="primary" onclick="runAutomatedTests()">Ejecutar Pruebas</button>
+      </h2>
+      <div id="testResultsList">
+        <div class="test-item"><span>Cargando pruebas...</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Include Canvas FX Engine -->
+  <script src="../js/canvas-fx.js"></script>
+
+  <script>
+    // Variables de control de simulación
+    let shipInterval = null;
+    let confettiInterval = null;
+    let sonarInterval = null;
+    let currentClickMode = 'flare_red';
+    let lastFrameTime = performance.now();
+    let frameCount = 0;
+    let currentFPS = 60;
+
+    // Inicializar CanvasFX
+    CanvasFX.init();
+
+    // Actualizador de telemetría e interfaz
+    function updateStats() {
+      const pCount = CanvasFX.getParticleCount();
+      const isActive = CanvasFX.isActive();
+
+      document.getElementById('valParticles').innerText = pCount;
+
+      const badge = document.getElementById('badgeEngineState');
+      if (isActive) {
+        badge.className = 'status-badge active';
+        badge.innerText = '⚡ ACTIVO (60 FPS)';
+      } else {
+        badge.className = 'status-badge sleeping';
+        badge.innerText = '⏸ INACTIVO (Auto-Sleep)';
+      }
+
+      // Cálculo de FPS
+      frameCount++;
+      const now = performance.now();
+      if (now - lastFrameTime >= 500) {
+        currentFPS = (frameCount * 1000) / (now - lastFrameTime);
+        document.getElementById('valFPS').innerText = currentFPS.toFixed(1);
+        frameCount = 0;
+        lastFrameTime = now;
+      }
+
+      requestAnimationFrame(updateStats);
+    }
+    requestAnimationFrame(updateStats);
+
+    function triggerWake() {
+      const centerX = window.innerWidth / 2;
+      const centerY = window.innerHeight / 2;
+      for (let i = 0; i < 5; i++) {
+        setTimeout(() => {
+          CanvasFX.waterWake(centerX + (i * 20) - 40, centerY, 2, 0);
+        }, i * 60);
+      }
+    }
+
+    function toggleShipSimulation() {
+      const shipEl = document.getElementById('simulatedShip');
+      const btn = document.getElementById('btnShipSim');
+
+      if (shipInterval) {
+        clearInterval(shipInterval);
+        shipInterval = null;
+        shipEl.style.display = 'none';
+        btn.innerText = '🚢 Simular Buque Navegando';
+        btn.classList.remove('danger');
+      } else {
+        shipEl.style.display = 'block';
+        btn.innerText = '⏹ Detener Navegación';
+        btn.classList.add('danger');
+
+        let shipX = 50;
+        let shipY = window.innerHeight * 0.4;
+        let angle = 0;
+
+        shipInterval = setInterval(() => {
+          shipX += 3.5;
+          angle += 0.05;
+          shipY = (window.innerHeight * 0.4) + Math.sin(angle) * 35;
+
+          if (shipX > window.innerWidth + 50) {
+            shipX = -50;
+          }
+
+          shipEl.style.left = shipX + 'px';
+          shipEl.style.top = shipY + 'px';
+          shipEl.style.transform = `translate(-50%, -50%) rotate(${Math.cos(angle) * 10}deg)`;
+
+          CanvasFX.waterWake(shipX - 18, shipY + 10, -2, Math.cos(angle));
+        }, 30);
+      }
+    }
+
+    function toggleConfettiLoop() {
+      const btn = document.getElementById('btnConfettiLoop');
+      if (confettiInterval) {
+        clearInterval(confettiInterval);
+        confettiInterval = null;
+        btn.innerText = '🔄 Lluvia Continua';
+        btn.classList.remove('danger');
+      } else {
+        btn.innerText = '⏹ Detener Lluvia';
+        btn.classList.add('danger');
+        CanvasFX.launchNauticalConfetti({ count: 50 });
+        confettiInterval = setInterval(() => {
+          CanvasFX.launchNauticalConfetti({ count: 25 });
+        }, 400);
+      }
+    }
+
+    function toggleSonarLoop() {
+      const btn = document.getElementById('btnSonarLoop');
+      if (sonarInterval) {
+        clearInterval(sonarInterval);
+        sonarInterval = null;
+        btn.innerText = '⏱ Sonar Temporizador';
+        btn.classList.remove('danger');
+      } else {
+        btn.innerText = '⏹ Detener Sonar';
+        btn.classList.add('danger');
+        CanvasFX.sonarRing(window.innerWidth / 2, window.innerHeight / 2, '#D4A843');
+        sonarInterval = setInterval(() => {
+          CanvasFX.sonarRing(window.innerWidth / 2, window.innerHeight / 2, '#D4A843');
+        }, 1000);
+      }
+    }
+
+    function handleZoneClick(e) {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const x = e.clientX;
+      const y = e.clientY;
+
+      CanvasFX.launchFlare(x, y, '#E4001A');
+      CanvasFX.sonarRing(x, y, 'rgba(212, 168, 67, 0.7)');
+    }
+
+    // Suite de Pruebas Automatizada
+    function runAutomatedTests() {
+      const resultsContainer = document.getElementById('testResultsList');
+      resultsContainer.innerHTML = '';
+
+      const tests = [
+        {
+          name: '1. Objeto Global window.CanvasFX existe y está definido',
+          run: () => typeof window.CanvasFX === 'object' && window.CanvasFX !== null
+        },
+        {
+          name: '2. Interfaz completa presente: init, waterWake, launchFlare, launchNauticalConfetti, sonarRing, clear',
+          run: () => {
+            const fns = ['init', 'waterWake', 'launchFlare', 'launchNauticalConfetti', 'sonarRing', 'clear', 'getParticleCount', 'isActive', 'destroy'];
+            return fns.every(fn => typeof window.CanvasFX[fn] === 'function');
+          }
+        },
+        {
+          name: '3. Elemento <canvas id="marejadaCanvasFX"> inyectado con pointer-events: none y z-index: 99',
+          run: () => {
+            CanvasFX.init();
+            const canvasEl = document.getElementById('marejadaCanvasFX');
+            if (!canvasEl) return false;
+            return canvasEl.style.pointerEvents === 'none' && canvasEl.style.zIndex === '99';
+          }
+        },
+        {
+          name: '4. waterWake() genera partículas y activa el bucle',
+          run: () => {
+            CanvasFX.clear();
+            CanvasFX.waterWake(100, 100, 1, 0);
+            return CanvasFX.getParticleCount() > 0 && CanvasFX.isActive();
+          }
+        },
+        {
+          name: '5. launchFlare() genera chispas y humo ascendente',
+          run: () => {
+            CanvasFX.clear();
+            CanvasFX.launchFlare(200, 200, '#E4001A');
+            return CanvasFX.getParticleCount() >= 30 && CanvasFX.isActive();
+          }
+        },
+        {
+          name: '6. launchNauticalConfetti() genera cintas, anclas, salvavidas y estrellas',
+          run: () => {
+            CanvasFX.clear();
+            CanvasFX.launchNauticalConfetti({ count: 60 });
+            return CanvasFX.getParticleCount() >= 50 && CanvasFX.isActive();
+          }
+        },
+        {
+          name: '7. sonarRing() genera anillo expansivo con brillo',
+          run: () => {
+            CanvasFX.clear();
+            CanvasFX.sonarRing(300, 300, '#D4A843');
+            return CanvasFX.getParticleCount() >= 1 && CanvasFX.isActive();
+          }
+        },
+        {
+          name: '8. clear() purga todas las partículas y resetea conteo a 0',
+          run: () => {
+            CanvasFX.launchNauticalConfetti();
+            CanvasFX.clear();
+            return CanvasFX.getParticleCount() === 0;
+          }
+        },
+        {
+          name: '9. Auto-sleep: isActive() pasa a false cuando el conteo de partículas es 0',
+          run: () => {
+            CanvasFX.clear();
+            return CanvasFX.isActive() === false;
+          }
+        }
+      ];
+
+      let passedCount = 0;
+
+      tests.forEach(t => {
+        let pass = false;
+        let err = '';
+        try {
+          pass = t.run();
+        } catch (e) {
+          err = e.message;
+          pass = false;
+        }
+
+        if (pass) passedCount++;
+
+        const item = document.createElement('div');
+        item.className = 'test-item';
+        item.innerHTML = `
+          <span>${t.name} ${err ? `<small style="color: var(--fail)">(${err})</small>` : ''}</span>
+          <span class="badge ${pass ? 'pass' : 'fail'}">${pass ? 'PASÓ' : 'FALLÓ'}</span>
+        `;
+        resultsContainer.appendChild(item);
+      });
+
+      // Limpiar al final de las pruebas
+      CanvasFX.clear();
+    }
+
+    // Ejecutar pruebas al cargar
+    window.addEventListener('DOMContentLoaded', () => {
+      runAutomatedTests();
+    });
+  </script>
+</body>
+</html>
