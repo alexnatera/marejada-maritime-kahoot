@@ -89,17 +89,18 @@ h1, h2, h3, .title-font {
 .ocean-bg {
   position: fixed;
   inset: 0;
-  z-index: -2;
+  z-index: 0;
   background: radial-gradient(circle at 50% -10%, #0c3358 0%, #031428 50%, #020914 100%);
   overflow: hidden;
+  pointer-events: none;
 }
 
 .ocean-bg::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 80% 20%, rgba(0, 210, 255, 0.08) 0%, transparent 50%),
-              radial-gradient(circle at 20% 80%, rgba(228, 0, 26, 0.06) 0%, transparent 60%);
+  background: radial-gradient(circle at 80% 20%, rgba(0, 210, 255, 0.12) 0%, transparent 50%),
+              radial-gradient(circle at 20% 80%, rgba(228, 0, 26, 0.08) 0%, transparent 60%);
   pointer-events: none;
 }
 
@@ -107,9 +108,10 @@ h1, h2, h3, .title-font {
   content: '';
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px);
   background-size: 36px 36px;
-  opacity: 0.4;
+  opacity: 0.45;
+  pointer-events: none;
 }
 
 /* ==========================================================================
@@ -121,7 +123,7 @@ h1, h2, h3, .title-font {
   inset: 0;
   pointer-events: none;
   overflow: hidden;
-  z-index: -1;
+  z-index: 1;
 }
 
 .ambient-ship-vessel {
@@ -129,8 +131,9 @@ h1, h2, h3, .title-font {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.6));
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.7));
   will-change: transform;
+  pointer-events: none;
 }
 
 .ambient-ship-inner {
@@ -139,24 +142,31 @@ h1, h2, h3, .title-font {
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: shipBobbing 3.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  animation: shipBobbing 3.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  pointer-events: none;
 }
 
-.ambient-ship-inner svg {
-  width: 100%;
-  height: 100%;
-  overflow: visible;
+.ambient-ship-inner svg,
+.ambient-ship-vessel svg {
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 100% !important;
+  min-height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  display: block !important;
+  overflow: visible !important;
 }
 
 /* Estela de Espuma Marina Trasera */
 .ambient-ship-wake {
   position: absolute;
-  right: 88%;
-  top: 58%;
-  width: 90px;
-  height: 16px;
-  background: radial-gradient(ellipse at left, rgba(255, 255, 255, 0.65) 0%, rgba(0, 210, 255, 0.35) 40%, transparent 80%);
-  filter: blur(3px);
+  right: 86%;
+  top: 55%;
+  width: 120px;
+  height: 22px;
+  background: radial-gradient(ellipse at left, rgba(255, 255, 255, 0.8) 0%, rgba(0, 210, 255, 0.5) 45%, transparent 80%);
+  filter: blur(4px);
   transform-origin: right center;
   animation: ambientWakeFlow 1.6s ease-in-out infinite;
   pointer-events: none;
@@ -164,71 +174,72 @@ h1, h2, h3, .title-font {
 
 /* Carril 1: Portacontenedores Profundo (Fondo Lento) */
 .ambient-vessel-container {
-  top: 12%;
-  width: 155px;
-  height: 105px;
-  opacity: 0.22;
-  animation: ambientSailLeft 80s linear infinite;
-  animation-delay: -10s;
+  top: 10%;
+  width: 220px;
+  height: 140px;
+  opacity: 0.52;
+  animation: ambientSailLeft 75s linear infinite;
+  animation-delay: -5s;
 }
 
 /* Carril 2: Remolcador SAAM Escoltando (Cerca del Portacontenedores) */
 .ambient-vessel-tug {
   top: 18%;
-  width: 88px;
-  height: 60px;
-  opacity: 0.35;
-  animation: ambientEscortPatrol 52s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
-  animation-delay: -8s;
+  width: 150px;
+  height: 100px;
+  opacity: 0.78;
+  animation: ambientEscortPatrol 46s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+  animation-delay: -4s;
 }
 
 /* Carril 3: Velero Oceánico Virando */
 .ambient-vessel-sailboat {
   top: 32%;
-  width: 72px;
-  height: 72px;
-  opacity: 0.28;
-  animation: ambientSailRight 42s linear infinite;
-  animation-delay: -15s;
+  width: 110px;
+  height: 110px;
+  opacity: 0.68;
+  animation: ambientSailRight 38s linear infinite;
+  animation-delay: -12s;
 }
 
 /* Carril 4: Lancha de Práctico Rápida */
 .ambient-vessel-pilot {
   top: 45%;
-  width: 80px;
-  height: 52px;
-  opacity: 0.38;
-  animation: ambientPilotDash 24s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-  animation-delay: -4s;
+  width: 130px;
+  height: 85px;
+  opacity: 0.82;
+  animation: ambientPilotDash 22s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  animation-delay: -2s;
 }
 
 /* Carril 5: Moto de Agua Ágil */
 .ambient-vessel-jetski {
   top: 58%;
-  width: 54px;
-  height: 38px;
-  opacity: 0.35;
-  animation: ambientSailLeft 20s linear infinite;
-  animation-delay: -12s;
+  width: 85px;
+  height: 58px;
+  opacity: 0.75;
+  animation: ambientSailLeft 18s linear infinite;
+  animation-delay: -8s;
 }
 
 /* Carril 6: Petrolero de Gran Calado */
 .ambient-vessel-tanker {
   top: 70%;
-  width: 165px;
-  height: 110px;
-  opacity: 0.24;
-  animation: ambientSailRight 90s linear infinite;
-  animation-delay: -25s;
+  width: 240px;
+  height: 155px;
+  opacity: 0.52;
+  animation: ambientSailRight 85s linear infinite;
+  animation-delay: -20s;
 }
 
 /* Carril 7: Submarino en Inmersión / Emersión */
 .ambient-vessel-sub {
   top: 84%;
-  width: 115px;
-  height: 72px;
-  animation: ambientSubmarineDive 55s ease-in-out infinite;
-  animation-delay: -5s;
+  width: 170px;
+  height: 105px;
+  opacity: 0.65;
+  animation: ambientSubmarineDive 50s ease-in-out infinite;
+  animation-delay: -4s;
 }
 
 .wave-strip {
@@ -237,7 +248,7 @@ h1, h2, h3, .title-font {
   left: 0;
   width: 100%;
   height: 140px;
-  z-index: -1;
+  z-index: 1;
   opacity: 0.6;
   pointer-events: none;
 }
@@ -247,7 +258,7 @@ h1, h2, h3, .title-font {
 .deco-buoys {
   position: fixed;
   inset: 0;
-  z-index: -1;
+  z-index: 1;
   overflow: hidden;
   pointer-events: none;
 }
@@ -269,18 +280,24 @@ h1, h2, h3, .title-font {
 
 /* ---------- Layout ---------- */
 .container {
+  position: relative;
+  z-index: 10;
   max-width: 1100px;
   margin: 0 auto;
   padding: 24px 20px 60px;
 }
 
 .container-sm {
+  position: relative;
+  z-index: 10;
   max-width: 560px;
   margin: 0 auto;
   padding: 20px 16px 60px;
 }
 
 .topbar {
+  position: relative;
+  z-index: 20;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -289,7 +306,7 @@ h1, h2, h3, .title-font {
   flex-wrap: wrap;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(12px);
-  background: rgba(2, 11, 24, 0.6);
+  background: rgba(2, 11, 24, 0.7);
 }
 
 .brand {
