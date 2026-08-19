@@ -3,35 +3,44 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Host · Zarpa</title>
+<title>Host · Marejada 2.0</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
+<!-- Botón Flotante de Audio Procedural -->
+<button id="audioToggleBtn" class="audio-floating-btn" title="Silenciar / Activar Sonido" aria-label="Silenciar o Activar Sonido">
+  <span class="audio-wave-bars">
+    <span class="audio-wave-bar"></span>
+    <span class="audio-wave-bar"></span>
+    <span class="audio-wave-bar"></span>
+  </span>
+</button>
+
 <div class="topbar">
-  <a href="index.html" class="brand"><span class="brand-mark" id="brandIcon"></span> Zarpa</a>
+  <a href="index.html" class="brand"><span class="brand-mark" id="brandIcon"></span> Marejada</a>
   <div class="nav-links">
     <a href="admin.html" class="btn btn-secondary">Administración</a>
     <a href="player.html" class="btn btn-secondary">Jugador</a>
-    <a href="dashboard.html" class="btn btn-secondary">Resultados</a>
+    <a href="dashboard.html" class="btn btn-secondary">Analítica & Discovery</a>
   </div>
 </div>
 
 <div class="container" id="app">
 
-  <!-- SELECCIÓN DE SESIÓN -->
+  <!-- 1. SELECCIÓN DE SESIÓN -->
   <section id="viewSelect">
     <div class="eyebrow">Zarpar</div>
     <h1>Elige una sesión para presentar</h1>
-    <p class="muted">Selecciona una sesión creada en el panel de administración y comienza la travesía.</p>
+    <p class="muted">Selecciona una sesión creada en el panel de administración y comienza la travesía náutica en pantalla grande.</p>
     <div id="hostSessionsList" class="panel-grid mt-24"><p class="muted">Cargando sesiones...</p></div>
   </section>
 
-  <!-- LOBBY -->
+  <!-- 2. LOBBY / MUELLE VIVO 2.0 -->
   <section id="viewLobby" class="hidden">
-    <div class="card">
+    <div class="card glass-card">
       <div class="saam-stripe"></div>
       <div class="panel-grid cols-2" style="align-items:center;">
         <div class="text-center">
@@ -39,9 +48,9 @@
           <div class="pin-display" id="lobbyPin"></div>
           <p class="muted mt-8">Entra a <strong>player.html</strong> y escribe este PIN, o escanea el código →</p>
           <div class="join-instructions mt-16">
-            <div class="join-step"><span class="step-num">1</span> Escanea el QR con tu celular (o abre la web)</div>
-            <div class="join-step"><span class="step-num">2</span> Ingresa el PIN de la sesión</div>
-            <div class="join-step"><span class="step-num">3</span> Elige tu buque, escribe tu nombre y ¡zarpa!</div>
+            <div class="join-step"><span class="step-num">1</span> Escanea el QR con tu celular o abre player.html</div>
+            <div class="join-step"><span class="step-num">2</span> Ingresa el PIN y tu nombre de tripulante</div>
+            <div class="join-step"><span class="step-num">3</span> Elige tu avatar buque y ¡zarpa a bordo!</div>
           </div>
         </div>
         <div class="text-center">
@@ -52,9 +61,9 @@
       <div class="flex-between wrap gap-12 mt-24" style="align-items:center;">
         <div class="flex gap-8" style="align-items:center;">
           <span id="usersIcon"></span>
-          <strong id="playerCount">0</strong> tripulantes a bordo
+          <span><strong id="playerCount">0</strong> tripulantes a bordo</span>
         </div>
-        <button class="btn-primary" id="btnStartGame" disabled>Iniciar juego</button>
+        <button class="btn-primary" id="btnStartGame" disabled><span>⚓ Iniciar Travesía</span></button>
       </div>
       <div class="dock-scene" id="dockScene">
         <div class="dock-water"></div>
@@ -65,49 +74,108 @@
     </div>
   </section>
 
-  <!-- PREGUNTA ACTIVA -->
+  <!-- 3. PREGUNTA ACTIVA CON RELOJ BRÚJULA NÁUTICA -->
   <section id="viewQuestion" class="hidden">
-    <div class="card">
-      <div class="flex-between wrap gap-12">
-        <div class="eyebrow" id="qProgress"></div>
+    <div class="card glass-card">
+      <div class="flex-between wrap gap-12" style="align-items:center;">
+        <div class="flex gap-8 wrap" style="align-items:center;">
+          <div class="eyebrow" id="qProgress">Pregunta 1 de 5</div>
+          <span id="qTypeBadge" class="type-tag">Opción Múltiple</span>
+          <div id="highTideBadge" class="high-tide-banner hidden">🌊 Marea Alta · ¡Puntaje Doble!</div>
+        </div>
         <div class="flex gap-8" style="align-items:center;">
-          <span id="usersIcon2"></span> <span id="answeredCount">0</span>/<span id="totalPlayers">0</span> respondieron
+          <span id="usersIcon2"></span>
+          <span><strong id="answeredCount">0</strong>/<span id="totalPlayers">0</span> respondieron</span>
         </div>
       </div>
-      <h2 id="qText" class="mt-16"></h2>
-      <div class="timer-bar-track"><div class="timer-bar-fill" id="timerBar" style="width:100%"></div></div>
-      <div id="qOptionsPreview" class="options-grid"></div>
-      <div class="flex-between mt-24">
-        <button class="btn-secondary" id="btnEndQuestion">Terminar pregunta ahora</button>
-      </div>
-    </div>
-  </section>
 
-  <!-- RESULTADOS DE PREGUNTA -->
-  <section id="viewResults" class="hidden">
-    <div class="card">
-      <div class="eyebrow" id="resultsProgress"></div>
-      <h2 id="resultsQText" class="mt-16"></h2>
-      <div id="resultsContent" class="mt-24"></div>
+      <h2 id="qText" class="mt-16 text-center" style="font-size:clamp(1.4rem, 3vw, 2.2rem);"></h2>
+
+      <!-- Reloj Brújula Náutica -->
+      <div class="compass-timer-wrap" id="compassTimerWrap">
+        <div class="compass-ring"></div>
+        <div class="compass-needle" id="compassNeedle"></div>
+        <span class="compass-cardinal n">N</span>
+        <span class="compass-cardinal e">E</span>
+        <span class="compass-cardinal s">S</span>
+        <span class="compass-cardinal w">W</span>
+        <div class="compass-countdown" id="compassCountdown">20</div>
+      </div>
+
+      <div class="timer-bar-track mt-16"><div class="timer-bar-fill" id="timerBar" style="width:100%"></div></div>
+
+      <div id="qOptionsPreview" class="mt-20"></div>
+
       <div class="flex-between mt-24">
         <div></div>
-        <button class="btn-primary" id="btnNextQuestion">Siguiente pregunta</button>
+        <button class="btn-secondary" id="btnEndQuestion"><span>⏱️ Terminar pregunta ahora</span></button>
       </div>
-    </div>
-    <div class="card mt-16">
-      <div class="eyebrow">Clasificación en vivo</div>
-      <div id="liveRegatta" class="regatta mt-16"></div>
     </div>
   </section>
 
-  <!-- LEADERBOARD FINAL -->
+  <!-- 4. RESULTADOS DE PREGUNTA Y REGATA EN VIVO 2.0 -->
+  <section id="viewResults" class="hidden">
+    <div class="card glass-card">
+      <div class="flex-between wrap gap-12" style="align-items:center;">
+        <div class="flex gap-8 wrap" style="align-items:center;">
+          <div class="eyebrow" id="resultsProgress">Resultados</div>
+          <span id="resultsTypeBadge" class="type-tag">Opción Múltiple</span>
+          <div id="resultsHighTideBadge" class="high-tide-banner hidden">🌊 Marea Alta · ¡Puntaje Doble!</div>
+        </div>
+      </div>
+
+      <h2 id="resultsQText" class="mt-16"></h2>
+      <div id="resultsContent" class="mt-24"></div>
+
+      <div class="flex-between mt-24">
+        <div></div>
+        <button class="btn-primary" id="btnNextQuestion"><span>Siguiente pregunta ➔</span></button>
+      </div>
+    </div>
+
+    <!-- Regata Naval en Vivo 2.0 -->
+    <div class="card glass-card mt-24" id="regattaCard">
+      <div id="liveRegatta"></div>
+    </div>
+  </section>
+
+  <!-- 5. PODIO 3D Y CEREMONIA FINAL -->
   <section id="viewEnded" class="hidden">
-    <div class="card text-center">
-      <span id="trophyIcon" style="width:48px;height:48px;color: var(--color-gold);"></span>
-      <h1>¡Travesía completada!</h1>
-      <p class="muted">La regata final</p>
-      <div id="finalLeaderboard" class="regatta mt-24" style="text-align:left; max-width:620px; margin:0 auto;"></div>
-      <button class="btn-secondary mt-24" onclick="location.reload()">Presentar otra sesión</button>
+    <div class="card glass-card text-center">
+      <div id="trophyIcon" style="width:56px;height:56px;color:var(--color-gold);margin:0 auto 12px;display:inline-block;"></div>
+      <h1 style="font-size:clamp(1.8rem, 4vw, 2.6rem);">¡Travesía completada!</h1>
+      <p class="muted">La flota ha llegado a puerto seguro. ¡Felicitaciones a los tripulantes más audaces!</p>
+
+      <!-- Podio 3D -->
+      <div class="podium-3d mt-24" id="podium3D">
+        <div class="podium-step podium-step-2" id="podiumStep2">
+          <div class="podium-crown">🥈 2º</div>
+          <div class="podium-ship" id="podiumShip2" style="width:50px;height:34px;margin-bottom:8px;"></div>
+          <div class="podium-name" id="podiumName2" style="font-weight:700;font-size:0.95rem;color:#fff;">--</div>
+          <div class="podium-score" id="podiumScore2" style="font-size:0.85rem;font-weight:700;color:rgba(255,255,255,0.9);margin-top:4px;">0 pts</div>
+        </div>
+        <div class="podium-step podium-step-1" id="podiumStep1">
+          <div class="podium-crown">👑 🥇 1º</div>
+          <div class="podium-ship" id="podiumShip1" style="width:60px;height:40px;margin-bottom:8px;"></div>
+          <div class="podium-name" id="podiumName1" style="font-weight:700;font-size:1.1rem;color:#FFF2A1;">--</div>
+          <div class="podium-score" id="podiumScore1" style="font-size:0.95rem;font-weight:700;color:#FFF2A1;margin-top:4px;">0 pts</div>
+        </div>
+        <div class="podium-step podium-step-3" id="podiumStep3">
+          <div class="podium-crown">🥉 3º</div>
+          <div class="podium-ship" id="podiumShip3" style="width:46px;height:30px;margin-bottom:8px;"></div>
+          <div class="podium-name" id="podiumName3" style="font-weight:700;font-size:0.9rem;color:#fff;">--</div>
+          <div class="podium-score" id="podiumScore3" style="font-size:0.8rem;font-weight:700;color:rgba(255,255,255,0.85);margin-top:4px;">0 pts</div>
+        </div>
+      </div>
+
+      <!-- Clasificación Completa -->
+      <div class="divider"></div>
+      <div id="finalLeaderboard" class="mt-24 text-left" style="text-align:left; max-width:800px; margin:24px auto 0;"></div>
+
+      <div class="flex gap-12 mt-24" style="justify-content:center; flex-wrap:wrap;">
+        <button class="btn-secondary" onclick="location.reload()">Presentar otra sesión</button>
+        <a href="dashboard.html" class="btn btn-gold">Ver analítica completa ➔</a>
+      </div>
     </div>
   </section>
 
@@ -117,6 +185,10 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
 <script src="js/icons.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/canvas-fx.js"></script>
+<script src="js/mechanics.js"></script>
+<script src="js/regatta.js"></script>
 <script src="js/utils.js"></script>
 <script src="js/config.js"></script>
 <script src="js/host.js"></script>
