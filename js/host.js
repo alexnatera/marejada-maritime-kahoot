@@ -18,26 +18,40 @@ let hAnsweredCount = 0;
 let hLastSonarSecond = -1;
 let hPodiumFxInterval = null;
 
-document.addEventListener('DOMContentLoaded', () => {
-  // Fondo de océano con olas y maniobras náuticas
-  injectOceanBg();
+function initHost() {
+  try {
+    injectOceanBg();
+  } catch (e) {
+    console.warn('injectOceanBg error:', e);
+  }
 
-  // Inyección de iconos temáticos
-  const brandEl = qs('#brandIcon');
-  if (brandEl) brandEl.innerHTML = tugLogoSVG();
-  const usersEl1 = qs('#usersIcon');
-  if (usersEl1) usersEl1.innerHTML = ICONS.users;
-  const usersEl2 = qs('#usersIcon2');
-  if (usersEl2) usersEl2.innerHTML = ICONS.users;
-  const trophyEl = qs('#trophyIcon');
-  if (trophyEl) trophyEl.innerHTML = ICONS.trophy;
+  try {
+    const brandEl = qs('#brandIcon');
+    if (brandEl && typeof tugLogoSVG === 'function') brandEl.innerHTML = tugLogoSVG();
+    const usersEl1 = qs('#usersIcon');
+    if (usersEl1 && typeof ICONS !== 'undefined' && ICONS.users) usersEl1.innerHTML = ICONS.users;
+    const usersEl2 = qs('#usersIcon2');
+    if (usersEl2 && typeof ICONS !== 'undefined' && ICONS.users) usersEl2.innerHTML = ICONS.users;
+    const trophyEl = qs('#trophyIcon');
+    if (trophyEl && typeof ICONS !== 'undefined' && ICONS.trophy) trophyEl.innerHTML = ICONS.trophy;
+  } catch (e) {
+    console.warn('Icons injection error:', e);
+  }
 
   // Inicializar motores audiovisuales
-  if (window.AudioFX) AudioFX.init();
-  if (window.CanvasFX) CanvasFX.init();
+  try {
+    if (window.AudioFX) AudioFX.init();
+    if (window.CanvasFX) CanvasFX.init();
+  } catch (e) {
+    console.warn('FX init error:', e);
+  }
 
   // Configurar botón flotante de mute de audio
-  setupAudioToggleButton();
+  try {
+    setupAudioToggleButton();
+  } catch (e) {
+    console.warn('Audio toggle setup error:', e);
+  }
 
   // Cargar sesiones disponibles
   loadHostSessions();
@@ -69,7 +83,13 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initHost);
+} else {
+  initHost();
+}
 
 /**
  * Configura y sincroniza el estado del botón flotante de audio

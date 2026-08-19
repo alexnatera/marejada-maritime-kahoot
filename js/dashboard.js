@@ -10,7 +10,7 @@ let dResponsesByQuestion = {};
 let dActiveTab = 'summit'; // 'summit' | 'discovery'
 let dPlayerStreaks = {}; // playerId -> { maxStreak, streakInfo }
 
-document.addEventListener('DOMContentLoaded', () => {
+function initDashboard() {
   if (typeof injectOceanBg === 'function') injectOceanBg();
   const brandEl = qs('#brandIcon');
   if (brandEl && typeof tugLogoSVG === 'function') brandEl.innerHTML = tugLogoSVG();
@@ -43,10 +43,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Pestañas
-  const tabSummit = qs('#tabBtnSummit');
-  const tabDiscovery = qs('#tabBtnDiscovery');
-  if (tabSummit) tabSummit.addEventListener('click', () => switchDashboardTab('summit'));
-  if (tabDiscovery) tabDiscovery.addEventListener('click', () => switchDashboardTab('discovery'));
+  qs('#tabBtnSummit')?.addEventListener('click', () => switchDashboardTab('summit'));
+  qs('#tabBtnDiscovery')?.addEventListener('click', () => switchDashboardTab('discovery'));
 
   // Exportaciones
   qs('#btnExportGeneral')?.addEventListener('click', exportGeneralCSV);
@@ -57,7 +55,13 @@ document.addEventListener('DOMContentLoaded', () => {
   qs('#feedbackSearchInput')?.addEventListener('input', (e) => {
     filterFeedbackCards(e.target.value);
   });
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initDashboard);
+} else {
+  initDashboard();
+}
 
 /**
  * Inicializa el botón flotante de audio

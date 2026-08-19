@@ -262,12 +262,25 @@ const TEMPLATES = {
 // ===========================================================================
 // Inicialización del DOM y Eventos
 // ===========================================================================
-document.addEventListener('DOMContentLoaded', async () => {
-  injectOceanBg();
-  if (qs('#brandIcon')) qs('#brandIcon').innerHTML = tugLogoSVG();
+async function initAdmin() {
+  try {
+    injectOceanBg();
+  } catch (e) {
+    console.warn('injectOceanBg error:', e);
+  }
+
+  try {
+    if (qs('#brandIcon') && typeof tugLogoSVG === 'function') qs('#brandIcon').innerHTML = tugLogoSVG();
+  } catch (e) {
+    console.warn('Brand icon error:', e);
+  }
   
   // Renderizar formulario inicial con tipo opción múltiple
-  renderOptionInputs('multiple_choice');
+  try {
+    renderOptionInputs('multiple_choice');
+  } catch (e) {
+    console.warn('renderOptionInputs error:', e);
+  }
 
   // Listeners de creación de sesiones
   if (qs('#btnCreateSession')) qs('#btnCreateSession').addEventListener('click', createSession);
@@ -295,7 +308,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (qs('#btnLogout')) qs('#btnLogout').addEventListener('click', handleLogout);
 
   await initAuthGate();
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initAdmin);
+} else {
+  initAdmin();
+}
 
 // ===========================================================================
 // Puerta de Acceso (Auth Gate con Supabase Auth)

@@ -20,26 +20,42 @@ let pQuestionTimeLimit = 20;
 let pQuestionStartTime = 0;
 let pCurrentSequenceOrder = [];
 
-document.addEventListener('DOMContentLoaded', () => {
+function initPlayer() {
   // Fondo de océano con olas y maniobras náuticas
-  injectOceanBg();
+  try {
+    injectOceanBg();
+  } catch (e) {
+    console.warn('injectOceanBg error:', e);
+  }
 
   // Inyección de logos e iconos SVG
-  const brandEl = qs('#brandIcon');
-  if (brandEl) brandEl.innerHTML = tugLogoSVG();
-  const checkEl = qs('#checkIcon');
-  if (checkEl) checkEl.innerHTML = ICONS.check;
-  const trophyEl = qs('#trophyIcon');
-  if (trophyEl) trophyEl.innerHTML = ICONS.trophy;
-  const mascotEl = qs('#captainMascot');
-  if (mascotEl) mascotEl.innerHTML = captainMascotSVG();
+  try {
+    const brandEl = qs('#brandIcon');
+    if (brandEl && typeof tugLogoSVG === 'function') brandEl.innerHTML = tugLogoSVG();
+    const checkEl = qs('#checkIcon');
+    if (checkEl && typeof ICONS !== 'undefined' && ICONS.check) checkEl.innerHTML = ICONS.check;
+    const trophyEl = qs('#trophyIcon');
+    if (trophyEl && typeof ICONS !== 'undefined' && ICONS.trophy) trophyEl.innerHTML = ICONS.trophy;
+    const mascotEl = qs('#captainMascot');
+    if (mascotEl && typeof captainMascotSVG === 'function') mascotEl.innerHTML = captainMascotSVG();
+  } catch (e) {
+    console.warn('Icons injection error:', e);
+  }
 
   // Inicializar motores audiovisuales y de partículas
-  if (window.AudioFX) AudioFX.init();
-  if (window.CanvasFX) CanvasFX.init();
+  try {
+    if (window.AudioFX) AudioFX.init();
+    if (window.CanvasFX) CanvasFX.init();
+  } catch (e) {
+    console.warn('FX init error:', e);
+  }
 
   // Configurar botón flotante de silencio / volumen
-  setupAudioToggleButton();
+  try {
+    setupAudioToggleButton();
+  } catch (e) {
+    console.warn('Audio toggle setup error:', e);
+  }
 
   // Renderizar selector de buques
   renderAvatarPicker();
@@ -71,7 +87,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Intentar restaurar sesión activa de sessionStorage
   restoreSession();
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initPlayer);
+} else {
+  initPlayer();
+}
 
 /**
  * Dispara feedback háptico en dispositivos móviles compatibles
