@@ -426,6 +426,26 @@ function renderQuestionView(q) {
         </div>
       </div>
     `;
+  } else if (normalizedType === 'hazard_hotspot' || normalizedType === 'hotspot') {
+    preview.innerHTML = `
+      <div class="text-center p-16">
+        <p class="muted mb-8" style="font-size:0.95rem; color:#F7B500;">⚠️ Los tripulantes están tocando en su móvil la zona de peligro en el plano de cubierta:</p>
+        <div style="max-width:380px; margin:0 auto; border-radius:10px; overflow:hidden; border:2px solid rgba(212,168,67,0.4); background:#0B3559;">
+          <svg viewBox="0 0 400 300" style="width:100%; height:auto; display:block;" xmlns="http://www.w3.org/2000/svg">
+            <path d="M60 270 Q40 180 80 50 Q120 10 200 10 Q280 10 320 50 Q360 180 340 270 Q200 290 60 270 Z" fill="#1b2836" stroke="#4A6572" stroke-width="4"/>
+            <rect x="130" y="50" width="140" height="70" rx="10" fill="#2d3e50" stroke="#9fd3ef" stroke-width="2"/>
+            <text x="200" y="90" fill="#ffffff" font-size="12" font-weight="bold" text-anchor="middle">PUENTE DE MANDO</text>
+            <rect x="160" y="140" width="80" height="30" rx="4" fill="#5C6B73" stroke="#D4A843" stroke-width="2"/>
+            <text x="200" y="160" fill="#F7B500" font-size="11" font-weight="bold" text-anchor="middle">WINCHE DE TIRO</text>
+            <path d="M100 180 L300 180 L290 260 Q200 275 110 260 Z" fill="rgba(228, 0, 26, 0.15)" stroke="#E4001A" stroke-dasharray="4,4" stroke-width="2"/>
+            <path d="M200 165 Q240 210 200 280" fill="none" stroke="#E4001A" stroke-width="3"/>
+            <text x="200" y="220" fill="#ff6b6b" font-size="11" font-weight="bold" text-anchor="middle">ZONA DE MANIOBRAS (POPA)</text>
+            <circle cx="120" cy="245" r="8" fill="#F7B500"/>
+            <circle cx="280" cy="245" r="8" fill="#F7B500"/>
+          </svg>
+        </div>
+      </div>
+    `;
   } else {
     preview.innerHTML = `
       <div class="text-center p-24">
@@ -681,6 +701,47 @@ async function renderResultsView(q) {
               <span class="sequence-num">${stepNum + 1}</span>
               <span style="font-weight:600;">${escapeHtml(q.options[optIdx])}</span>
             </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  }
+  // 3.5. Identificación de Peligros en Cubierta / Hotspot
+  else if (normalizedType === 'hazard_hotspot' || normalizedType === 'hotspot') {
+    const correctCount = responses.filter(r => Boolean(r.is_correct)).length;
+    const totalResponses = Math.max(1, responses.length);
+    const accuracyPct = Math.round((correctCount / totalResponses) * 100);
+
+    const clicks = responses.map(r => {
+      if (!r.answer) return null;
+      if (typeof r.answer.x === 'number' && typeof r.answer.y === 'number') return { x: r.answer.x, y: r.answer.y, is_correct: r.is_correct };
+      return null;
+    }).filter(Boolean);
+
+    content.innerHTML = `
+      <div class="p-16 text-center">
+        <div class="flex-between wrap gap-8 mb-12" style="align-items:center;">
+          <span class="badge badge-ended" style="font-size:0.95rem; padding:6px 14px;">
+            ⚠️ Análisis de Detección de Peligros en Cubierta
+          </span>
+          <span class="muted">
+            Aciertos de seguridad: <strong style="color:var(--color-gold);">${correctCount}</strong> de ${responses.length} (${accuracyPct}%)
+          </span>
+        </div>
+        <div style="position:relative; max-width:420px; margin:0 auto; border-radius:10px; overflow:hidden; border:2px solid rgba(212,168,67,0.4); background:#0B3559;">
+          <svg viewBox="0 0 400 300" style="width:100%; height:auto; display:block;" xmlns="http://www.w3.org/2000/svg">
+            <path d="M60 270 Q40 180 80 50 Q120 10 200 10 Q280 10 320 50 Q360 180 340 270 Q200 290 60 270 Z" fill="#1b2836" stroke="#4A6572" stroke-width="4"/>
+            <rect x="130" y="50" width="140" height="70" rx="10" fill="#2d3e50" stroke="#9fd3ef" stroke-width="2"/>
+            <text x="200" y="90" fill="#ffffff" font-size="12" font-weight="bold" text-anchor="middle">PUENTE DE MANDO</text>
+            <rect x="160" y="140" width="80" height="30" rx="4" fill="#5C6B73" stroke="#D4A843" stroke-width="2"/>
+            <text x="200" y="160" fill="#F7B500" font-size="11" font-weight="bold" text-anchor="middle">WINCHE DE TIRO</text>
+            <circle cx="200" cy="225" r="48" fill="rgba(212, 168, 67, 0.25)" stroke="#D4A843" stroke-width="3" stroke-dasharray="6,4"/>
+            <text x="200" y="230" fill="#D4A843" font-size="12" font-weight="bold" text-anchor="middle">ZONA CRÍTICA SNAP-BACK</text>
+            <circle cx="120" cy="245" r="8" fill="#F7B500"/>
+            <circle cx="280" cy="245" r="8" fill="#F7B500"/>
+          </svg>
+          ${clicks.map(c => `
+            <div style="position:absolute; left:${c.x}%; top:${c.y}%; width:12px; height:12px; margin-left:-6px; margin-top:-6px; border-radius:50%; background:${c.is_correct ? '#2ECC71' : '#E4001A'}; border:1.5px solid #fff; box-shadow:0 0 6px ${c.is_correct ? '#2ECC71' : '#E4001A'};"></div>
           `).join('')}
         </div>
       </div>

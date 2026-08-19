@@ -44,6 +44,19 @@ const TEMPLATES = {
         is_high_tide: false
       },
       {
+        type: 'hazard_hotspot',
+        question_text: '⚠️ [HOTSPOT TÁCTIL] Toca directamente en el plano del remolcador la zona de peligro mortal por latigazo (Snap-Back Zone) durante el tiro:',
+        options: [],
+        hazard_zones: [
+          { id: 'snap_back_stern', x: 50, y: 70, radius: 24, label: 'Zona de Latigazo Popa / Seno del Cabo', is_hazard: true }
+        ],
+        correct_index: 0,
+        correct_option: 0,
+        correct_order: null,
+        time_limit: 25,
+        is_high_tide: false
+      },
+      {
         type: 'sequence',
         question_text: '🔄 ¡Alerta de Girondaje (Girting)! El buque asistido vira bruscamente y arrastra al remolcador de banda. Ordena la secuencia de salvamento:',
         options: [
@@ -1021,6 +1034,17 @@ function renderOptionInputs(type, initialData = null) {
         💬 <strong>Formato de Texto Libre:</strong> Cada tripulante podrá redactar sus sugerencias, opiniones o hallazgos en un campo de texto de hasta 400 caracteres. No requiere opciones fijas.
       </div>
     `;
+  }
+  // 7. IDENTIFICACIÓN DE PELIGROS / HOTSPOT
+  else if (type === 'hazard_hotspot' || type === 'hotspot') {
+    block.classList.remove('hidden');
+    title.textContent = 'Configuración de Zona de Peligro en Cubierta';
+    hint.textContent = 'El jugador deberá tocar la zona de mayor riesgo en el plano náutico';
+    inputs.innerHTML = `
+      <div class="info-box">
+        ⚠️ <strong>Formato Hotspot de Seguridad:</strong> Presenta un plano de cubierta del remolcador con la zona de popa y seno de maniobra señalada como riesgo crítico de latigazo (Snap-Back). La validación calcula la proximidad al peligro en tiempo real.
+      </div>
+    `;
   } else {
     block.classList.add('hidden');
     inputs.innerHTML = '';
@@ -1180,6 +1204,9 @@ async function saveQuestion() {
   } else if (type === 'poll_rating' || type === 'scale' || type === 'poll_text' || type === 'text') {
     options = [];
     correctOption = null;
+  } else if (type === 'hazard_hotspot' || type === 'hotspot') {
+    options = [];
+    correctOption = 0;
   }
 
   const isPoll = window.Mechanics ? Mechanics.isPollType(type) : false;

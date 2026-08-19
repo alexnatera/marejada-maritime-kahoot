@@ -238,3 +238,13 @@ function injectOceanBg() {
     }
   } catch (e) { console.warn('wave-strip:', e); }
 }
+
+// Registro de Service Worker para soporte PWA y resiliencia offline en muelles/bahía
+if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch((err) => {
+      console.warn('SW registration skipped/failed:', err);
+    });
+  });
+}
+

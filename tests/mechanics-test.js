@@ -223,7 +223,32 @@ function runAllTests() {
   assertEqual(resPollText.is_correct, null, 'Poll Text: is_correct es null');
   assertEqual(resPollText.points, 0, 'Poll Text: points es 0');
 
-  // 4.7 Legacy Aliases (quiz, survey, scale, text)
+  // 4.7 Hazard Hotspot (Identificación de Peligros en Cubierta)
+  const qHotspot = {
+    type: 'hazard_hotspot',
+    question_text: 'Toca la zona de mayor peligro por latigazo de cabo (Snap-Back) en la popa:',
+    hazard_zones: [
+      { id: 'snap_back_stern', x: 50, y: 70, radius: 20, label: 'Zona de Latigazo Popa', is_hazard: true }
+    ],
+    time_limit: 20
+  };
+
+  // Toque acertado dentro de la zona de riesgo (x=52, y=68) -> dist ~2.8 <= 20
+  const resHotspot_OK = Mechanics.validateAnswer(qHotspot, { x: 52, y: 68 }, { timeRemaining: 20, streak: 1 });
+  assertEqual(resHotspot_OK.is_correct, true, 'Hotspot: Toque dentro del radio de la zona de peligro es correcto');
+  assertEqual(resHotspot_OK.points, 1000, 'Hotspot: Otorga 1000 pts con racha base a tiempo completo');
+  assertEqual(resHotspot_OK.streak, 2, 'Hotspot: Racha avanza de 1 a 2');
+
+  const resHotspot_Streak2 = Mechanics.validateAnswer(qHotspot, { x: 52, y: 68 }, { timeRemaining: 20, streak: 2 });
+  assertEqual(resHotspot_Streak2.points, 1200, 'Hotspot: Racha 2 otorga 1200 pts (+20%)');
+
+  // Toque fallido lejos de la zona (ej: en la proa x=50, y=20) -> dist = 50 > 20
+  const resHotspot_MISS = Mechanics.validateAnswer(qHotspot, { x: 50, y: 20 }, { timeRemaining: 20, streak: 2 });
+  assertEqual(resHotspot_MISS.is_correct, false, 'Hotspot: Toque fuera de la zona de peligro es fallido');
+  assertEqual(resHotspot_MISS.points, 0, 'Hotspot: Toque fallido otorga 0 puntos');
+  assertEqual(resHotspot_MISS.streak, 0, 'Hotspot: Toque fallido reinicia racha');
+
+  // 4.8 Legacy Aliases (quiz, survey, scale, text)
   const qQuiz = { type: 'quiz', options: ['A', 'B'], correct_option: 1 };
   const resQuiz = Mechanics.validateAnswer(qQuiz, { optionIndex: 1 }, { timeRemaining: 20 });
   assertEqual(resQuiz.is_correct, true, 'Legacy quiz type alias compatible');

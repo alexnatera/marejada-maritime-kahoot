@@ -674,6 +674,78 @@ function renderQuestion(rawQ, session) {
     textWrapper.appendChild(submitBtn);
     container.appendChild(textWrapper);
   }
+  // 6. Identificación Visual de Peligros en Cubierta / Hotspot
+  else if (normalizedType === 'hazard_hotspot' || normalizedType === 'hotspot') {
+    const hotspotWrapper = document.createElement('div');
+    hotspotWrapper.className = 'mechanics-hotspot-wrapper';
+
+    const hint = document.createElement('p');
+    hint.className = 'hotspot-instruction';
+    hint.style.margin = '0 0 10px 0';
+    hint.style.fontSize = '0.95rem';
+    hint.style.color = '#F7B500';
+    hint.innerHTML = '⚠️ <strong>¡Toca la zona de peligro mortal</strong> en el plano del remolcador:';
+    hotspotWrapper.appendChild(hint);
+
+    const mapArea = document.createElement('div');
+    mapArea.className = 'mechanics-hotspot-canvas';
+    mapArea.style.position = 'relative';
+    mapArea.style.width = '100%';
+    mapArea.style.maxWidth = '400px';
+    mapArea.style.margin = '0 auto';
+    mapArea.style.cursor = 'crosshair';
+    mapArea.style.borderRadius = '12px';
+    mapArea.style.overflow = 'hidden';
+    mapArea.style.background = '#0B3559';
+    mapArea.style.border = '2px solid rgba(212, 168, 67, 0.4)';
+
+    mapArea.innerHTML = `
+      <svg viewBox="0 0 400 300" style="width:100%; height:auto; display:block;" xmlns="http://www.w3.org/2000/svg">
+        <path d="M60 270 Q40 180 80 50 Q120 10 200 10 Q280 10 320 50 Q360 180 340 270 Q200 290 60 270 Z" fill="#1b2836" stroke="#4A6572" stroke-width="4"/>
+        <rect x="130" y="50" width="140" height="70" rx="10" fill="#2d3e50" stroke="#9fd3ef" stroke-width="2"/>
+        <text x="200" y="90" fill="#ffffff" font-size="12" font-weight="bold" text-anchor="middle">PUENTE DE MANDO</text>
+        <rect x="160" y="140" width="80" height="30" rx="4" fill="#5C6B73" stroke="#D4A843" stroke-width="2"/>
+        <text x="200" y="160" fill="#F7B500" font-size="11" font-weight="bold" text-anchor="middle">WINCHE DE TIRO</text>
+        <path d="M100 180 L300 180 L290 260 Q200 275 110 260 Z" fill="rgba(228, 0, 26, 0.15)" stroke="#E4001A" stroke-dasharray="4,4" stroke-width="2"/>
+        <path d="M200 165 Q240 210 200 280" fill="none" stroke="#E4001A" stroke-width="3"/>
+        <text x="200" y="220" fill="#ff6b6b" font-size="11" font-weight="bold" text-anchor="middle">ZONA DE MANIOBRAS (POPA)</text>
+        <circle cx="120" cy="245" r="8" fill="#F7B500"/>
+        <circle cx="280" cy="245" r="8" fill="#F7B500"/>
+      </svg>
+      <div class="hotspot-marker" style="display:none; position:absolute; width:24px; height:24px; margin-left:-12px; margin-top:-12px; border-radius:50%; background:rgba(228,0,26,0.85); border:2px solid #fff; box-shadow:0 0 10px #ff0000; pointer-events:none; z-index:10;"></div>
+    `;
+
+    const marker = mapArea.querySelector('.hotspot-marker');
+
+    function handleHotspotTap(e) {
+      const rect = mapArea.getBoundingClientRect();
+      const clientX = e.clientX !== undefined ? e.clientX : (e.touches && e.touches[0] ? e.touches[0].clientX : null);
+      const clientY = e.clientY !== undefined ? e.clientY : (e.touches && e.touches[0] ? e.touches[0].clientY : null);
+      if (clientX === null || clientY === null) return;
+
+      const x = Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100));
+      const y = Math.max(0, Math.min(100, ((clientY - rect.top) / rect.height) * 100));
+
+      if (marker) {
+        marker.style.left = `${x}%`;
+        marker.style.top = `${y}%`;
+        marker.style.display = 'block';
+      }
+
+      playAudio('bubble_tap');
+      triggerHaptic([40]);
+      handleAnswerSubmit({ x: Math.round(x * 10) / 10, y: Math.round(y * 10) / 10 });
+    }
+
+    mapArea.addEventListener('click', handleHotspotTap);
+    mapArea.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      handleHotspotTap(e);
+    });
+
+    hotspotWrapper.appendChild(mapArea);
+    container.appendChild(hotspotWrapper);
+  }
 
   // Iniciar temporizador del jugador
   startPlayerTimer(pQuestionTimeLimit);

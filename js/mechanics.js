@@ -15,10 +15,12 @@
     MULTIPLE_CHOICE: 'multiple_choice',
     TRUE_FALSE: 'true_false',
     SEQUENCE: 'sequence',
+    HAZARD_HOTSPOT: 'hazard_hotspot',
     POLL_CHOICE: 'poll_choice',
     POLL_RATING: 'poll_rating',
     POLL_TEXT: 'poll_text',
     // Aliases heredados
+    HOTSPOT: 'hotspot',
     QUIZ: 'quiz',
     SURVEY: 'survey',
     SCALE: 'scale',
@@ -30,6 +32,8 @@
     quiz: 'Opción Múltiple (Quiz)',
     true_false: 'Verdadero / Falso Náutico',
     sequence: 'Secuencia de Maniobra',
+    hazard_hotspot: 'Peligros en Cubierta (Hotspot)',
+    hotspot: 'Peligros en Cubierta (Hotspot)',
     poll_choice: 'Votación de Funcionalidades',
     survey: 'Encuesta',
     poll_rating: 'Valoración de Pantallas (1-10)',
@@ -43,6 +47,8 @@
     quiz: '⚓',
     true_false: '🧭',
     sequence: '🔄',
+    hazard_hotspot: '⚠️',
+    hotspot: '⚠️',
     poll_choice: '📊',
     survey: '📊',
     poll_rating: '⭐',
@@ -247,6 +253,18 @@
       correctOrder = options.map((_, i) => i);
     }
 
+    // Zonas de peligro para tipo hotspot
+    let hazardZones = [];
+    if (Array.isArray(question.hazard_zones)) {
+      hazardZones = question.hazard_zones;
+    } else if (Array.isArray(question.target_zones)) {
+      hazardZones = question.target_zones;
+    } else if (question.target_zone && typeof question.target_zone === 'object') {
+      hazardZones = [question.target_zone];
+    } else if (type === QUESTION_TYPES.HAZARD_HOTSPOT || type === 'hotspot') {
+      hazardZones = [{ id: 'snap_back_zone', x: 50, y: 65, radius: 22, label: 'Zona de Latigazo (Snap-Back)', is_hazard: true }];
+    }
+
     return {
       ...question,
       id: question.id || null,
@@ -256,6 +274,8 @@
       correct_index: correctIndex,
       correct_option: correctIndex, // Compatibilidad retroactiva
       correct_order: correctOrder,
+      hazard_zones: hazardZones,
+      target_zones: hazardZones,
       time_limit: timeLimit,
       is_high_tide: isHighTide,
       is_poll: isPoll
@@ -323,6 +343,23 @@
       correctAnswer = q.correct_order || [];
       if (Array.isArray(correctAnswer) && correctAnswer.length > 0 && order.length === correctAnswer.length) {
         isCorrect = correctAnswer.every((val, idx) => Number(val) === Number(order[idx]));
+      } else {
+        isCorrect = false;
+      }
+    } else if (type === QUESTION_TYPES.HAZARD_HOTSPOT || type === 'hotspot') {
+      const clickX = (typeof rawAnswer === 'object' && rawAnswer !== null && rawAnswer.x !== undefined) ? Number(rawAnswer.x) : null;
+      const clickY = (typeof rawAnswer === 'object' && rawAnswer !== null && rawAnswer.y !== undefined) ? Number(rawAnswer.y) : null;
+
+      correctAnswer = q.hazard_zones || [];
+      if (clickX !== null && clickY !== null && Array.isArray(correctAnswer) && correctAnswer.length > 0) {
+        isCorrect = correctAnswer.some(zone => {
+          if (zone.is_hazard === false) return false;
+          const zX = Number(zone.x);
+          const zY = Number(zone.y);
+          const radius = Number(zone.radius || 18);
+          const dist = Math.hypot(clickX - zX, clickY - zY);
+          return dist <= radius;
+        });
       } else {
         isCorrect = false;
       }
@@ -620,6 +657,78 @@
       textWrapper.appendChild(submitBtn);
       container.appendChild(textWrapper);
 
+      return { container, type: q.type };
+    }
+
+    // 6. Identificación Visual de Peligros en Cubierta / Hotspot
+    if (q.type === QUESTION_TYPES.HAZARD_HOTSPOT || q.type === 'hotspot') {
+      const hotspotWrapper = document.createElement('div');
+      hotspotWrapper.className = 'mechanics-hotspot-wrapper';
+
+      const instruction = document.createElement('p');
+      instruction.className = 'hotspot-instruction';
+      instruction.style.margin = '0 0 10px 0';
+      instruction.style.fontSize = '0.95rem';
+      instruction.style.color = '#F7B500';
+      instruction.innerHTML = '⚠️ <strong>¡Toca la zona de mayor peligro mortal</strong> en el plano de cubierta:';
+      hotspotWrapper.appendChild(instruction);
+
+      const mapArea = document.createElement('div');
+      mapArea.className = 'mechanics-hotspot-canvas';
+      mapArea.style.position = 'relative';
+      mapArea.style.width = '100%';
+      mapArea.style.maxWidth = '440px';
+      mapArea.style.margin = '0 auto';
+      mapArea.style.cursor = 'crosshair';
+      mapArea.style.borderRadius = '12px';
+      mapArea.style.overflow = 'hidden';
+      mapArea.style.background = '#0B3559';
+      mapArea.style.border = '2px solid rgba(212, 168, 67, 0.4)';
+
+      mapArea.innerHTML = `
+        <svg viewBox="0 0 400 300" style="width:100%; height:auto; display:block;" xmlns="http://www.w3.org/2000/svg">
+          <path d="M60 270 Q40 180 80 50 Q120 10 200 10 Q280 10 320 50 Q360 180 340 270 Q200 290 60 270 Z" fill="#1b2836" stroke="#4A6572" stroke-width="4"/>
+          <rect x="130" y="50" width="140" height="70" rx="10" fill="#2d3e50" stroke="#9fd3ef" stroke-width="2"/>
+          <text x="200" y="90" fill="#ffffff" font-size="12" font-weight="bold" text-anchor="middle">PUENTE DE MANDO</text>
+          <rect x="160" y="140" width="80" height="30" rx="4" fill="#5C6B73" stroke="#D4A843" stroke-width="2"/>
+          <text x="200" y="160" fill="#F7B500" font-size="11" font-weight="bold" text-anchor="middle">WINCHE DE TIRO</text>
+          <path d="M100 180 L300 180 L290 260 Q200 275 110 260 Z" fill="rgba(228, 0, 26, 0.15)" stroke="#E4001A" stroke-dasharray="4,4" stroke-width="2"/>
+          <path d="M200 165 Q240 210 200 280" fill="none" stroke="#E4001A" stroke-width="3"/>
+          <text x="200" y="220" fill="#ff6b6b" font-size="11" font-weight="bold" text-anchor="middle">ZONA DE MANIOBRAS</text>
+          <circle cx="120" cy="245" r="8" fill="#F7B500"/>
+          <circle cx="280" cy="245" r="8" fill="#F7B500"/>
+        </svg>
+        <div class="hotspot-marker" style="display:none; position:absolute; width:24px; height:24px; margin-left:-12px; margin-top:-12px; border-radius:50%; background:rgba(228,0,26,0.85); border:2px solid #fff; box-shadow:0 0 10px #ff0000; pointer-events:none; z-index:10;"></div>
+      `;
+
+      const marker = mapArea.querySelector('.hotspot-marker');
+
+      function handleTap(e) {
+        const rect = mapArea.getBoundingClientRect();
+        const clientX = e.clientX !== undefined ? e.clientX : (e.touches && e.touches[0] ? e.touches[0].clientX : null);
+        const clientY = e.clientY !== undefined ? e.clientY : (e.touches && e.touches[0] ? e.touches[0].clientY : null);
+        if (clientX === null || clientY === null) return;
+
+        const x = Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100));
+        const y = Math.max(0, Math.min(100, ((clientY - rect.top) / rect.height) * 100));
+
+        if (marker) {
+          marker.style.left = `${x}%`;
+          marker.style.top = `${y}%`;
+          marker.style.display = 'block';
+        }
+
+        submitAnswer({ x: Math.round(x * 10) / 10, y: Math.round(y * 10) / 10 });
+      }
+
+      mapArea.addEventListener('click', handleTap);
+      mapArea.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        handleTap(e);
+      });
+
+      hotspotWrapper.appendChild(mapArea);
+      container.appendChild(hotspotWrapper);
       return { container, type: q.type };
     }
 
