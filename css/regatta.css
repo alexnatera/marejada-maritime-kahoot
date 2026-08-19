@@ -1,0 +1,273 @@
+/* ==========================================================================
+   Marejada 2.0 — Regata Naval en Vivo 2.0 (`css/regatta.css`)
+   Pista marina de alta fidelidad, carriles fluidos, estelas y turbos
+   ========================================================================== */
+
+/* ---------- Contenedor Principal de la Regata ---------- */
+.regatta-container {
+  position: relative;
+  width: 100%;
+  border-radius: var(--radius-lg, 24px);
+  background: linear-gradient(180deg, rgba(4, 18, 37, 0.92) 0%, rgba(11, 53, 89, 0.88) 100%);
+  border: 1px solid rgba(52, 152, 219, 0.25);
+  box-shadow: 0 16px 40px rgba(4, 18, 37, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  padding: 24px 20px;
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+}
+
+.regatta-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.regatta-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-title, 'Playfair Display', serif);
+  font-size: 1.3rem;
+  color: var(--color-gold, #D4A843);
+  margin: 0;
+}
+
+.regatta-water-surface {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-height: 480px;
+  overflow-y: auto;
+  padding-right: 6px;
+  scroll-behavior: smooth;
+}
+
+/* ---------- Carril Náutico (Regatta Lane) ---------- */
+.regatta-lane {
+  position: relative;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  min-height: 52px;
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 6px 18px 6px 14px;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.3, 1), background 0.3s ease, border-color 0.3s ease;
+}
+
+.regatta-lane:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(212, 168, 67, 0.35);
+}
+
+/* Distinciones de Podio / Top Ranks */
+.regatta-lane.lane-1 {
+  background: linear-gradient(90deg, rgba(212, 168, 67, 0.28) 0%, rgba(212, 168, 67, 0.06) 100%);
+  border: 1px solid rgba(212, 168, 67, 0.6);
+  box-shadow: 0 4px 18px rgba(212, 168, 67, 0.2);
+}
+
+.regatta-lane.lane-2 {
+  background: linear-gradient(90deg, rgba(200, 214, 229, 0.18) 0%, rgba(200, 214, 229, 0.04) 100%);
+  border: 1px solid rgba(200, 214, 229, 0.4);
+}
+
+.regatta-lane.lane-3 {
+  background: linear-gradient(90deg, rgba(205, 127, 50, 0.18) 0%, rgba(205, 127, 50, 0.04) 100%);
+  border: 1px solid rgba(205, 127, 50, 0.4);
+}
+
+/* ---------- Indicador de Posición / Rango ---------- */
+.regatta-rank {
+  font-family: var(--font-title, 'Playfair Display', serif);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--color-gold, #D4A843);
+  width: 28px;
+  flex-shrink: 0;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.regatta-lane.lane-1 .regatta-rank {
+  color: #FFF2A1;
+  text-shadow: 0 0 10px rgba(212, 168, 67, 0.8);
+}
+
+/* ---------- Etiqueta e Información del Jugador ---------- */
+.regatta-label {
+  flex: 0 0 180px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: hidden;
+}
+
+.regatta-label-main {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.regatta-ship-tag {
+  font-weight: 500;
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.6);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ---------- Pista de Navegación y Boyas ---------- */
+.regatta-track-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 140px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+}
+
+.regatta-track {
+  position: absolute;
+  left: 6px;
+  right: 36px;
+  top: 50%;
+  height: 4px;
+  background: repeating-linear-gradient(90deg, rgba(52, 152, 219, 0.35) 0 10px, transparent 10px 20px);
+  border-radius: 2px;
+  transform: translateY(-50%);
+}
+
+.regatta-finish-line {
+  position: absolute;
+  right: 12px;
+  top: 10%;
+  bottom: 10%;
+  width: 10px;
+  background: repeating-linear-gradient(180deg, #ffffff 0 6px, #041225 6px 12px);
+  border-radius: 2px;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+}
+
+/* ---------- Buque en la Pista (Regatta Ship) ---------- */
+.regatta-ship {
+  position: absolute;
+  top: 50%;
+  transform: translate3d(-10px, -50%, 0);
+  width: 44px;
+  height: 32px;
+  transition: left 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+  z-index: 5;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.5));
+  will-change: left, transform;
+}
+
+.regatta-ship svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Estela de Espuma del Buque (Regatta Wake) */
+.regatta-wake,
+.regatta-ship::before {
+  content: '';
+  position: absolute;
+  right: 85%;
+  top: 60%;
+  width: 26px;
+  height: 6px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.65));
+  border-radius: 50%;
+  animation: wakePulse 1.2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Nitro / Turbo Activo */
+.regatta-nitro,
+.regatta-ship.has-nitro::after {
+  content: '';
+  position: absolute;
+  right: 90%;
+  top: 45%;
+  width: 22px;
+  height: 10px;
+  background: radial-gradient(circle at 80% 50%, #FF3B4E 0%, #D4A843 60%, transparent 100%);
+  border-radius: 40%;
+  animation: nitroTurboFlame 0.4s ease-in-out infinite;
+  filter: drop-shadow(0 0 6px #E4001A);
+  pointer-events: none;
+}
+
+/* Adelantamiento Destacado */
+.regatta-lane.is-overtaking {
+  border-color: var(--color-gold, #D4A843);
+  box-shadow: 0 0 18px rgba(212, 168, 67, 0.45);
+}
+
+.regatta-lane.is-overtaking .regatta-ship {
+  transform: translate3d(-10px, -50%, 0) scale(1.1);
+  filter: drop-shadow(0 0 12px #D4A843);
+}
+
+/* ---------- Badges Náuticos Especiales ---------- */
+.regatta-badge-leader {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #D4A843, #F5D77F);
+  color: #041225;
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: 0 2px 8px rgba(212, 168, 67, 0.5);
+  animation: crownFloat 2.4s ease-in-out infinite;
+}
+
+.regatta-badge-comeback {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--saam-red, #E4001A), #FF3B4E);
+  color: #ffffff;
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: 0 2px 8px rgba(228, 0, 26, 0.5);
+  animation: popIn 0.5s ease both;
+}
+
+.regatta-score-pill {
+  flex-shrink: 0;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--color-gold, #D4A843);
+  background: rgba(4, 18, 37, 0.65);
+  border: 1px solid rgba(212, 168, 67, 0.3);
+  padding: 5px 12px;
+  border-radius: 999px;
+  text-align: right;
+  min-width: 80px;
+}

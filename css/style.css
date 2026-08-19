@@ -1,21 +1,37 @@
 /* ==========================================================================
-   Marejada — tema marítimo para plataforma de engagement interactivo
+   Marejada 2.0 — Tema Marítimo, Glassmorphism Naval, Animaciones y Regata
    ========================================================================== */
 
+@import './animations.css';
+@import './regatta.css';
+
 :root {
-  /* Paleta inspirada en SAAM Towage: rojo remolcador + azul naval profundo */
+  /* Paleta Náutica SAAM & Naval Profundo */
   --saam-red: #E4001A;
   --saam-red-dark: #A50014;
   --saam-red-light: #FF3B4E;
+  --saam-red-glow: rgba(228, 0, 26, 0.45);
 
   --color-deep: #041225;
   --color-navy: #0B3559;
   --color-navy-2: #124A7D;
+  --color-navy-surface: rgba(11, 53, 89, 0.45);
+  --color-navy-border: rgba(52, 152, 219, 0.25);
+
   --color-gold: #D4A843;
+  --color-gold-light: #F5D77F;
+  --color-gold-dark: #A67D24;
+  --color-gold-glow: rgba(212, 168, 67, 0.45);
+
   --color-bg-light: #F0F4F8;
   --color-bg-dark: #041225;
   --color-text-on-dark: #FFFFFF;
   --color-text-on-light: #0B3559;
+
+  --color-cyan: #00d2ff;
+  --color-emerald: #2ECC71;
+  --color-coral: #E74C3C;
+  --color-amber: #F39C12;
 
   --opt-a: #E74C3C;
   --opt-b: #3498DB;
@@ -25,9 +41,12 @@
   --radius-sm: 10px;
   --radius-md: 16px;
   --radius-lg: 24px;
+  --radius-full: 999px;
+
   --shadow-soft: 0 8px 24px rgba(4, 18, 37, 0.25);
   --shadow-soft-lg: 0 16px 48px rgba(4, 18, 37, 0.35);
   --shadow-red: 0 8px 22px rgba(228, 0, 26, 0.4);
+  --shadow-gold: 0 8px 22px rgba(212, 168, 67, 0.35);
 
   --font-title: 'Playfair Display', serif;
   --font-body: 'Inter', sans-serif;
@@ -35,10 +54,6 @@
 
 * { box-sizing: border-box; }
 
-/* Tamaño por defecto para cualquier icono SVG inyectado sin clase específica
-   (evita que renderice al tamaño intrínseco de 300x150 del navegador). Las
-   reglas más específicas de abajo (.brand svg, .ship-avatar-wrap svg, etc.)
-   siguen ganando por especificidad y no se ven afectadas. */
 svg { width: 20px; height: 20px; display: inline-block; vertical-align: middle; flex-shrink: 0; }
 
 html, body {
@@ -61,7 +76,7 @@ h1, h2, h3, .title-font {
   font-weight: 700;
 }
 
-/* ---------- Fondo animado tipo olas ---------- */
+/* ---------- Fondo Animado Olas ---------- */
 .ocean-bg {
   position: fixed;
   inset: 0;
@@ -89,11 +104,6 @@ h1, h2, h3, .title-font {
   animation: waveRotate 30s linear infinite reverse;
 }
 
-@keyframes waveRotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
 .wave-strip {
   position: fixed;
   bottom: 0;
@@ -106,9 +116,8 @@ h1, h2, h3, .title-font {
 }
 
 .wave-strip svg { width: 200%; height: 100%; animation: waveSlide 14s linear infinite; }
-@keyframes waveSlide { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-/* ---------- Remolcadores maniobrando y boyas decorativas de fondo ---------- */
+/* ---------- Maniobras y Boyas de Fondo ---------- */
 .bg-maneuvers {
   position: fixed;
   inset: 0;
@@ -129,11 +138,6 @@ h1, h2, h3, .title-font {
 .bg-maneuvers .scene-2 { top: 62%; animation-duration: 42s; animation-delay: 9s; opacity: 0.4; }
 .bg-maneuvers .scene-3 { top: 38%; animation-duration: 50s; animation-delay: 20s; opacity: 0.45; }
 
-@keyframes maneuverCross {
-  0% { transform: translateX(-30vw) translateY(0); }
-  100% { transform: translateX(130vw) translateY(0); }
-}
-
 .deco-buoys {
   position: fixed;
   inset: 0;
@@ -152,11 +156,6 @@ h1, h2, h3, .title-font {
 .deco-buoys .deco-buoy svg { width: 100%; display: block; }
 .deco-buoys .buoy-1 { left: 6%; bottom: 8%; animation-duration: 4.5s; }
 .deco-buoys .buoy-2 { right: 8%; bottom: 14%; animation-duration: 5.2s; animation-delay: 1s; }
-
-@keyframes bobBuoy {
-  0%, 100% { transform: translateY(0) rotate(-4deg); }
-  50% { transform: translateY(-10px) rotate(4deg); }
-}
 
 @media (max-width: 640px) {
   .deco-buoys, .bg-maneuvers { display: none; }
@@ -196,20 +195,30 @@ h1, h2, h3, .title-font {
 
 .brand .brand-mark { color: var(--saam-red); display: flex; }
 .brand .brand-mark svg { width: 34px; height: 34px; }
-
 .brand svg { width: 32px; height: 32px; }
 
 .nav-links { display: flex; gap: 10px; flex-wrap: wrap; }
 
-/* ---------- Cards & Panels ---------- */
-.card {
-  background: rgba(255,255,255,0.045);
-  border: 1px solid rgba(228,0,26,0.22);
-  backdrop-filter: blur(6px);
+/* ---------- Glassmorphism Naval: Cards & Panels ---------- */
+.card, .glass-card {
+  background: rgba(11, 53, 89, 0.35);
+  border: 1px solid rgba(228, 0, 26, 0.22);
+  backdrop-filter: blur(14px) saturate(160%);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
   border-radius: var(--radius-lg);
   padding: 28px;
-  box-shadow: var(--shadow-soft);
-  animation: fadeIn 0.5s ease both;
+  box-shadow: 0 12px 32px rgba(4, 18, 37, 0.4);
+  animation: fadeIn 0.45s ease both;
+}
+
+.glass-panel {
+  background: rgba(4, 18, 37, 0.75);
+  border: 1px solid rgba(52, 152, 219, 0.25);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: 0 16px 40px rgba(4, 18, 37, 0.5);
 }
 
 .card-light {
@@ -226,6 +235,150 @@ h1, h2, h3, .title-font {
 @media (min-width: 720px) {
   .panel-grid.cols-2 { grid-template-columns: 1fr 1fr; }
   .panel-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* ---------- Resplandores y Glows ---------- */
+.glow-gold {
+  box-shadow: 0 0 20px var(--color-gold-glow);
+  border-color: var(--color-gold) !important;
+}
+
+.glow-red {
+  box-shadow: 0 0 20px var(--saam-red-glow);
+  border-color: var(--saam-red) !important;
+}
+
+.glow-blue {
+  box-shadow: 0 0 20px rgba(52, 152, 219, 0.45);
+  border-color: #3498DB !important;
+}
+
+/* ---------- Floating Audio Mute Widget ---------- */
+.audio-floating-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(4, 18, 37, 0.85);
+  border: 1.5px solid var(--color-gold);
+  color: var(--color-gold);
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+  animation: audioPulseGlow 3s infinite;
+}
+
+.audio-floating-btn:hover {
+  transform: scale(1.08);
+  background: rgba(11, 53, 89, 0.95);
+  box-shadow: 0 6px 20px rgba(212, 168, 67, 0.6);
+}
+
+.audio-floating-btn.is-muted {
+  border-color: var(--saam-red);
+  color: #ff8a7a;
+  animation: none;
+  background: rgba(228, 0, 26, 0.15);
+}
+
+.audio-wave-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 16px;
+}
+
+.audio-wave-bar {
+  width: 3px;
+  background: currentColor;
+  border-radius: 2px;
+  animation: audioWaveBar 0.8s ease-in-out infinite alternate;
+}
+
+.audio-wave-bar:nth-child(1) { animation-delay: 0s; }
+.audio-wave-bar:nth-child(2) { animation-delay: 0.2s; }
+.audio-wave-bar:nth-child(3) { animation-delay: 0.4s; }
+
+.audio-floating-btn.is-muted .audio-wave-bar {
+  animation: none;
+  height: 3px;
+}
+
+/* ---------- Reloj Brújula Náutica (Compass Timer) ---------- */
+.compass-timer-wrap {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  margin: 16px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.compass-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 3px solid var(--color-gold);
+  box-shadow: 0 0 20px rgba(212, 168, 67, 0.35), inset 0 0 15px rgba(212, 168, 67, 0.2);
+  background: radial-gradient(circle, rgba(11, 53, 89, 0.8) 0%, rgba(4, 18, 37, 0.95) 75%);
+}
+
+.compass-needle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4px;
+  height: 60px;
+  margin-left: -2px;
+  margin-top: -30px;
+  background: linear-gradient(180deg, var(--saam-red) 50%, rgba(255, 255, 255, 0.6) 50%);
+  border-radius: 2px;
+  transform-origin: center center;
+  transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.compass-cardinal {
+  position: absolute;
+  font-family: var(--font-title);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-gold);
+  text-shadow: 0 0 4px rgba(212, 168, 67, 0.8);
+}
+
+.compass-cardinal.n { top: 4px; left: 50%; transform: translateX(-50%); color: var(--saam-red-light); }
+.compass-cardinal.s { bottom: 4px; left: 50%; transform: translateX(-50%); }
+.compass-cardinal.e { right: 6px; top: 50%; transform: translateY(-50%); }
+.compass-cardinal.w { left: 6px; top: 50%; transform: translateY(-50%); }
+
+.compass-countdown {
+  position: relative;
+  z-index: 3;
+  font-family: var(--font-title);
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+}
+
+.compass-timer-wrap.warning .compass-ring {
+  border-color: var(--saam-red);
+  animation: compassWarningPulse 0.8s infinite;
+}
+
+.compass-timer-wrap.warning .compass-countdown {
+  color: #ff8a7a;
 }
 
 /* ---------- Typography helpers ---------- */
@@ -323,7 +476,6 @@ input:focus, select:focus, textarea:focus { border-color: var(--color-gold); }
 }
 
 label { font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; display: block; }
-
 .field { margin-bottom: 16px; }
 
 /* ---------- Player join ---------- */
@@ -334,7 +486,7 @@ label { font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; display: block
   letter-spacing: 0.2em;
 }
 
-/* ---------- Quiz option buttons ---------- */
+/* ---------- Quiz Option Buttons ---------- */
 .options-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -359,6 +511,7 @@ label { font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; display: block
   gap: 12px;
   box-shadow: var(--shadow-soft);
   border: 2px solid transparent;
+  backdrop-filter: blur(6px);
 }
 
 .option-btn .shape { font-size: 1.4rem; flex-shrink: 0; }
@@ -373,50 +526,222 @@ label { font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; display: block
 .option-btn.incorrect-reveal { outline: 4px solid #E74C3C; opacity: 0.6; }
 .option-btn:disabled { cursor: default; }
 
-/* ---------- Timer ---------- */
-.timer-wrap {
+/* ---------- Nuevos Formatos de Pregunta / Sondeos de Discovery ---------- */
+/* V/F Náutico */
+.tf-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.tf-btn {
+  min-height: 120px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  border-radius: var(--radius-lg);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 12px auto;
+  gap: 8px;
 }
 
-.timer-circle { transform: rotate(-90deg); }
-
-.timer-track { fill: none; stroke: rgba(255,255,255,0.15); stroke-width: 8; }
-
-.timer-progress {
-  fill: none;
-  stroke: var(--color-gold);
-  stroke-width: 8;
-  stroke-linecap: round;
-  transition: stroke-dashoffset 1s linear, stroke 0.3s ease;
+.tf-btn.tf-safe {
+  background: linear-gradient(135deg, #11998e, #38ef7d);
+  box-shadow: 0 8px 24px rgba(46, 204, 113, 0.35);
 }
 
-.timer-progress.low { stroke: #E74C3C; }
+.tf-btn.tf-hazard {
+  background: linear-gradient(135deg, var(--saam-red-dark), var(--saam-red));
+  box-shadow: 0 8px 24px rgba(228, 0, 26, 0.4);
+}
 
-.timer-number {
+/* Secuencia / Maniobra */
+.sequence-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.sequence-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  cursor: grab;
+  user-select: none;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.sequence-item:active { cursor: grabbing; transform: scale(0.99); }
+.sequence-num {
   font-family: var(--font-title);
-  font-size: 1.8rem;
-  fill: var(--color-gold);
+  color: var(--color-gold);
+  font-weight: 700;
+  font-size: 1.1rem;
+  width: 24px;
 }
 
-.timer-bar-track {
-  width: 100%;
-  height: 10px;
-  border-radius: 6px;
-  background: rgba(255,255,255,0.12);
+/* Sondeo / Votación de Features */
+.poll-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.poll-btn {
+  position: relative;
   overflow: hidden;
-  margin: 14px 0;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(52, 152, 219, 0.3);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
 }
 
-.timer-bar-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--color-gold), #E74C3C);
-  transition: width 1s linear;
+.poll-bar-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(52, 152, 219, 0.25);
+  transition: width 0.6s ease;
+  z-index: 0;
 }
 
-/* ---------- Lobby / players list ---------- */
+.poll-btn > span { position: relative; z-index: 1; font-weight: 600; }
+
+/* Muro de Opinión / Feedback */
+.opinion-wall {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.opinion-card {
+  background: rgba(11, 53, 89, 0.4);
+  border: 1px solid rgba(212, 168, 67, 0.3);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* ---------- Sistema de Rachas "A Toda Máquina" ---------- */
+.streak-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  background: rgba(228, 0, 26, 0.15);
+  border: 1.5px solid var(--saam-red);
+}
+
+.streak-flame {
+  font-size: 1.3rem;
+  animation: streakBurn 1.5s ease-in-out infinite;
+}
+
+.streak-multiplier {
+  font-weight: 800;
+  color: var(--color-gold);
+  font-size: 0.9rem;
+}
+
+.haptic-pulse-border {
+  animation: hapticBorderPulse 0.6s ease-out;
+}
+
+.high-tide-banner {
+  background: linear-gradient(90deg, #E4001A, #D4A843, #E4001A);
+  background-size: 200% 200%;
+  animation: highTideGlow 3s ease infinite;
+  color: #fff;
+  font-weight: 800;
+  text-transform: uppercase;
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.08em;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ---------- Podio 3D & Ceremonia ---------- */
+.podium-3d {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 18px;
+  margin: 36px 0 20px;
+  perspective: 800px;
+}
+
+.podium-step {
+  flex: 1;
+  max-width: 140px;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 10px 14px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
+  animation: podiumRise 0.8s cubic-bezier(0.2, 1.2, 0.4, 1) both;
+}
+
+.podium-step-1 {
+  height: 220px;
+  background: linear-gradient(180deg, rgba(212, 168, 67, 0.9), rgba(166, 125, 36, 0.95));
+  border: 2px solid #FFF2A1;
+  order: 2;
+  animation-delay: 0.4s;
+}
+
+.podium-step-2 {
+  height: 170px;
+  background: linear-gradient(180deg, rgba(200, 214, 229, 0.85), rgba(131, 149, 167, 0.9));
+  border: 1.5px solid #ffffff;
+  order: 1;
+  animation-delay: 0.2s;
+}
+
+.podium-step-3 {
+  height: 130px;
+  background: linear-gradient(180deg, rgba(205, 127, 50, 0.85), rgba(140, 80, 20, 0.9));
+  border: 1.5px solid #E59866;
+  order: 3;
+  animation-delay: 0s;
+}
+
+.podium-crown {
+  font-size: 2rem;
+  margin-bottom: 6px;
+  animation: crownFloat 2.5s ease-in-out infinite;
+}
+
+/* ---------- Diploma Digital del Capitán ---------- */
+.diploma-card {
+  background: #ffffff;
+  color: var(--color-text-on-light);
+  border: 4px double var(--color-gold);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+  text-align: center;
+  position: relative;
+}
+
+/* ---------- Lobby / Muelle y Jugadores ---------- */
 .player-chip-list {
   display: flex;
   flex-wrap: wrap;
@@ -435,171 +760,17 @@ label { font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; display: block
   animation: slideUp 0.3s ease both;
 }
 
-/* ---------- Leaderboard ---------- */
-.leaderboard-row {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 14px 18px;
-  border-radius: var(--radius-md);
-  background: rgba(255,255,255,0.05);
-  margin-bottom: 10px;
-  animation: slideUp 0.4s ease both;
-}
+.player-chip.with-avatar { display: inline-flex; align-items: center; gap: 8px; padding-left: 6px; }
+.player-chip .chip-avatar { width: 26px; height: 20px; display: inline-flex; }
+.player-chip .chip-avatar svg { width: 100%; height: 100%; }
 
-.leaderboard-row .rank {
-  font-family: var(--font-title);
-  font-size: 1.3rem;
-  color: var(--color-gold);
-  width: 34px;
-  flex-shrink: 0;
-  text-align: center;
-}
-
-.leaderboard-row.top-1 { background: linear-gradient(90deg, rgba(212,168,67,0.25), rgba(212,168,67,0.06)); border: 1px solid rgba(212,168,67,0.5); }
-.leaderboard-row.top-2 { background: rgba(255,255,255,0.09); }
-.leaderboard-row.top-3 { background: rgba(255,255,255,0.07); }
-
-.leaderboard-name { flex: 1; font-weight: 600; }
-.leaderboard-score { font-weight: 700; color: var(--color-gold); }
-
-/* ---------- Badges ---------- */
-.badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 12px;
-  border-radius: 999px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.badge-draft { background: rgba(255,255,255,0.12); color: #ccc; }
-.badge-lobby { background: rgba(52,152,219,0.2); color: #6cb8ee; }
-.badge-question { background: rgba(212,168,67,0.2); color: var(--color-gold); }
-.badge-results { background: rgba(243,156,18,0.2); color: #f5b041; }
-.badge-ended { background: rgba(46,204,113,0.2); color: #4fdc8c; }
-
-/* ---------- Scale slider ---------- */
-.scale-emoji {
-  font-size: 3rem;
-  text-align: center;
-  transition: transform 0.15s ease;
-}
-
-input[type="range"].scale-slider {
+.saam-stripe {
+  height: 5px;
   width: 100%;
-  accent-color: var(--color-gold);
-  height: 8px;
-}
-
-/* ---------- Feedback / states ---------- */
-.center-flex {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 60vh;
-  text-align: center;
-  gap: 16px;
-}
-
-.pulse { animation: pulse 1.4s ease-in-out infinite; }
-
-.confirm-check {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  background: rgba(46,204,113,0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: popIn 0.4s cubic-bezier(.2,1.4,.4,1) both;
-}
-
-.confirm-check svg { width: 56px; height: 56px; stroke: #2ECC71; }
-
-/* ---------- Utility ---------- */
-.flex { display: flex; }
-.flex-between { display: flex; align-items: center; justify-content: space-between; }
-.gap-8 { gap: 8px; }
-.gap-12 { gap: 12px; }
-.gap-16 { gap: 16px; }
-.mt-8 { margin-top: 8px; }
-.mt-16 { margin-top: 16px; }
-.mt-24 { margin-top: 24px; }
-.mb-16 { margin-bottom: 16px; }
-.text-center { text-align: center; }
-.hidden { display: none !important; }
-.w-full { width: 100%; }
-.wrap { flex-wrap: wrap; }
-
-.divider { height: 1px; background: rgba(255,255,255,0.1); margin: 20px 0; }
-
-table { width: 100%; border-collapse: collapse; }
-th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 0.92rem; }
-.card-light th, .card-light td { border-bottom: 1px solid rgba(27,58,92,0.1); }
-
-.question-row-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 14px;
-  border-radius: var(--radius-sm);
-  background: rgba(255,255,255,0.05);
-  margin-bottom: 8px;
-}
-
-.session-card {
-  border-radius: var(--radius-md);
-  padding: 18px 20px;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.1);
-  margin-bottom: 12px;
-  animation: fadeIn 0.4s ease both;
-}
-
-.type-tag {
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  padding: 3px 9px;
-  border-radius: 6px;
-  background: rgba(212,168,67,0.18);
-  color: var(--color-gold);
-  font-weight: 700;
-}
-
-/* ---------- Animations ---------- */
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-@keyframes slideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.06); } }
-@keyframes popIn { 0% { opacity: 0; transform: scale(0.4); } 100% { opacity: 1; transform: scale(1); } }
-
-.slide-up { animation: slideUp 0.4s ease both; }
-.fade-in { animation: fadeIn 0.5s ease both; }
-
-::-webkit-scrollbar { width: 10px; }
-::-webkit-scrollbar-thumb { background: rgba(212,168,67,0.4); border-radius: 10px; }
-::-webkit-scrollbar-track { background: transparent; }
-
-/* ==========================================================================
-   Avatares de buques, mascota capitán, muelle animado y regata
-   ========================================================================== */
-
-.ship-avatar-wrap {
-  display: inline-flex;
-  animation: shipBob 3.2s ease-in-out infinite;
-  transform-origin: 50% 80%;
-}
-
-.ship-avatar-wrap svg { display: block; }
-
-@keyframes shipBob {
-  0%, 100% { transform: translateY(0) rotate(-1.5deg); }
-  50% { transform: translateY(-6px) rotate(1.5deg); }
+  background: linear-gradient(90deg, var(--saam-red) 0%, var(--saam-red) 60%, var(--color-gold) 60%, var(--color-gold) 100%);
+  border-radius: 3px;
+  margin-bottom: 18px;
+  opacity: 0.9;
 }
 
 /* ---------- Selector de avatar (jugador) ---------- */
@@ -632,6 +803,13 @@ th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid rgba(255
 .avatar-option .ship-avatar-wrap svg { width: 100%; height: 100%; }
 .avatar-option span.avatar-label { font-size: 0.7rem; font-weight: 600; text-align: center; color: rgba(255,255,255,0.8); }
 
+.ship-avatar-wrap {
+  display: inline-flex;
+  animation: shipBob 3.2s ease-in-out infinite;
+  transform-origin: 50% 80%;
+}
+.ship-avatar-wrap svg { display: block; }
+
 /* ---------- Muelle / lobby animado ---------- */
 .dock-scene {
   position: relative;
@@ -649,11 +827,6 @@ th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid rgba(255
   height: 60%;
   background: repeating-linear-gradient(100deg, rgba(255,255,255,0.05) 0 2px, transparent 2px 40px);
   animation: dockWaterShift 6s linear infinite;
-}
-
-@keyframes dockWaterShift {
-  from { background-position-x: 0; }
-  to { background-position-x: -400px; }
 }
 
 .dock-scene .dock-pier {
@@ -677,14 +850,28 @@ th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid rgba(255
 
 .dock-fleet .dock-ship {
   width: 46px;
+  position: relative;
   animation: shipBob 3s ease-in-out infinite, dockArrive 0.6s cubic-bezier(.2,1.6,.4,1) both;
 }
 
 .dock-fleet .dock-ship svg { width: 100%; height: auto; }
 
-@keyframes dockArrive {
-  from { transform: translateX(60px) translateY(0); opacity: 0; }
-  to { transform: translateX(0) translateY(0); opacity: 1; }
+.dock-fleet .dock-ship-caption {
+  position: absolute;
+  bottom: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.6rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 64px;
+  color: rgba(255,255,255,0.8);
+  background: rgba(4,18,37,0.6);
+  padding: 1px 5px;
+  border-radius: 8px;
+  z-index: 3;
 }
 
 .dock-empty-msg {
@@ -699,192 +886,76 @@ th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid rgba(255
   padding: 0 20px;
 }
 
-/* ---------- Capitán mascota ---------- */
 .captain-mascot {
   width: 90px;
   margin: 0 auto;
   animation: shipBob 3.4s ease-in-out infinite;
 }
-
 .captain-mascot svg { width: 100%; height: auto; }
 
-/* ---------- Regata / leaderboard con buques ---------- */
-.regatta {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.regatta-lane {
-  position: relative;
-  background: rgba(255,255,255,0.05);
+/* ---------- Badges ---------- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
   border-radius: 999px;
-  min-height: 46px;
-  overflow: visible;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 5px 16px;
-}
-
-.regatta-lane .regatta-label {
-  flex: 0 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
+  font-size: 0.75rem;
   font-weight: 700;
-  font-size: 0.85rem;
-  max-width: 42%;
-  overflow: hidden;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
-.regatta-lane .regatta-label .regatta-label-main {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.badge-draft { background: rgba(255,255,255,0.12); color: #ccc; }
+.badge-lobby { background: rgba(52,152,219,0.2); color: #6cb8ee; }
+.badge-question { background: rgba(212,168,67,0.2); color: var(--color-gold); }
+.badge-results { background: rgba(243,156,18,0.2); color: #f5b041; }
+.badge-ended { background: rgba(46,204,113,0.2); color: #4fdc8c; }
+
+/* ---------- Utility ---------- */
+.flex { display: flex; }
+.flex-between { display: flex; align-items: center; justify-content: space-between; }
+.gap-8 { gap: 8px; }
+.gap-12 { gap: 12px; }
+.gap-16 { gap: 16px; }
+.mt-8 { margin-top: 8px; }
+.mt-16 { margin-top: 16px; }
+.mt-24 { margin-top: 24px; }
+.mb-16 { margin-bottom: 16px; }
+.text-center { text-align: center; }
+.hidden { display: none !important; }
+.w-full { width: 100%; }
+.wrap { flex-wrap: wrap; }
+.divider { height: 1px; background: rgba(255,255,255,0.1); margin: 20px 0; }
+
+table { width: 100%; border-collapse: collapse; }
+th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 0.92rem; }
+.card-light th, .card-light td { border-bottom: 1px solid rgba(27,58,92,0.1); }
+
+.session-card {
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  margin-bottom: 12px;
+  animation: fadeIn 0.4s ease both;
 }
 
-.regatta-lane .regatta-label .regatta-ship-tag {
-  font-weight: 500;
-  font-size: 0.66rem;
-  color: rgba(255,255,255,0.55);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  padding-left: 28px;
-}
-
-.regatta-lane .regatta-rank {
+.type-tag {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 3px 9px;
+  border-radius: 6px;
+  background: rgba(212,168,67,0.18);
   color: var(--color-gold);
-  font-family: var(--font-title);
-  width: 20px;
-  flex-shrink: 0;
-  text-align: center;
+  font-weight: 700;
 }
 
-.regatta-lane .regatta-track-wrap {
-  position: relative;
-  flex: 1;
-  min-width: 60px;
-  height: 36px;
-}
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-thumb { background: rgba(212,168,67,0.4); border-radius: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
 
-.regatta-lane .regatta-track {
-  position: absolute;
-  left: 4px;
-  right: 4px;
-  top: 50%;
-  height: 3px;
-  background: repeating-linear-gradient(90deg, rgba(255,255,255,0.25) 0 8px, transparent 8px 16px);
-  transform: translateY(-50%);
-}
-
-.regatta-lane .regatta-ship {
-  position: absolute;
-  top: 50%;
-  transform: translate(-6px, -55%);
-  width: 40px;
-  transition: left 1s cubic-bezier(.3,.8,.4,1);
-  z-index: 2;
-  filter: drop-shadow(0 3px 4px rgba(0,0,0,0.4));
-}
-
-.regatta-lane .regatta-ship svg { width: 100%; height: auto; }
-
-.regatta-lane.lane-1 { background: linear-gradient(90deg, rgba(212,168,67,0.22), rgba(212,168,67,0.04)); border: 1px solid rgba(212,168,67,0.4); }
-.regatta-lane.lane-2 { background: rgba(255,255,255,0.08); }
-.regatta-lane.lane-3 { background: rgba(255,255,255,0.06); }
-
-/* ---------- Confeti / boyas al acertar ---------- */
-.buoy-burst {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 999;
-  overflow: hidden;
-}
-
-.buoy-burst span {
-  position: absolute;
-  top: -40px;
-  font-size: 1.6rem;
-  animation: buoyFall linear forwards;
-}
-
-@keyframes buoyFall {
-  to { transform: translateY(110vh) rotate(360deg); opacity: 0.2; }
-}
-
-/* ---------- Chip de avatar pequeño (listas, lobby, resultados) ---------- */
-.player-chip.with-avatar { display: inline-flex; align-items: center; gap: 8px; padding-left: 6px; }
-.player-chip .chip-avatar { width: 26px; height: 20px; display: inline-flex; }
-.player-chip .chip-avatar svg { width: 100%; height: 100%; }
-
-/* ---------- Franja SAAM (detalle de marca) ---------- */
-.saam-stripe {
-  height: 5px;
-  width: 100%;
-  background: linear-gradient(90deg, var(--saam-red) 0%, var(--saam-red) 60%, var(--color-gold) 60%, var(--color-gold) 100%);
-  border-radius: 3px;
-  margin-bottom: 18px;
-  opacity: 0.9;
-}
-
-/* ---------- Humo de chimenea (remolcador, petrolero, ferry, crucero...) ---------- */
-.funnel-smoke .puff {
-  fill: rgba(255,255,255,0.6);
-  animation: smokeRise 2.6s ease-in infinite;
-  transform-box: fill-box;
-  transform-origin: 50% 50%;
-}
-
-.funnel-smoke .puff:nth-child(1) { animation-delay: 0s; }
-.funnel-smoke .puff:nth-child(2) { animation-delay: 0.7s; }
-.funnel-smoke .puff:nth-child(3) { animation-delay: 1.4s; }
-
-@keyframes smokeRise {
-  0% { transform: translate(0, 0) scale(0.5); opacity: 0; }
-  20% { opacity: 0.75; }
-  100% { transform: translate(5px, -18px) scale(1.5); opacity: 0; }
-}
-
-/* ---------- Banderín ondeando (velero, yate, crucero) ---------- */
-.mast-flag {
-  transform-box: fill-box;
-  transform-origin: 0% 50%;
-  animation: flagWave 1.6s ease-in-out infinite;
-}
-
-@keyframes flagWave {
-  0%, 100% { transform: skewY(-10deg); }
-  50% { transform: skewY(10deg); }
-}
-
-/* ---------- Estela de espuma detrás de los buques en movimiento ---------- */
-.regatta-lane .regatta-ship::before,
-.dock-fleet .dock-ship::before {
-  content: '';
-  position: absolute;
-  right: 100%;
-  top: 62%;
-  width: 22px;
-  height: 5px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.45));
-  border-radius: 50%;
-  animation: wakePulse 1.3s ease-in-out infinite;
-}
-
-.dock-fleet .dock-ship { position: relative; }
-
-@keyframes wakePulse {
-  0%, 100% { opacity: 0.25; transform: scaleX(0.75); }
-  50% { opacity: 0.65; transform: scaleX(1.15); }
-}
-
-/* ---------- Instrucciones de ingreso (host + jugador) ---------- */
 .qr-card {
   background: #fff;
   border-radius: var(--radius-md);
@@ -893,7 +964,6 @@ th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid rgba(255
   box-shadow: var(--shadow-soft);
   line-height: 0;
 }
-
 .qr-card svg { width: 148px; height: 148px; }
 
 .join-instructions {
@@ -924,23 +994,4 @@ th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid rgba(255
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-/* ---------- Nombre cómico del buque bajo el avatar en el muelle ---------- */
-.dock-fleet .dock-ship-caption {
-  position: absolute;
-  bottom: -18px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 0.6rem;
-  font-weight: 600;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 64px;
-  color: rgba(255,255,255,0.8);
-  background: rgba(4,18,37,0.6);
-  padding: 1px 5px;
-  border-radius: 8px;
-  z-index: 3;
 }
