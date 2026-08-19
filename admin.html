@@ -7,6 +7,197 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
+<style>
+/* Estilos complementarios para el panel de administración */
+.template-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin: 18px 0 28px;
+}
+
+.template-card {
+  background: rgba(11, 53, 89, 0.45);
+  border: 1px solid rgba(52, 152, 219, 0.3);
+  border-radius: var(--radius-md);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 16px;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  backdrop-filter: blur(10px);
+}
+
+.template-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--color-gold);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.35);
+}
+
+.template-card.featured {
+  border-color: rgba(228, 0, 26, 0.45);
+  background: linear-gradient(145deg, rgba(11, 53, 89, 0.6), rgba(4, 18, 37, 0.8));
+}
+
+.template-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.template-icon {
+  font-size: 2rem;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+}
+
+.template-card h4 {
+  margin: 0 0 6px 0;
+  font-size: 1.1rem;
+  font-family: var(--font-title);
+  color: #ffffff;
+}
+
+.template-desc {
+  font-size: 0.86rem;
+  color: rgba(255, 255, 255, 0.72);
+  line-height: 1.45;
+  margin: 0;
+}
+
+/* Toggle Switch */
+.toggle-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.toggle-control input[type="checkbox"] {
+  display: none;
+}
+
+.toggle-slider {
+  width: 46px;
+  height: 26px;
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  position: relative;
+  transition: background 0.25s ease, box-shadow 0.25s ease;
+  flex-shrink: 0;
+}
+
+.toggle-slider::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  transition: transform 0.25s cubic-bezier(0.2, 0.85, 0.4, 1.2);
+}
+
+.toggle-control input[type="checkbox"]:checked + .toggle-slider {
+  background: linear-gradient(135deg, var(--saam-red), #ff4d5a);
+  box-shadow: 0 0 12px var(--saam-red-glow);
+}
+
+.toggle-control input[type="checkbox"]:checked + .toggle-slider::after {
+  transform: translateX(20px);
+}
+
+.toggle-label {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--color-text-on-dark);
+}
+
+/* Question List Items */
+.question-row-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 18px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  margin-bottom: 10px;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.question-row-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(52, 152, 219, 0.3);
+}
+
+.question-row-item.editing {
+  border-color: var(--color-gold);
+  background: rgba(212, 168, 67, 0.1);
+  box-shadow: 0 0 14px var(--color-gold-glow);
+}
+
+.high-tide-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgba(228, 0, 26, 0.22);
+  border: 1px solid var(--saam-red);
+  color: #ff7b88;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dynamic-input-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.input-badge-prefix {
+  font-weight: 700;
+  font-size: 0.85rem;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--color-gold);
+  flex-shrink: 0;
+}
+
+.btn-sm {
+  padding: 8px 14px;
+  font-size: 0.85rem;
+}
+
+.info-box {
+  background: rgba(52, 152, 219, 0.12);
+  border: 1px solid rgba(52, 152, 219, 0.3);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.88);
+}
+</style>
 </head>
 <body>
 
@@ -22,11 +213,11 @@
 
 <!-- LOGIN -->
 <div class="container-sm" id="viewLogin">
-  <div class="card">
+  <div class="card glass-card">
     <div class="saam-stripe"></div>
     <div class="eyebrow">Acceso restringido</div>
     <h1>Panel de administración</h1>
-    <p class="muted">Ingresa con tu cuenta de administrador para gestionar sesiones.</p>
+    <p class="muted">Ingresa con tu cuenta de administrador para gestionar sesiones marítimas.</p>
     <div class="field mt-24">
       <label>Correo</label>
       <input type="email" id="loginEmail" placeholder="tu@correo.com" autocomplete="username">
@@ -35,83 +226,202 @@
       <label>Contraseña</label>
       <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password">
     </div>
-    <button class="btn-primary btn-block" id="btnLogin">Ingresar</button>
+    <button class="btn-primary btn-block" id="btnLogin">Ingresar al panel</button>
     <p class="muted mt-16" id="loginError"></p>
   </div>
 </div>
 
+<!-- CONTENIDO PRINCIPAL ADMIN -->
 <div class="container hidden" id="adminContent">
-  <div class="eyebrow">Panel de administración</div>
-  <h1>Gestiona tus sesiones marítimas</h1>
-
-  <div class="panel-grid cols-2 mt-24">
-    <!-- Crear sesión -->
-    <div class="card">
-      <h3>Nueva sesión</h3>
-      <div class="field">
-        <label>Título de la sesión</label>
-        <input type="text" id="newSessionTitle" placeholder="Ej: Seguridad en cubierta">
-      </div>
-      <button class="btn-primary w-full" id="btnCreateSession">Crear sesión</button>
-    </div>
-
-    <!-- Lista de sesiones -->
-    <div class="card">
-      <h3>Tus sesiones</h3>
-      <div id="sessionsList" class="mt-16"><p class="muted">Cargando...</p></div>
+  <div class="flex-between wrap gap-12" style="align-items:flex-end;">
+    <div>
+      <div class="eyebrow">Panel de administración · Zarpa 2.0</div>
+      <h1 style="margin:4px 0;">Gestiona tus sesiones marítimas</h1>
+      <p class="muted" style="margin:0;">Crea cuestionarios para el Summit de Seguridad, sondeos de producto o combina ambos modos.</p>
     </div>
   </div>
 
-  <!-- Editor de preguntas -->
-  <div class="card mt-24 hidden" id="editorPanel">
-    <div class="flex-between wrap gap-12">
+  <!-- PLANTILLAS PRECONFIGURADAS -->
+  <div class="mt-24">
+    <div class="flex-between wrap gap-12" style="align-items:center;">
+      <h3 style="margin:0;">Plantillas marítimas listas para usar</h3>
+      <span class="muted" style="font-size:0.85rem;">Creación con 1-click</span>
+    </div>
+    
+    <div class="template-grid">
+      <!-- Plantilla 1: Summit Seguridad -->
+      <div class="template-card featured">
+        <div>
+          <div class="template-card-header">
+            <span class="template-icon">🚢</span>
+            <div>
+              <span class="badge badge-question">Trivia Competitiva</span>
+              <h4>Summit Seguridad Marítima</h4>
+            </div>
+          </div>
+          <p class="template-desc mt-8">
+            Trivia de seguridad náutica, maniobras de remolcadores, Snap-Back Zone, EPP y ronda final de Marea Alta 2x.
+          </p>
+        </div>
+        <button class="btn btn-gold btn-block" id="btnTplSummit">⚡ Cargar Plantilla Summit</button>
+      </div>
+
+      <!-- Plantilla 2: Sondeo Discovery -->
+      <div class="template-card">
+        <div>
+          <div class="template-card-header">
+            <span class="template-icon">📊</span>
+            <div>
+              <span class="badge badge-lobby">Product Discovery</span>
+              <h4>Sondeo Features & UX</h4>
+            </div>
+          </div>
+          <p class="template-desc mt-8">
+            Votación de módulos prioritarios, valoración 1-10 de pantallas y recopilación de sugerencias libres.
+          </p>
+        </div>
+        <button class="btn btn-secondary btn-block" id="btnTplDiscovery">⚡ Cargar Plantilla Sondeo</button>
+      </div>
+
+      <!-- Plantilla 3: Híbrido -->
+      <div class="template-card">
+        <div>
+          <div class="template-card-header">
+            <span class="template-icon">🔄</span>
+            <div>
+              <span class="badge badge-results">Modo Integral</span>
+              <h4>Plantilla Híbrida</h4>
+            </div>
+          </div>
+          <p class="template-desc mt-8">
+            Lo mejor de ambos mundos: 4 preguntas de trivia competitiva con podio + 3 preguntas de sondeo y UX.
+          </p>
+        </div>
+        <button class="btn btn-primary btn-block" id="btnTplHybrid">⚡ Cargar Plantilla Híbrida</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SESIONES Y CREACIÓN MANUAL -->
+  <div class="panel-grid cols-2 mt-16">
+    <!-- Crear sesión en blanco -->
+    <div class="card glass-card">
+      <div class="eyebrow">Creación personalizada</div>
+      <h3>Nueva sesión en blanco</h3>
+      <p class="muted" style="font-size:0.88rem; margin-top:4px;">Crea una sesión vacía para agregar tus propias preguntas personalizadas.</p>
+      <div class="field mt-16">
+        <label>Título de la sesión</label>
+        <input type="text" id="newSessionTitle" placeholder="Ej: Maniobras portuarias y fondeo">
+      </div>
+      <button class="btn-primary w-full" id="btnCreateSession">Crear sesión en blanco</button>
+    </div>
+
+    <!-- Lista de sesiones existentes -->
+    <div class="card glass-card">
+      <div class="flex-between wrap gap-8">
+        <div class="eyebrow">Historial</div>
+        <button class="btn-secondary btn-sm" id="btnRefreshSessions" title="Actualizar lista">🔄 Refrescar</button>
+      </div>
+      <h3>Tus sesiones</h3>
+      <div id="sessionsList" class="mt-16"><p class="muted">Cargando sesiones...</p></div>
+    </div>
+  </div>
+
+  <!-- EDITOR DE PREGUNTAS (PANEL DESPLEGABLE) -->
+  <div class="card glass-card mt-24 hidden" id="editorPanel">
+    <div class="flex-between wrap gap-12" style="align-items:center;">
       <div>
-        <div class="eyebrow" id="editorPin"></div>
+        <div class="flex gap-8" style="align-items:center;">
+          <span class="eyebrow" id="editorPin"></span>
+        </div>
         <h2 id="editorTitle" style="margin:4px 0;"></h2>
       </div>
-      <button class="btn-secondary" id="btnCloseEditor">Cerrar editor</button>
+      <div class="flex gap-8 wrap">
+        <input type="file" id="jsonFileInput" accept=".json,application/json" class="hidden">
+        <button class="btn-secondary" id="btnImportJson" title="Importar preguntas desde archivo JSON">📥 Importar JSON</button>
+        <button class="btn-secondary" id="btnExportJson" title="Exportar sesión actual a archivo JSON">📤 Exportar JSON</button>
+        <button class="btn-secondary" id="btnCloseEditor">✖️ Cerrar editor</button>
+      </div>
     </div>
 
     <div class="divider"></div>
 
     <div class="panel-grid cols-2">
+      <!-- Formulario de Creación / Edición de Preguntas -->
       <div>
-        <h3>Agregar pregunta</h3>
-        <div class="field">
+        <div class="flex-between wrap gap-8" style="align-items:center;">
+          <h3 id="formTitle" style="margin:0;">Agregar pregunta</h3>
+          <button class="btn-secondary btn-sm hidden" id="btnCancelEdit">✖ Cancelar edición</button>
+        </div>
+        <input type="hidden" id="editingQuestionId" value="">
+
+        <div class="field mt-16">
           <label>Tipo de pregunta</label>
           <select id="qType">
-            <option value="quiz">Quiz (opción múltiple, con correcta)</option>
-            <option value="survey">Encuesta (opción múltiple, sin correcta)</option>
-            <option value="scale">Escala (1 a 10)</option>
-            <option value="text">Texto libre</option>
+            <option value="multiple_choice">⚓ Opción Múltiple (Trivia con puntaje y alternativas)</option>
+            <option value="true_false">🧭 Verdadero / Falso Náutico (Seguro vs Riesgo)</option>
+            <option value="sequence">🔄 Secuencia de Maniobra (Ordenar pasos cronológicos)</option>
+            <option value="poll_choice">📊 Votación de Funcionalidades (Sondeo sin correcta)</option>
+            <option value="poll_rating">⭐ Valoración de Pantallas / UX (Escala 1 al 10)</option>
+            <option value="poll_text">💬 Sugerencias y Feedback (Texto libre abierto)</option>
           </select>
         </div>
+
         <div class="field">
-          <label>Texto de la pregunta</label>
-          <textarea id="qText" rows="2" placeholder="Escribe tu pregunta..."></textarea>
+          <label>Texto de la pregunta o enunciado</label>
+          <textarea id="qText" rows="3" placeholder="Escribe aquí el enunciado o consigna..."></textarea>
         </div>
 
+        <!-- Bloque de Opciones Dinámico -->
         <div id="optionsBlock">
-          <label>Opciones</label>
+          <div class="flex-between wrap gap-8 mb-8" style="align-items:center;">
+            <label id="optionsBlockTitle" style="margin:0;">Opciones de respuesta</label>
+            <span id="optionsBlockHint" class="muted" style="font-size:0.8rem;">Selecciona la opción correcta con el botón circular</span>
+          </div>
           <div id="optionsInputs"></div>
         </div>
 
+        <!-- Tiempo límite -->
         <div class="field mt-16">
-          <label>Tiempo límite</label>
+          <label>Tiempo límite para responder</label>
           <select id="qTime">
-            <option value="10">10 segundos</option>
-            <option value="15">15 segundos</option>
-            <option value="30" selected>30 segundos</option>
-            <option value="60">60 segundos</option>
+            <option value="10">10 segundos (Ultra rápido)</option>
+            <option value="15">15 segundos (Dinámico)</option>
+            <option value="20" selected>20 segundos (Estándar recomendado)</option>
+            <option value="30">30 segundos (Maniobras complejas / Secuencia)</option>
+            <option value="45">45 segundos</option>
+            <option value="60">60 segundos (Reflexión / Feedback extenso)</option>
+            <option value="90">90 segundos</option>
+            <option value="120">120 segundos (2 minutos)</option>
           </select>
         </div>
 
-        <button class="btn-primary w-full mt-8" id="btnAddQuestion">Agregar pregunta</button>
+        <!-- Ronda de Marea Alta (High Tide) -->
+        <div class="field mt-16" id="highTideBlock">
+          <label class="toggle-control">
+            <input type="checkbox" id="qHighTide">
+            <span class="toggle-slider"></span>
+            <span class="toggle-label">🌊 Ronda de Marea Alta (Puntos Dobles 2x)</span>
+          </label>
+          <p class="muted" style="font-size:0.8rem; margin:6px 0 0 58px;">
+            Duplica el puntaje en esta pregunta clave (ideal para preguntas decisivas o finales de bloque).
+          </p>
+        </div>
+
+        <button class="btn-primary w-full mt-24" id="btnSaveQuestion">➕ Agregar pregunta</button>
       </div>
 
+      <!-- Lista de Preguntas de la Sesión Actual -->
       <div>
-        <h3>Preguntas de la sesión</h3>
-        <div id="questionsList" class="mt-16"><p class="muted">Sin preguntas aún.</p></div>
+        <div class="flex-between wrap gap-8" style="align-items:center;">
+          <h3 style="margin:0;">Preguntas de la sesión</h3>
+          <span class="badge badge-question" id="questionsCountBadge">0 preguntas</span>
+        </div>
+        <p class="muted" style="font-size:0.84rem; margin-top:4px;">Usa las flechas para reordenar, el lápiz para editar o el botón de copia para duplicar.</p>
+        
+        <div id="questionsList" class="mt-16">
+          <p class="muted">Sin preguntas aún. Agrega una con el formulario o carga una plantilla.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -119,6 +429,8 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="js/icons.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/mechanics.js"></script>
 <script src="js/utils.js"></script>
 <script src="js/config.js"></script>
 <script src="js/admin.js"></script>
