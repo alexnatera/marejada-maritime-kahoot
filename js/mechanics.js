@@ -1,12 +1,13 @@
 // js/mechanics.js
 // Motor de Mecánicas, Rachas y Formatos de Pregunta — Marejada 2.0
 (function (root, factory) {
+  const m = factory();
+  if (typeof root !== 'undefined') root.Mechanics = m;
+  if (typeof window !== 'undefined') window.Mechanics = m;
   if (typeof module === 'object' && module.exports) {
-    module.exports = factory();
-  } else {
-    root.Mechanics = factory();
+    module.exports = m;
   }
-})(typeof self !== 'undefined' ? self : this, function () {
+})(typeof self !== 'undefined' ? self : (typeof globalThis !== 'undefined' ? globalThis : this), function () {
   'use strict';
 
   // Constantes de Tipos de Pregunta

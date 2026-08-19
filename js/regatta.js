@@ -6,12 +6,17 @@
 // ==========================================================================
 
 (function (root, factory) {
-  if (typeof module === 'object' && module.exports) {
-    module.exports = factory();
-  } else {
-    root.RegattaEngine = factory();
+  const engine = factory(root);
+  if (typeof root !== 'undefined') {
+    root.RegattaEngine = engine;
   }
-})(typeof self !== 'undefined' ? self : this, function () {
+  if (typeof window !== 'undefined') {
+    window.RegattaEngine = engine;
+  }
+  if (typeof module === 'object' && module.exports) {
+    module.exports = engine;
+  }
+})(typeof self !== 'undefined' ? self : (typeof globalThis !== 'undefined' ? globalThis : this), function (root) {
   'use strict';
 
   // Configuración por defecto
@@ -84,15 +89,16 @@
   ];
 
   function getShipTitle(player) {
-    if (typeof root.shipTitle === 'function') {
-      return root.shipTitle(player);
+    const globalScope = (typeof root !== 'undefined' && root) ? root : ((typeof window !== 'undefined' && window) ? window : ((typeof globalThis !== 'undefined' && globalThis) ? globalThis : {}));
+    if (typeof globalScope.shipTitle === 'function') {
+      return globalScope.shipTitle(player);
     }
     const avatar = (player && player.avatar) || 'tug';
     const baseNames = {
       tug: 'Remolcador', container: 'Portacontenedores', tanker: 'Petrolero',
       ferry: 'Ferry', sailboat: 'Velero', cruise: 'Crucero',
       fishing: 'Pesquero', submarine: 'Submarino', jetski: 'Moto de agua',
-      kayak: 'Kayak', icebreaker: 'Rompehielos', yacht: 'Yate'
+      kayak: 'Kayak', icebreaker: 'Rompehielos', yacht: 'Yate', pilot: 'Lancha Práctico'
     };
     const base = baseNames[avatar] || 'Buque';
     const idStr = String((player && (player.id ?? player.name)) || '0');
@@ -104,11 +110,12 @@
 
   function getShipSvg(avatarKey) {
     const key = avatarKey || 'tug';
-    if (typeof root.shipAvatarSVG === 'function') {
-      return root.shipAvatarSVG(key);
+    const globalScope = (typeof root !== 'undefined' && root) ? root : ((typeof window !== 'undefined' && window) ? window : ((typeof globalThis !== 'undefined' && globalThis) ? globalThis : {}));
+    if (typeof globalScope.shipAvatarSVG === 'function') {
+      return globalScope.shipAvatarSVG(key);
     }
-    if (root.SHIP_AVATARS && root.SHIP_AVATARS[key] && root.SHIP_AVATARS[key].svg) {
-      return root.SHIP_AVATARS[key].svg;
+    if (globalScope.SHIP_AVATARS && globalScope.SHIP_AVATARS[key] && globalScope.SHIP_AVATARS[key].svg) {
+      return globalScope.SHIP_AVATARS[key].svg;
     }
     return FALLBACK_SHIPS[key] || FALLBACK_SHIPS.tug;
   }

@@ -1,66 +1,156 @@
-// Iconos SVG inline con temática marítima
+// ==========================================================================
+// Marejada 2.0 — Iconos SVG & Flota de Buques Vectoriales de Alta Fidelidad
+// Estilo Híbrido: SAAM Corporativo Premium + Arcade Náutico Táctil
+// ==========================================================================
+
+// Iconografía Náutica y de Navegación UI
 const ICONS = {
-  anchor: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2"/><path d="M12 7v13"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/><path d="M5 12a7 7 0 0 0 14 0"/></svg>`,
-  wheel: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2"/><path d="M12 4v4M12 16v4M4 12h4M16 12h4M6.3 6.3l2.8 2.8M14.9 14.9l2.8 2.8M17.7 6.3l-2.8 2.8M9.1 14.9l-2.8 2.8"/></svg>`,
-  compass: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>`,
-  lighthouse: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21h6"/><path d="M10 21V10l-1-5h6l-1 5v11"/><path d="M8 5h8"/><path d="M2 12l4-1"/><path d="M22 12l-4-1"/><path d="M9 14h6"/></svg>`,
-  sailboat: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18h18l-2 3H5z"/><path d="M12 18V3l6 9z"/><path d="M8 18l2-13-2 4z"/></svg>`,
-  users: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
-  check: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`,
-  trophy: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 5H4a3 3 0 0 0 3 5"/><path d="M17 5h3a3 3 0 0 1-3 5"/></svg>`,
+  anchor: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="5" r="2.5" stroke-width="2"/>
+    <path d="M12 7.5v13.5M5 13H2a10 10 0 0 0 20 0h-3M6 13a6 6 0 0 0 12 0" stroke-width="2"/>
+  </svg>`,
+  wheel: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="2.5"/>
+    <path d="M12 3.5v5M12 15.5v5M3.5 12h5M15.5 12h5M6 6l3.5 3.5M14.5 14.5L18 18M18 6l-3.5 3.5M9.5 14.5L6 18"/>
+  </svg>`,
+  compass: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="9.5"/>
+    <polygon points="16.5 7.5 13.5 13.5 7.5 16.5 10.5 10.5 16.5 7.5" fill="currentColor" fill-opacity="0.2"/>
+  </svg>`,
+  lighthouse: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M9 22h6M10 22V10l-1.5-6h7L14 10v12M7.5 4h9M2 11l4.5-1M22 11l-4.5-1M9 13.5h6"/>
+    <circle cx="12" cy="7" r="1.5" fill="currentColor"/>
+  </svg>`,
+  sailboat: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M2.5 18.5h19l-2.5 3.5H5z"/><path d="M12 18.5V3l7.5 11z"/><path d="M7.5 18.5l3.5-14-3 5z"/>
+  </svg>`,
+  users: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+    <path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+  </svg>`,
+  check: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="20 6 9 17 4 12"/>
+  </svg>`,
+  trophy: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M7 21h10M12 17v4M6 4h12v5a6 6 0 0 1-12 0z"/><path d="M6 5H3.5a2.5 2.5 0 0 0 0 5H6M18 5h2.5a2.5 2.5 0 0 1 0 5H18"/>
+  </svg>`,
   plus: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>`,
-  trash: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>`,
-  copy: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`,
+  trash: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/>
+  </svg>`,
+  copy: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+  </svg>`,
   arrowUp: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>`,
   arrowDown: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>`,
   arrowRight: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>`,
-  download: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><path d="M12 15V3"/></svg>`,
-  chart: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6"/><rect x="12" y="8" width="3" height="10"/><rect x="17" y="5" width="3" height="13"/></svg>`,
-  settings: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>`,
-  play: `<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="6 3 20 12 6 21 6 3"/></svg>`
+  download: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><path d="M12 15V3"/>
+  </svg>`,
+  chart: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6" rx="1"/><rect x="12" y="8" width="3" height="10" rx="1"/><rect x="17" y="5" width="3" height="13" rx="1"/>
+  </svg>`,
+  settings: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+  </svg>`,
+  play: `<svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"/></svg>`,
+  volumeOn: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+  </svg>`,
+  volumeMute: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>
+  </svg>`,
+  medal: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/>
+  </svg>`,
+  crown: `<svg viewBox="0 0 24 24" fill="currentColor">
+    <path d="M2 19h20v2H2zM2 6l5 6 5-8 5 8 5-6v11H2z"/>
+  </svg>`,
+  bolt: `<svg viewBox="0 0 24 24" fill="currentColor">
+    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+  </svg>`
 };
 
 // ---------------------------------------------------------------------------
-// Logo de marca: remolcador estilo SAAM (casco azul marino, banda negra de
-// defensas, caseta amarilla, mástil con antena) — reemplaza el timón genérico
+// Logo de marca SAAM Marejada: Remolcador Estilizado de Alta Fidelidad
 // ---------------------------------------------------------------------------
 function tugLogoSVG() {
-  return `<svg viewBox="0 0 40 26" xmlns="http://www.w3.org/2000/svg">
-    <path d="M2 20 Q10 17 18 20 T34 20" fill="none" stroke="#9fd3ef" stroke-width="1.6" stroke-linecap="round" opacity="0.5"/>
-    <rect x="4" y="16.5" width="30" height="3" rx="1.5" fill="#12181C"/>
-    <path d="M4 10 Q4 8 6 8 L30 8 Q34 8 34 12 L34 15 Q34 17 31 17 L7 17 Q4 17 4 15 Z" fill="#0B3559"/>
-    <rect x="12" y="2" width="14" height="8" rx="1.5" fill="#F7B500"/>
-    <rect x="14.3" y="4.2" width="3.6" height="3.6" fill="#FFFFFF"/>
-    <rect x="20" y="4.2" width="3.6" height="3.6" fill="#FFFFFF"/>
-    <rect x="26.5" y="0" width="2.6" height="6" fill="#E4001A"/>
+  return `<svg viewBox="0 0 44 28" xmlns="http://www.w3.org/2000/svg" class="saam-logo-svg">
+    <defs>
+      <linearGradient id="logoHull" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#164A78"/>
+        <stop offset="100%" stop-color="#08233C"/>
+      </linearGradient>
+      <linearGradient id="logoCab" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#FFD43F"/>
+        <stop offset="100%" stop-color="#E59800"/>
+      </linearGradient>
+      <linearGradient id="logoRed" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#FF384D"/>
+        <stop offset="100%" stop-color="#B80014"/>
+      </linearGradient>
+    </defs>
+    <!-- Estela de proa -->
+    <path d="M2 22 Q12 19 22 22 T42 22" fill="none" stroke="#00D2FF" stroke-width="1.8" stroke-linecap="round" opacity="0.65"/>
+    <!-- Casco -->
+    <path d="M4 12 Q5 9 8 9 L34 9 Q38 9 39 13 L40 16 Q40 19 36 19 L7 19 Q4 19 4 15 Z" fill="url(#logoHull)"/>
+    <!-- Quilla roja SAAM -->
+    <path d="M5 17.5 L37 17.5 Q38 17.5 38 19 L6 19 Q5 19 5 17.5 Z" fill="url(#logoRed)"/>
+    <!-- Defensa de proa de goma negra -->
+    <rect x="3" y="10" width="3.5" height="8" rx="1.5" fill="#182026"/>
+    <!-- Caseta amarilla -->
+    <rect x="13" y="3" width="16" height="8" rx="2" fill="url(#logoCab)"/>
+    <!-- Ventanas panorámicas de cristal -->
+    <rect x="15.5" y="4.8" width="4.5" height="3.8" rx="0.8" fill="#E8F7FF"/>
+    <rect x="22" y="4.8" width="4.5" height="3.8" rx="0.8" fill="#E8F7FF"/>
+    <!-- Chimenea SAAM -->
+    <rect x="29" y="1" width="3.2" height="7" rx="1" fill="url(#logoRed)"/>
+    <rect x="29" y="2.5" width="3.2" height="1.8" fill="#FFFFFF"/>
+    <!-- Mástil y antena -->
+    <line x1="20" y1="3" x2="20" y2="0.5" stroke="#DCE8F2" stroke-width="1" stroke-linecap="round"/>
   </svg>`;
 }
 
 function wavesSVG() {
-  return `<svg viewBox="0 0 1600 200" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M0,100 C200,150 400,50 600,100 C800,150 1000,50 1200,100 C1400,150 1500,100 1600,100 L1600,200 L0,200 Z" fill="#E4001A" opacity="0.35"/>
-    <path d="M0,120 C200,80 400,160 600,120 C800,80 1000,160 1200,120 C1400,80 1500,120 1600,120 L1600,200 L0,200 Z" fill="#D4A843" opacity="0.3"/>
+  return `<svg viewBox="0 0 1600 160" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="waveGradA" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#00D2FF" stop-opacity="0.3"/>
+        <stop offset="100%" stop-color="#041225" stop-opacity="0.8"/>
+      </linearGradient>
+      <linearGradient id="waveGradB" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#E4001A" stop-opacity="0.25"/>
+        <stop offset="100%" stop-color="#041225" stop-opacity="0.6"/>
+      </linearGradient>
+    </defs>
+    <path d="M0,80 C320,130 520,30 800,80 C1080,130 1280,30 1600,80 L1600,160 L0,160 Z" fill="url(#waveGradA)"/>
+    <path d="M0,100 C240,60 480,140 720,100 C960,60 1200,140 1600,100 L1600,160 L0,160 Z" fill="url(#waveGradB)"/>
   </svg>`;
 }
 
 // ---------------------------------------------------------------------------
-// Elementos decorativos animados: boyas flotando (las gaviotas fueron
-// reemplazadas por las escenas de maniobras de remolcadores, más abajo)
+// Elementos decorativos animados de fondo (boyas inteligentes con pulsos)
 // ---------------------------------------------------------------------------
-function birdsSVG() {
-  const bird = `<svg viewBox="0 0 24 12" xmlns="http://www.w3.org/2000/svg"><path d="M0 6 Q6 0 12 6 Q18 0 24 6" fill="none" stroke="rgba(255,255,255,0.65)" stroke-width="2" stroke-linecap="round"/></svg>`;
-  return `
-    <span class="bird bird-1">${bird}</span>
-    <span class="bird bird-2">${bird}</span>
-    <span class="bird bird-3">${bird}</span>
-  `;
-}
-
 function buoyDecoSVG() {
-  return `<svg viewBox="0 0 24 34" xmlns="http://www.w3.org/2000/svg">
-    <path d="M12 2c4 0 6 4 6 9s-2 9-6 9-6-4-6-9 2-9 6-9z" fill="#E4001A"/>
-    <path d="M6 14h12" stroke="#fff" stroke-width="3"/>
-    <rect x="10" y="21" width="4" height="10" fill="#fff"/>
+  return `<svg viewBox="0 0 28 38" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="buoyRed" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#FF4757"/>
+        <stop offset="100%" stop-color="#A50014"/>
+      </linearGradient>
+    </defs>
+    <!-- Linterna con luz parpadeante -->
+    <circle cx="14" cy="5" r="3" fill="#FFEAA7"/>
+    <circle cx="14" cy="5" r="5" fill="#FFEAA7" opacity="0.4"/>
+    <!-- Torre cónica -->
+    <path d="M11 7 L17 7 L19 20 L9 20 Z" fill="#2D3436"/>
+    <!-- Franjas reflectantes -->
+    <rect x="10.5" y="11" width="7" height="3" fill="#FFFFFF"/>
+    <!-- Flotador principal -->
+    <path d="M5 20 Q5 16 14 16 Q23 16 23 20 L22 28 Q14 31 6 28 Z" fill="url(#buoyRed)"/>
+    <line x1="5" y1="23" x2="23" y2="23" stroke="#FFFFFF" stroke-width="2"/>
+    <!-- Contrapeso -->
+    <rect x="12.5" y="29" width="3" height="8" rx="1.5" fill="#1E272E"/>
   </svg>`;
 }
 
@@ -72,274 +162,322 @@ function buoysDecoSVG() {
 }
 
 // ---------------------------------------------------------------------------
-// Remolcadores maniobrando de fondo: pequeñas escenas animadas que cruzan la
-// pantalla en loop, cada una con el remolcador realizando un tipo distinto de
-// maniobra (cobra/remolque, empuje, escolta) junto a un buque distinto.
+// FLOTA DE BUQUES VECTORIALES PREMIUM (10 Identidades Náuticas)
+// Diseñados con gradientes esféricos, iluminación realista y proporciones estilizadas
 // ---------------------------------------------------------------------------
-function tugSilhouetteSVG() {
-  return `<g>
-    <rect x="0" y="16" width="34" height="4" rx="2" fill="#0a1216"/>
-    <path d="M0 8 Q0 5 4 5 L26 5 Q32 5 32 10 L32 14 Q32 17 27 17 L5 17 Q0 17 0 14 Z" fill="#0B3559"/>
-    <rect x="10" y="0" width="14" height="7" rx="2" fill="#F7B500"/>
-    <rect x="12.3" y="1.6" width="3.6" height="3" fill="#fff"/>
-    <rect x="17.5" y="1.6" width="3.6" height="3" fill="#fff"/>
-    <rect x="17" y="-4" width="1.6" height="5" fill="#12181C"/>
-  </g>`;
-}
 
-function targetShipSVG(kind) {
-  if (kind === 'container') {
-    return `<g>
-      <path d="M0 22 L150 22 L142 30 L10 30 Z" fill="#0B3559"/>
-      <rect x="10" y="8" width="18" height="14" fill="#E4001A"/>
-      <rect x="30" y="8" width="18" height="14" fill="#D4A843"/>
-      <rect x="50" y="8" width="18" height="14" fill="#3498DB"/>
-      <rect x="70" y="8" width="18" height="14" fill="#2ECC71"/>
-      <rect x="90" y="8" width="18" height="14" fill="#E4001A"/>
-      <rect x="120" y="2" width="20" height="20" rx="2" fill="#fff"/>
-    </g>`;
-  }
-  if (kind === 'cruise') {
-    return `<g>
-      <path d="M0 24 L160 24 L150 32 L12 32 Z" fill="#0B3559"/>
-      <rect x="10" y="12" width="130" height="12" rx="2" fill="#fff"/>
-      <rect x="24" y="2" width="90" height="11" rx="2" fill="#fff"/>
-      <rect x="120" y="0" width="8" height="8" fill="#E4001A"/>
-    </g>`;
-  }
-  // tanker / bulker (por defecto)
-  return `<g>
-    <path d="M0 24 Q0 18 10 18 L140 18 Q150 18 150 24 L150 26 Q150 30 142 30 L8 30 Q0 30 0 26 Z" fill="#5C6B73"/>
-    <rect x="10" y="12" width="120" height="6" fill="#3A4750"/>
-    <rect x="132" y="0" width="18" height="20" rx="2" fill="#fff"/>
-  </g>`;
-}
+const COMMON_DEFS = `
+  <defs>
+    <!-- Gradientes de Casco -->
+    <linearGradient id="hullNavy" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1B4D7E"/>
+      <stop offset="60%" stop-color="#0E2F52"/>
+      <stop offset="100%" stop-color="#06172B"/>
+    </linearGradient>
+    <linearGradient id="hullRed" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FF384D"/>
+      <stop offset="70%" stop-color="#C70017"/>
+      <stop offset="100%" stop-color="#7A000E"/>
+    </linearGradient>
+    <linearGradient id="hullSteel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#718093"/>
+      <stop offset="70%" stop-color="#485460"/>
+      <stop offset="100%" stop-color="#1E272E"/>
+    </linearGradient>
+    <linearGradient id="hullGold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FCE182"/>
+      <stop offset="50%" stop-color="#D4A843"/>
+      <stop offset="100%" stop-color="#8E6716"/>
+    </linearGradient>
+    <linearGradient id="superWhite" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="85%" stop-color="#E4EBF0"/>
+      <stop offset="100%" stop-color="#C5D2DB"/>
+    </linearGradient>
+    <linearGradient id="cabYellow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFE053"/>
+      <stop offset="75%" stop-color="#EAA600"/>
+      <stop offset="100%" stop-color="#B27400"/>
+    </linearGradient>
+    <linearGradient id="glassCyan" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#B8F2FF"/>
+      <stop offset="60%" stop-color="#48DBFB"/>
+      <stop offset="100%" stop-color="#0ABDE3"/>
+    </linearGradient>
+    <linearGradient id="foamWake" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#00D2FF" stop-opacity="0.8"/>
+      <stop offset="50%" stop-color="#FFFFFF" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#00D2FF" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+`;
 
-/** kind: 'tow' (cobra un buque con espía), 'push' (empuja de costado), 'escort' (navega junto a él). */
-function tugManeuverSVG(kind) {
-  const shipKind = kind === 'push' ? 'container' : kind === 'escort' ? 'cruise' : 'tanker';
-  const ship = targetShipSVG(shipKind);
-
-  if (kind === 'push') {
-    return `<svg viewBox="0 0 260 40" xmlns="http://www.w3.org/2000/svg">
-      <g transform="translate(46 8)">${tugSilhouetteSVG()}</g>
-      <g transform="translate(76 -4)">${ship}</g>
-    </svg>`;
-  }
-  if (kind === 'escort') {
-    return `<svg viewBox="0 0 260 40" xmlns="http://www.w3.org/2000/svg">
-      <g transform="translate(0 20)">${tugSilhouetteSVG()}</g>
-      <g transform="translate(50 -6)">${ship}</g>
-    </svg>`;
-  }
-  // tow: remolcador cobrando desde proa con línea de remolque punteada
-  return `<svg viewBox="0 0 260 40" xmlns="http://www.w3.org/2000/svg">
-    <g transform="translate(0 8)">${tugSilhouetteSVG()}</g>
-    <path d="M34 20 L104 16" stroke="#33414a" stroke-width="1.2" stroke-dasharray="2 3"/>
-    <g transform="translate(104 -2)">${ship}</g>
-  </svg>`;
-}
-
-function tugManeuversBgSVG() {
-  return `
-    <div class="maneuver-scene scene-1">${tugManeuverSVG('tow')}</div>
-    <div class="maneuver-scene scene-2">${tugManeuverSVG('push')}</div>
-    <div class="maneuver-scene scene-3">${tugManeuverSVG('escort')}</div>
-  `;
-}
-
-// ---------------------------------------------------------------------------
-// Flota de avatares: cada jugador elige un tipo de buque como identidad visual
-// ---------------------------------------------------------------------------
-const MINI_WAVE = `<path d="M2 46 Q10 42 18 46 T34 46 T50 46 T66 46 T82 46 T98 46 T114 46 T118 46" fill="none" stroke="#9fd3ef" stroke-width="2.5" stroke-linecap="round" opacity="0.55"/>`;
-
-function funnelSmoke(x, y) {
-  return `<g transform="translate(${x} ${y})">
-    <g class="funnel-smoke">
-      <circle class="puff" cx="0" cy="0" r="3"/>
-      <circle class="puff" cx="2.5" cy="-1.5" r="2.3"/>
-      <circle class="puff" cx="-2" cy="-3" r="1.9"/>
-    </g>
-  </g>`;
-}
-
-function mastFlag(x, y, color) {
-  return `<g transform="translate(${x} ${y})">
-    <g class="mast-flag">
-      <path d="M0 0 L11 2.5 L0 5 Z" fill="${color || '#E4001A'}"/>
-    </g>
-  </g>`;
-}
+const MINI_WAVE = `
+  <!-- Estela de agua dinámica -->
+  <path d="M4 50 Q16 46 28 50 T52 50 T76 50 T100 50 T124 50 T136 50" fill="none" stroke="url(#foamWake)" stroke-width="3" stroke-linecap="round"/>
+  <path d="M12 53 Q24 49 36 53 T60 53 T84 53 T108 53" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1.6" stroke-linecap="round"/>
+`;
 
 const SHIP_AVATARS = {
+  // 1. Remolcador SAAM (El héroe de la flota)
   tug: {
-    label: 'Remolcador',
-    svg: `<svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+    label: 'Remolcador SAAM',
+    category: 'Maniobras & Salvamento',
+    svg: `<svg viewBox="0 0 140 68" xmlns="http://www.w3.org/2000/svg" class="ship-vector">
+      ${COMMON_DEFS}
       ${MINI_WAVE}
-      <rect x="10" y="42" width="84" height="5" rx="2.5" fill="#12181C"/>
-      <path d="M10 32 Q10 28 15 28 L88 28 Q96 28 96 34 L96 40 Q96 44 90 44 L16 44 Q10 44 10 40 Z" fill="#0B3559"/>
-      <rect x="32" y="10" width="42" height="20" rx="3" fill="#F7B500"/>
-      <rect x="37" y="15" width="10" height="8" rx="1.5" fill="#FFFFFF"/>
-      <rect x="51" y="15" width="10" height="8" rx="1.5" fill="#FFFFFF"/>
-      <rect x="65" y="15" width="7" height="10" rx="1.5" fill="#D99A00"/>
-      <rect x="70" y="4" width="5" height="10" rx="1.5" fill="#E4001A"/>
-      ${funnelSmoke(72, 2)}
-      <rect x="46" y="2" width="2" height="10" fill="#12181C"/>
-      <path d="M40 4 L54 4" stroke="#12181C" stroke-width="1.6" stroke-linecap="round"/>
+      <!-- Casco Principal -->
+      <path d="M14 36 Q15 28 22 28 L104 28 Q118 28 122 36 L124 44 Q124 50 114 50 L20 50 Q14 50 14 44 Z" fill="url(#hullNavy)"/>
+      <!-- Quilla Roja de Protección -->
+      <path d="M16 45 L121 45 Q122 47 116 50 L20 50 Q16 49 16 45 Z" fill="url(#hullRed)"/>
+      <line x1="16" y1="44.5" x2="120" y2="44.5" stroke="#FFD700" stroke-width="1.2" opacity="0.8"/>
+      <!-- Defensa de Proa (Pusher Fender de Goma Negra) -->
+      <path d="M112 28 Q126 28 126 38 Q126 48 112 48" fill="none" stroke="#1B2228" stroke-width="7" stroke-linecap="round"/>
+      <rect x="18" y="47" width="92" height="4.5" rx="2.2" fill="#182026" opacity="0.9"/>
+      <!-- Caseta de Mando Amarilla SAAM -->
+      <rect x="42" y="10" width="52" height="20" rx="4" fill="url(#cabYellow)"/>
+      <!-- Visera del Puente -->
+      <path d="M40 12 L96 12 L92 9 L44 9 Z" fill="#2C3A47"/>
+      <!-- Ventanas Panorámicas de Puente -->
+      <rect x="48" y="14" width="12" height="8" rx="1.5" fill="url(#glassCyan)"/>
+      <rect x="63" y="14" width="12" height="8" rx="1.5" fill="url(#glassCyan)"/>
+      <rect x="78" y="14" width="10" height="8" rx="1.5" fill="url(#glassCyan)"/>
+      <!-- Reflejos en Ventanas -->
+      <line x1="50" y1="15" x2="54" y2="21" stroke="#FFFFFF" stroke-width="1.2" opacity="0.75"/>
+      <line x1="65" y1="15" x2="69" y2="21" stroke="#FFFFFF" stroke-width="1.2" opacity="0.75"/>
+      <!-- Chimenea SAAM con Franja Blanca -->
+      <rect x="86" y="2" width="8" height="12" rx="2" fill="url(#hullRed)"/>
+      <rect x="86" y="5" width="8" height="3" fill="#FFFFFF"/>
+      <!-- Luces de Navegación (Babor / Estribor) -->
+      <circle cx="44" cy="18" r="2" fill="#00FF88"/>
+      <circle cx="94" cy="18" r="2" fill="#FF3B4E"/>
+      <!-- Radar y Mástil -->
+      <line x1="58" y1="10" x2="58" y2="2" stroke="#E4EBF0" stroke-width="2"/>
+      <ellipse cx="58" cy="2" rx="5" ry="1.8" fill="#F5F6FA"/>
     </svg>`
   },
+
+  // 2. Portacontenedores
   container: {
     label: 'Portacontenedores',
-    svg: `<svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+    category: 'Carga Comercial',
+    svg: `<svg viewBox="0 0 140 68" xmlns="http://www.w3.org/2000/svg" class="ship-vector">
+      ${COMMON_DEFS}
       ${MINI_WAVE}
-      <path d="M6 40 L112 40 L104 48 L14 48 Z" fill="#0B3559"/>
-      <rect x="14" y="22" width="16" height="14" fill="#E4001A"/>
-      <rect x="32" y="22" width="16" height="14" fill="#D4A843"/>
-      <rect x="50" y="22" width="16" height="14" fill="#3498DB"/>
-      <rect x="68" y="22" width="16" height="14" fill="#2ECC71"/>
-      <rect x="14" y="10" width="16" height="10" fill="#D4A843"/>
-      <rect x="32" y="10" width="16" height="10" fill="#E4001A"/>
-      <rect x="50" y="10" width="16" height="10" fill="#2ECC71"/>
-      <rect x="90" y="16" width="16" height="24" rx="2" fill="#FFFFFF"/>
-      <rect x="94" y="20" width="4" height="4" fill="#124A7D"/>
-      <rect x="100" y="20" width="4" height="4" fill="#124A7D"/>
+      <!-- Casco Largo con Bulbo de Proa -->
+      <path d="M8 40 L130 40 L120 50 L18 50 Z" fill="url(#hullNavy)"/>
+      <path d="M12 47 L124 47 L120 50 L18 50 Z" fill="url(#hullRed)"/>
+      <!-- Bloques de Contenedores Apilados en 3D -->
+      <!-- Fila Inferior -->
+      <rect x="18" y="26" width="18" height="14" rx="1.2" fill="#E4001A"/>
+      <rect x="38" y="26" width="18" height="14" rx="1.2" fill="#D4A843"/>
+      <rect x="58" y="26" width="18" height="14" rx="1.2" fill="#2E86DE"/>
+      <rect x="78" y="26" width="18" height="14" rx="1.2" fill="#10AC84"/>
+      <!-- Fila Media -->
+      <rect x="18" y="14" width="18" height="11" rx="1.2" fill="#D4A843"/>
+      <rect x="38" y="14" width="18" height="11" rx="1.2" fill="#2E86DE"/>
+      <rect x="58" y="14" width="18" height="11" rx="1.2" fill="#10AC84"/>
+      <rect x="78" y="14" width="18" height="11" rx="1.2" fill="#E4001A"/>
+      <!-- Fila Superior -->
+      <rect x="38" y="5" width="18" height="8" rx="1.2" fill="#E4001A"/>
+      <rect x="58" y="5" width="18" height="8" rx="1.2" fill="#D4A843"/>
+      <!-- Ranuras de Contenedores -->
+      <line x1="27" y1="26" x2="27" y2="40" stroke="#000" stroke-width="0.8" opacity="0.3"/>
+      <line x1="47" y1="26" x2="47" y2="40" stroke="#000" stroke-width="0.8" opacity="0.3"/>
+      <line x1="67" y1="26" x2="67" y2="40" stroke="#000" stroke-width="0.8" opacity="0.3"/>
+      <!-- Torre de Control y Alojamiento Popa -->
+      <rect x="100" y="16" width="20" height="24" rx="2" fill="url(#superWhite)"/>
+      <rect x="104" y="20" width="12" height="4" rx="1" fill="url(#glassCyan)"/>
+      <rect x="104" y="26" width="12" height="4" rx="1" fill="url(#glassCyan)"/>
+      <!-- Chimenea Popa -->
+      <rect x="114" y="8" width="5" height="10" rx="1" fill="url(#hullRed)"/>
     </svg>`
   },
+
+  // 3. Petrolero / Tanquero
   tanker: {
     label: 'Petrolero',
-    svg: `<svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+    category: 'Granel Líquido',
+    svg: `<svg viewBox="0 0 140 68" xmlns="http://www.w3.org/2000/svg" class="ship-vector">
+      ${COMMON_DEFS}
       ${MINI_WAVE}
-      <path d="M8 40 Q8 30 20 30 L98 30 Q108 30 108 38 L108 40 Q108 46 100 46 L16 46 Q8 46 8 40 Z" fill="#3A4750"/>
-      <rect x="20" y="24" width="72" height="8" fill="#5C6B73"/>
-      <circle cx="36" cy="22" r="5" fill="#D4A843"/>
-      <circle cx="52" cy="22" r="5" fill="#D4A843"/>
-      <circle cx="68" cy="22" r="5" fill="#D4A843"/>
-      <rect x="90" y="10" width="18" height="20" rx="2" fill="#FFFFFF"/>
-      <rect x="94" y="14" width="5" height="5" fill="#124A7D"/>
-      <rect x="102" y="14" width="5" height="5" fill="#124A7D"/>
-      ${funnelSmoke(99, 8)}
+      <!-- Casco Pesado y Quilla -->
+      <path d="M10 40 Q10 32 24 32 L116 32 Q128 32 128 40 L128 44 Q128 50 118 50 L20 50 Q10 50 10 44 Z" fill="url(#hullSteel)"/>
+      <path d="M14 46 L124 46 Q125 48 118 50 L20 50 Q14 49 14 46 Z" fill="url(#hullRed)"/>
+      <!-- Tuberías y Manifolds de Cubierta -->
+      <rect x="24" y="27" width="80" height="6" rx="1.5" fill="#2F3640"/>
+      <line x1="24" y1="30" x2="104" y2="30" stroke="#D4A843" stroke-width="2"/>
+      <!-- Domos de Tanques -->
+      <ellipse cx="40" cy="27" rx="6" ry="3" fill="url(#hullGold)"/>
+      <ellipse cx="60" cy="27" rx="6" ry="3" fill="url(#hullGold)"/>
+      <ellipse cx="80" cy="27" rx="6" ry="3" fill="url(#hullGold)"/>
+      <ellipse cx="98" cy="27" rx="6" ry="3" fill="url(#hullGold)"/>
+      <!-- Superestructura Popa -->
+      <rect x="106" y="14" width="20" height="20" rx="2" fill="url(#superWhite)"/>
+      <rect x="110" y="17" width="12" height="4" rx="1" fill="url(#glassCyan)"/>
+      <rect x="110" y="23" width="12" height="4" rx="1" fill="url(#glassCyan)"/>
+      <rect x="116" y="6" width="6" height="10" rx="1" fill="url(#hullRed)"/>
     </svg>`
   },
-  ferry: {
-    label: 'Ferry',
-    svg: `<svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
-      ${MINI_WAVE}
-      <path d="M10 44 Q10 34 22 34 L98 34 Q110 34 110 42 L110 44 Q110 48 104 48 L16 48 Q10 48 10 44 Z" fill="#E4001A"/>
-      <rect x="18" y="20" width="84" height="16" rx="2" fill="#FFFFFF"/>
-      <rect x="24" y="24" width="6" height="6" fill="#124A7D"/>
-      <rect x="36" y="24" width="6" height="6" fill="#124A7D"/>
-      <rect x="48" y="24" width="6" height="6" fill="#124A7D"/>
-      <rect x="60" y="24" width="6" height="6" fill="#124A7D"/>
-      <rect x="72" y="24" width="6" height="6" fill="#124A7D"/>
-      <rect x="84" y="24" width="6" height="6" fill="#124A7D"/>
-      <rect x="40" y="8" width="24" height="12" rx="2" fill="#0B3559"/>
-      <rect x="70" y="4" width="6" height="16" fill="#D4A843"/>
-      ${funnelSmoke(73, 2)}
-    </svg>`
-  },
-  sailboat: {
-    label: 'Velero',
-    svg: `<svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
-      ${MINI_WAVE}
-      <path d="M22 44 Q60 54 98 44 L92 48 Q60 56 28 48 Z" fill="#0B3559"/>
-      <rect x="58" y="6" width="3" height="40" fill="#5C6B73"/>
-      <path d="M61 8 L61 40 L88 40 Z" fill="#FFFFFF"/>
-      <path d="M58 14 L58 40 L36 40 Z" fill="#E4001A"/>
-      ${mastFlag(58, 4, '#D4A843')}
-    </svg>`
-  },
+
+  // 4. Crucero Oceánico de Lujo
   cruise: {
-    label: 'Crucero',
-    svg: `<svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+    label: 'Crucero Oceánico',
+    category: 'Pasajeros de Lujo',
+    svg: `<svg viewBox="0 0 140 68" xmlns="http://www.w3.org/2000/svg" class="ship-vector">
+      ${COMMON_DEFS}
       ${MINI_WAVE}
-      <path d="M4 42 Q4 32 16 32 L104 32 Q116 32 116 40 L116 42 Q116 48 108 48 L12 48 Q4 48 4 42 Z" fill="#0B3559"/>
-      <rect x="16" y="22" width="88" height="12" rx="2" fill="#FFFFFF"/>
-      <rect x="26" y="12" width="68" height="12" rx="2" fill="#FFFFFF"/>
-      <rect x="40" y="4" width="40" height="10" rx="2" fill="#FFFFFF"/>
-      <rect x="22" y="25" width="5" height="5" fill="#3498DB"/>
-      <rect x="34" y="25" width="5" height="5" fill="#3498DB"/>
-      <rect x="46" y="25" width="5" height="5" fill="#3498DB"/>
-      <rect x="58" y="25" width="5" height="5" fill="#3498DB"/>
-      <rect x="70" y="25" width="5" height="5" fill="#3498DB"/>
-      <rect x="82" y="25" width="5" height="5" fill="#3498DB"/>
-      <rect x="86" y="2" width="6" height="8" rx="1.5" fill="#E4001A"/>
-      ${funnelSmoke(89, 3)}
-      ${mastFlag(70, 3, '#D4A843')}
+      <!-- Casco Aerodinámico Azul Marino -->
+      <path d="M6 42 Q8 32 20 32 L120 32 Q132 32 132 40 L132 44 Q132 50 122 50 L14 50 Q6 50 6 42 Z" fill="url(#hullNavy)"/>
+      <line x1="12" y1="44" x2="128" y2="44" stroke="#00D2FF" stroke-width="1.4"/>
+      <!-- Cubiertas de Pasajeros Escalonadas -->
+      <path d="M18 24 L122 24 Q126 24 126 28 L126 32 L18 32 Z" fill="url(#superWhite)"/>
+      <path d="M28 15 L116 15 Q120 15 120 20 L120 24 L28 24 Z" fill="url(#superWhite)"/>
+      <path d="M42 8 L104 8 Q108 8 108 12 L108 15 L42 15 Z" fill="url(#superWhite)"/>
+      <!-- Hileras de Camarotes con Cristales Azules -->
+      <rect x="24" y="26" width="94" height="4" rx="1" fill="url(#glassCyan)"/>
+      <rect x="34" y="17" width="76" height="4" rx="1" fill="url(#glassCyan)"/>
+      <rect x="46" y="10" width="54" height="3.5" rx="1" fill="url(#glassCyan)"/>
+      <!-- Chimeneas Gemelas Aerodinámicas -->
+      <path d="M96 2 L104 2 L101 8 L94 8 Z" fill="url(#hullRed)"/>
+      <path d="M106 2 L114 2 L111 8 L104 8 Z" fill="url(#hullGold)"/>
     </svg>`
   },
+
+  // 5. Velero de Competición
+  sailboat: {
+    label: 'Velero de Regata',
+    category: 'Vela Deportiva',
+    svg: `<svg viewBox="0 0 140 68" xmlns="http://www.w3.org/2000/svg" class="ship-vector">
+      ${COMMON_DEFS}
+      ${MINI_WAVE}
+      <!-- Casco de Carbono Aerodinámico -->
+      <path d="M26 44 Q70 54 116 42 L110 49 Q70 56 32 48 Z" fill="url(#hullNavy)"/>
+      <line x1="30" y1="46" x2="112" y2="44" stroke="#D4A843" stroke-width="1.8"/>
+      <!-- Mástil -->
+      <rect x="68" y="4" width="3" height="42" rx="1" fill="#718093"/>
+      <!-- Vela Mayor (Blanca con Franja Roja SAAM) -->
+      <path d="M72 6 L72 40 L108 40 Z" fill="url(#superWhite)"/>
+      <path d="M72 18 L100 40 L72 40 Z" fill="url(#hullRed)" opacity="0.9"/>
+      <!-- Génova / Foque de Proa -->
+      <path d="M67 10 L67 40 L38 40 Z" fill="url(#superWhite)"/>
+      <path d="M67 22 L48 40 L67 40 Z" fill="url(#hullGold)" opacity="0.9"/>
+      <!-- Grímpola en tope de mástil -->
+      <polygon points="68,2 80,4 68,6" fill="#FF384D"/>
+    </svg>`
+  },
+
+  // 6. Ferry Costero
+  ferry: {
+    label: 'Ferry Costero',
+    category: 'Transporte Interurbano',
+    svg: `<svg viewBox="0 0 140 68" xmlns="http://www.w3.org/2000/svg" class="ship-vector">
+      ${COMMON_DEFS}
+      ${MINI_WAVE}
+      <!-- Casco Bicolor Rojo & Blanco -->
+      <path d="M12 42 Q14 34 26 34 L114 34 Q126 34 126 42 L126 46 Q126 50 118 50 L20 50 Q12 50 12 46 Z" fill="url(#hullRed)"/>
+      <!-- Cubierta de Salón Panorámico -->
+      <rect x="22" y="20" width="94" height="15" rx="3" fill="url(#superWhite)"/>
+      <!-- Ventanales de Pasajeros -->
+      <rect x="28" y="23" width="10" height="7" rx="1.5" fill="url(#glassCyan)"/>
+      <rect x="42" y="23" width="10" height="7" rx="1.5" fill="url(#glassCyan)"/>
+      <rect x="56" y="23" width="10" height="7" rx="1.5" fill="url(#glassCyan)"/>
+      <rect x="70" y="23" width="10" height="7" rx="1.5" fill="url(#glassCyan)"/>
+      <rect x="84" y="23" width="10" height="7" rx="1.5" fill="url(#glassCyan)"/>
+      <rect x="98" y="23" width="10" height="7" rx="1.5" fill="url(#glassCyan)"/>
+      <!-- Puente Superior -->
+      <rect x="48" y="10" width="36" height="11" rx="2" fill="url(#hullNavy)"/>
+      <rect x="54" y="13" width="24" height="4.5" rx="1" fill="url(#glassCyan)"/>
+      <!-- Chimeneas -->
+      <rect x="88" y="6" width="6" height="15" rx="1" fill="url(#hullGold)"/>
+    </svg>`
+  },
+
+  // 7. Pesquero de Alta Mar
   fishing: {
-    label: 'Pesquero',
-    svg: `<svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+    label: 'Pesquero de Alta Mar',
+    category: 'Flota Pesquera',
+    svg: `<svg viewBox="0 0 140 68" xmlns="http://www.w3.org/2000/svg" class="ship-vector">
+      ${COMMON_DEFS}
       ${MINI_WAVE}
-      <path d="M18 44 Q18 36 26 36 L82 36 Q90 36 90 42 L90 44 Q90 48 86 48 L22 48 Q18 48 18 44 Z" fill="#8A5A2B"/>
-      <rect x="34" y="18" width="22" height="18" rx="2" fill="#FFFFFF"/>
-      <rect x="39" y="23" width="6" height="6" fill="#124A7D"/>
-      <path d="M56 20 L88 8" stroke="#5C6B73" stroke-width="3" stroke-linecap="round"/>
-      <path d="M86 8 L96 18 L80 20 Z" fill="none" stroke="#D4A843" stroke-width="2"/>
-      <rect x="60" y="10" width="4" height="10" fill="#E4001A"/>
-      ${funnelSmoke(62, 8)}
+      <!-- Casco Rústico Robusto -->
+      <path d="M16 42 Q18 32 28 32 L106 32 Q116 32 116 40 L116 46 Q116 50 110 50 L24 50 Q16 50 16 46 Z" fill="url(#hullSteel)"/>
+      <line x1="20" y1="45" x2="112" y2="45" stroke="#FFD700" stroke-width="1.4"/>
+      <!-- Caseta Proa -->
+      <rect x="36" y="18" width="30" height="16" rx="2" fill="url(#superWhite)"/>
+      <rect x="42" y="22" width="8" height="6" rx="1" fill="url(#glassCyan)"/>
+      <rect x="54" y="22" width="8" height="6" rx="1" fill="url(#glassCyan)"/>
+      <!-- Pluma y Grúas de Pesca en Popa -->
+      <line x1="72" y1="32" x2="108" y2="10" stroke="#E4EBF0" stroke-width="3" stroke-linecap="round"/>
+      <line x1="108" y1="10" x2="114" y2="28" stroke="#D4A843" stroke-width="1.8" stroke-dasharray="3 2"/>
+      <polygon points="106,8 116,10 112,18" fill="none" stroke="#E4001A" stroke-width="2"/>
+      <rect x="62" y="10" width="5" height="10" rx="1" fill="url(#hullRed)"/>
     </svg>`
   },
+
+  // 8. Submarino de Exploración
   submarine: {
-    label: 'Submarino',
-    svg: `<svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+    label: 'Submarino Científico',
+    category: 'Exploración Submarina',
+    svg: `<svg viewBox="0 0 140 68" xmlns="http://www.w3.org/2000/svg" class="ship-vector">
+      ${COMMON_DEFS}
       ${MINI_WAVE}
-      <ellipse cx="58" cy="36" rx="46" ry="12" fill="#5C6B73"/>
-      <rect x="50" y="16" width="16" height="18" rx="3" fill="#3A4750"/>
-      <rect x="55" y="4" width="3" height="14" fill="#D4A843"/>
-      <circle cx="30" cy="36" r="4" fill="#9fd3ef"/>
-      <circle cx="44" cy="36" r="4" fill="#9fd3ef"/>
-      <circle cx="72" cy="36" r="4" fill="#9fd3ef"/>
-      <circle cx="86" cy="36" r="4" fill="#9fd3ef"/>
-      <path d="M100 34 L112 30 L112 42 Z" fill="#3A4750"/>
+      <!-- Casco Hidrodinámico Cilíndrico -->
+      <ellipse cx="68" cy="40" rx="54" ry="13" fill="url(#hullSteel)"/>
+      <!-- Vela / Torre de Mando -->
+      <rect x="58" y="18" width="20" height="18" rx="4" fill="url(#hullNavy)"/>
+      <!-- Periscopio y Snorkel -->
+      <line x1="65" y1="18" x2="65" y2="6" stroke="#DCE8F2" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="72" y1="18" x2="72" y2="8" stroke="#D4A843" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="65" cy="5" r="2" fill="#00FF88"/>
+      <!-- Ojos de Buey Bioluminiscentes -->
+      <circle cx="34" cy="40" r="4.5" fill="url(#glassCyan)"/>
+      <circle cx="50" cy="40" r="4.5" fill="url(#glassCyan)"/>
+      <circle cx="86" cy="40" r="4.5" fill="url(#glassCyan)"/>
+      <circle cx="102" cy="40" r="4.5" fill="url(#glassCyan)"/>
+      <!-- Hélice Propulsora -->
+      <path d="M120 37 L132 32 L132 48 Z" fill="#2C3A47"/>
     </svg>`
   },
+
+  // 9. Moto de Agua / Jet Ski Racing
   jetski: {
-    label: 'Moto de agua',
-    svg: `<svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+    label: 'Moto Acuática',
+    category: 'Velocidad Ligera',
+    svg: `<svg viewBox="0 0 140 68" xmlns="http://www.w3.org/2000/svg" class="ship-vector">
+      ${COMMON_DEFS}
       ${MINI_WAVE}
-      <path d="M20 44 Q54 52 96 40 Q100 38 96 36 L34 32 Q20 32 18 40 Z" fill="#E4001A"/>
-      <path d="M34 32 Q46 20 66 20 Q78 20 80 30 L80 34 Q64 30 50 32 Z" fill="#FFFFFF"/>
-      <circle cx="62" cy="24" r="3.6" fill="#0B3559"/>
-      <path d="M10 44 Q18 40 26 44" fill="none" stroke="#9fd3ef" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
+      <!-- Casco Angular Ultrarrápido -->
+      <path d="M22 46 Q64 54 114 40 Q120 38 114 35 L44 32 Q24 32 20 42 Z" fill="url(#hullRed)"/>
+      <!-- Carenado y Asiento -->
+      <path d="M44 32 Q58 20 80 20 Q94 20 96 30 L96 34 Q76 30 60 32 Z" fill="url(#superWhite)"/>
+      <!-- Manillar y Piloto -->
+      <circle cx="74" cy="22" r="4" fill="#08233C"/>
+      <rect x="68" y="24" width="16" height="8" rx="2" fill="url(#hullGold)"/>
+      <!-- Chorro Hidropropulsor -->
+      <path d="M10 46 Q20 38 30 46" fill="none" stroke="#00D2FF" stroke-width="3.5" stroke-linecap="round"/>
     </svg>`
   },
-  kayak: {
-    label: 'Kayak',
-    svg: `<svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+
+  // 10. Lancha de Prácticos / Piloto de Puerto
+  pilot: {
+    label: 'Lancha de Prácticos',
+    category: 'Asistencia Portuaria',
+    svg: `<svg viewBox="0 0 140 68" xmlns="http://www.w3.org/2000/svg" class="ship-vector">
+      ${COMMON_DEFS}
       ${MINI_WAVE}
-      <path d="M14 42 Q60 34 106 42 Q60 48 14 42 Z" fill="#D4A843"/>
-      <circle cx="58" cy="32" r="7" fill="#0B3559"/>
-      <rect x="52" y="38" width="12" height="8" fill="#124A7D"/>
-      <path d="M34 22 L82 34" stroke="#5C6B73" stroke-width="2.6" stroke-linecap="round"/>
-      <path d="M32 18 L40 24 L28 26 Z" fill="#E4001A"/>
-      <path d="M84 30 L92 36 L80 38 Z" fill="#E4001A"/>
-    </svg>`
-  },
-  icebreaker: {
-    label: 'Rompehielos',
-    svg: `<svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
-      ${MINI_WAVE}
-      <path d="M10 44 L26 30 Q30 26 38 26 L96 26 Q106 26 106 36 L106 44 Q106 48 100 48 L16 48 Q10 48 10 44 Z" fill="#E4001A"/>
-      <rect x="46" y="12" width="28" height="16" rx="2" fill="#FFFFFF"/>
-      <rect x="51" y="16" width="6" height="6" fill="#124A7D"/>
-      <rect x="63" y="16" width="6" height="6" fill="#124A7D"/>
-      <rect x="86" y="4" width="7" height="14" rx="2" fill="#D4A843"/>
-      ${funnelSmoke(89, 2)}
-      <path d="M14 44 L20 38 L26 44 L32 38 L38 44" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>`
-  },
-  yacht: {
-    label: 'Yate',
-    svg: `<svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
-      ${MINI_WAVE}
-      <path d="M16 42 Q16 34 26 34 L96 34 Q104 34 100 40 L96 44 Q60 50 24 44 Z" fill="#FFFFFF"/>
-      <rect x="16" y="36" width="84" height="4" fill="#124A7D"/>
-      <rect x="40" y="20" width="34" height="15" rx="3" fill="#0B3559"/>
-      <rect x="46" y="24" width="8" height="7" rx="1" fill="#9fd3ef"/>
-      <rect x="60" y="24" width="8" height="7" rx="1" fill="#9fd3ef"/>
-      <rect x="76" y="10" width="2.4" height="24" fill="#5C6B73"/>
-      ${mastFlag(78, 8, '#E4001A')}
+      <!-- Casco Naranja de Alta Visibilidad -->
+      <path d="M14 42 Q16 32 26 32 L112 32 Q124 32 124 40 L124 44 Q124 50 114 50 L22 50 Q14 50 14 44 Z" fill="url(#hullGold)"/>
+      <path d="M16 46 L118 46 L114 50 L22 50 Z" fill="url(#hullNavy)"/>
+      <!-- Cabina Central -->
+      <rect x="42" y="16" width="46" height="18" rx="3" fill="url(#superWhite)"/>
+      <rect x="48" y="20" width="14" height="7" rx="1.5" fill="url(#glassCyan)"/>
+      <rect x="68" y="20" width="14" height="7" rx="1.5" fill="url(#glassCyan)"/>
+      <!-- Luces de Trabajo y Radar -->
+      <line x1="65" y1="16" x2="65" y2="6" stroke="#1E272E" stroke-width="2"/>
+      <ellipse cx="65" cy="6" rx="6" ry="2" fill="#E4001A"/>
+      <!-- Letrero PILOT -->
+      <text x="56" y="42" fill="#041225" font-size="6.5" font-weight="900" font-family="sans-serif">PILOTO</text>
     </svg>`
   }
 };
@@ -349,17 +487,46 @@ function shipAvatarSVG(key) {
   return entry.svg;
 }
 
+// ---------------------------------------------------------------------------
+// Mascota Capitán Náutico SAAM (Para Certificados y Celebración)
+// ---------------------------------------------------------------------------
 function captainMascotSVG() {
-  return `<svg viewBox="0 0 140 90" xmlns="http://www.w3.org/2000/svg">
-    <path d="M6 66 Q14 60 22 66 T38 66 T54 66 T70 66 T86 66 T102 66 T118 66 T134 66" fill="none" stroke="#9fd3ef" stroke-width="3" stroke-linecap="round" opacity="0.55"/>
-    <path d="M16 58 Q16 42 32 42 L104 42 Q118 42 118 52 L118 58 Q118 64 112 64 L22 64 Q16 64 16 58 Z" fill="#E4001A"/>
-    <rect x="46" y="16" width="44" height="28" rx="4" fill="#FFFFFF"/>
-    <circle cx="60" cy="30" r="5" fill="#0B3559"/>
-    <circle cx="76" cy="30" r="5" fill="#0B3559"/>
-    <circle cx="61.5" cy="28.5" r="1.6" fill="#fff"/>
-    <circle cx="77.5" cy="28.5" r="1.6" fill="#fff"/>
-    <path d="M58 38 Q68 44 78 38" fill="none" stroke="#0B3559" stroke-width="2.4" stroke-linecap="round"/>
-    <rect x="94" y="6" width="10" height="18" rx="2" fill="#D4A843"/>
-    <rect x="16" y="56" width="102" height="6" fill="#0B3559"/>
+  return `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" class="captain-mascot-svg">
+    <defs>
+      <linearGradient id="capGold" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#FFE053"/>
+        <stop offset="100%" stop-color="#C58900"/>
+      </linearGradient>
+      <linearGradient id="capNavy" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#164A78"/>
+        <stop offset="100%" stop-color="#08233C"/>
+      </linearGradient>
+    </defs>
+    <!-- Corona de Laureles Dorados -->
+    <circle cx="60" cy="60" r="54" fill="none" stroke="url(#capGold)" stroke-width="3" stroke-dasharray="6 3"/>
+    <!-- Círculo Interior -->
+    <circle cx="60" cy="60" r="48" fill="url(#capNavy)"/>
+    <!-- Timón y Ancla de Honor -->
+    <circle cx="60" cy="60" r="28" fill="none" stroke="#FFFFFF" stroke-width="3"/>
+    <circle cx="60" cy="60" r="8" fill="url(#capGold)"/>
+    <!-- Rayos del Timón -->
+    <line x1="60" y1="26" x2="60" y2="94" stroke="#FFFFFF" stroke-width="3"/>
+    <line x1="26" y1="60" x2="94" y2="60" stroke="#FFFFFF" stroke-width="3"/>
+    <line x1="36" y1="36" x2="84" y2="84" stroke="#FFFFFF" stroke-width="2.5"/>
+    <line x1="84" y1="36" x2="36" y2="84" stroke="#FFFFFF" stroke-width="2.5"/>
+    <!-- Estrella Náutica Central -->
+    <polygon points="60,48 63,57 72,60 63,63 60,72 57,63 48,60 57,57" fill="#FFF2A1"/>
   </svg>`;
+}
+
+// Exportación universal para navegador y entornos de testing
+if (typeof window !== 'undefined') {
+  window.ICONS = ICONS;
+  window.SHIP_AVATARS = SHIP_AVATARS;
+  window.shipAvatarSVG = shipAvatarSVG;
+  window.tugLogoSVG = tugLogoSVG;
+  window.captainMascotSVG = captainMascotSVG;
+}
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { ICONS, SHIP_AVATARS, shipAvatarSVG, tugLogoSVG, captainMascotSVG };
 }

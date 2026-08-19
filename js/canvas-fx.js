@@ -637,6 +637,20 @@
     },
 
     /**
+     * Alias de conveniencia para confeti
+     */
+    launchConfetti(x, y, count = 80) {
+      this.launchNauticalConfetti({ originX: x, originY: y, burst: (typeof x === 'number' && typeof y === 'number'), count });
+    },
+
+    /**
+     * Alias de conveniencia para sonar
+     */
+    triggerSonarRing(x, y, color) {
+      this.sonarRing(x, y, color);
+    },
+
+    /**
      * Limpia todas las partículas activas y limpia el canvas.
      */
     clear() {
