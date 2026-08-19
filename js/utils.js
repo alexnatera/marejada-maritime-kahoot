@@ -160,31 +160,81 @@ function playShipBell() {
   osc.stop(now + 0.6);
 }
 
+function injectLivingFleet() {
+  if (document.querySelector('.ocean-living-fleet')) return;
+
+  const fleetContainer = document.createElement('div');
+  fleetContainer.className = 'ocean-living-fleet';
+
+  // Configuración de los buques ambientales navegando de fondo
+  const AMBIENT_SHIPS = [
+    { key: 'container', cssClass: 'ambient-vessel-container', title: 'Portacontenedores' },
+    { key: 'tug', cssClass: 'ambient-vessel-tug', title: 'Remolcador SAAM Escolta' },
+    { key: 'sailboat', cssClass: 'ambient-vessel-sailboat', title: 'Velero Oceánico' },
+    { key: 'pilot', cssClass: 'ambient-vessel-pilot', title: 'Lancha de Práctico' },
+    { key: 'jetski', cssClass: 'ambient-vessel-jetski', title: 'Moto de Agua' },
+    { key: 'tanker', cssClass: 'ambient-vessel-tanker', title: 'Petrolero' },
+    { key: 'submarine', cssClass: 'ambient-vessel-sub', title: 'Submarino de Exploración' }
+  ];
+
+  fleetContainer.innerHTML = AMBIENT_SHIPS.map(ship => {
+    let svgContent = '';
+    if (typeof shipAvatarSVG === 'function') {
+      svgContent = shipAvatarSVG(ship.key);
+    } else if (typeof window !== 'undefined' && window.SHIP_AVATARS && window.SHIP_AVATARS[ship.key]) {
+      svgContent = window.SHIP_AVATARS[ship.key].svg;
+    }
+    
+    return `
+      <div class="ambient-ship-vessel ${ship.cssClass}" title="${ship.title}">
+        <div class="ambient-ship-wake"></div>
+        <div class="ambient-ship-inner">
+          ${svgContent}
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  document.body.prepend(fleetContainer);
+}
+
 function injectOceanBg() {
   try {
-    const bg = document.createElement('div');
-    bg.className = 'ocean-bg';
-    document.body.prepend(bg);
+    if (!document.querySelector('.ocean-bg')) {
+      const bg = document.createElement('div');
+      bg.className = 'ocean-bg';
+      document.body.prepend(bg);
+    }
   } catch (e) { console.warn('ocean-bg:', e); }
 
   try {
-    const maneuvers = document.createElement('div');
-    maneuvers.className = 'bg-maneuvers';
-    maneuvers.innerHTML = tugManeuversBgSVG();
-    document.body.prepend(maneuvers);
+    injectLivingFleet();
+  } catch (e) { console.warn('living-fleet:', e); }
+
+  try {
+    if (!document.querySelector('.bg-maneuvers') && typeof tugManeuversBgSVG === 'function') {
+      const maneuvers = document.createElement('div');
+      maneuvers.className = 'bg-maneuvers';
+      maneuvers.innerHTML = tugManeuversBgSVG();
+      document.body.prepend(maneuvers);
+    }
   } catch (e) { console.warn('bg-maneuvers:', e); }
 
   try {
-    const buoys = document.createElement('div');
-    buoys.className = 'deco-buoys';
-    buoys.innerHTML = buoysDecoSVG();
-    document.body.prepend(buoys);
+    if (!document.querySelector('.deco-buoys') && typeof buoysDecoSVG === 'function') {
+      const buoys = document.createElement('div');
+      buoys.className = 'deco-buoys';
+      buoys.innerHTML = buoysDecoSVG();
+      document.body.prepend(buoys);
+    }
   } catch (e) { console.warn('deco-buoys:', e); }
 
   try {
-    const strip = document.createElement('div');
-    strip.className = 'wave-strip';
-    strip.innerHTML = wavesSVG();
-    document.body.appendChild(strip);
+    if (!document.querySelector('.wave-strip') && typeof wavesSVG === 'function') {
+      const strip = document.createElement('div');
+      strip.className = 'wave-strip';
+      strip.innerHTML = wavesSVG();
+      document.body.appendChild(strip);
+    }
   } catch (e) { console.warn('wave-strip:', e); }
 }

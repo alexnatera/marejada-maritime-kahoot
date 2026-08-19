@@ -110,7 +110,125 @@ h1, h2, h3, .title-font {
   background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
   background-size: 36px 36px;
   opacity: 0.4;
+}
+
+/* ==========================================================================
+   FLOTA NÁUTICA VIVA DE FONDO (LIVING FLEET AMBIENT SHIPS)
+   Los mismos avatares vectoriales navegando en profundidad con física hidrodinámica
+   ========================================================================== */
+.ocean-living-fleet {
+  position: fixed;
+  inset: 0;
   pointer-events: none;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.ambient-ship-vessel {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.6));
+  will-change: transform;
+}
+
+.ambient-ship-inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: shipBobbing 3.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.ambient-ship-inner svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Estela de Espuma Marina Trasera */
+.ambient-ship-wake {
+  position: absolute;
+  right: 88%;
+  top: 58%;
+  width: 90px;
+  height: 16px;
+  background: radial-gradient(ellipse at left, rgba(255, 255, 255, 0.65) 0%, rgba(0, 210, 255, 0.35) 40%, transparent 80%);
+  filter: blur(3px);
+  transform-origin: right center;
+  animation: ambientWakeFlow 1.6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Carril 1: Portacontenedores Profundo (Fondo Lento) */
+.ambient-vessel-container {
+  top: 12%;
+  width: 155px;
+  height: 105px;
+  opacity: 0.22;
+  animation: ambientSailLeft 80s linear infinite;
+  animation-delay: -10s;
+}
+
+/* Carril 2: Remolcador SAAM Escoltando (Cerca del Portacontenedores) */
+.ambient-vessel-tug {
+  top: 18%;
+  width: 88px;
+  height: 60px;
+  opacity: 0.35;
+  animation: ambientEscortPatrol 52s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+  animation-delay: -8s;
+}
+
+/* Carril 3: Velero Oceánico Virando */
+.ambient-vessel-sailboat {
+  top: 32%;
+  width: 72px;
+  height: 72px;
+  opacity: 0.28;
+  animation: ambientSailRight 42s linear infinite;
+  animation-delay: -15s;
+}
+
+/* Carril 4: Lancha de Práctico Rápida */
+.ambient-vessel-pilot {
+  top: 45%;
+  width: 80px;
+  height: 52px;
+  opacity: 0.38;
+  animation: ambientPilotDash 24s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  animation-delay: -4s;
+}
+
+/* Carril 5: Moto de Agua Ágil */
+.ambient-vessel-jetski {
+  top: 58%;
+  width: 54px;
+  height: 38px;
+  opacity: 0.35;
+  animation: ambientSailLeft 20s linear infinite;
+  animation-delay: -12s;
+}
+
+/* Carril 6: Petrolero de Gran Calado */
+.ambient-vessel-tanker {
+  top: 70%;
+  width: 165px;
+  height: 110px;
+  opacity: 0.24;
+  animation: ambientSailRight 90s linear infinite;
+  animation-delay: -25s;
+}
+
+/* Carril 7: Submarino en Inmersión / Emersión */
+.ambient-vessel-sub {
+  top: 84%;
+  width: 115px;
+  height: 72px;
+  animation: ambientSubmarineDive 55s ease-in-out infinite;
+  animation-delay: -5s;
 }
 
 .wave-strip {

@@ -246,37 +246,93 @@
   }
 }
 
-/* ---------- Clases Utilitarias ---------- */
-.anim-ship-bobbing {
-  animation: shipBobbing 3.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-  transform-origin: 50% 85%;
-  will-change: transform;
+/* ---------- 9. Maniobras Náuticas Ambientales de Fondo (Living Fleet 60fps) ---------- */
+@keyframes ambientSailRight {
+  0% {
+    transform: translate3d(-200px, 0, 0);
+  }
+  100% {
+    transform: translate3d(calc(100vw + 200px), 0, 0);
+  }
 }
 
-.anim-ship-gentle {
-  animation: shipBobGentle 4.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-  transform-origin: 50% 85%;
-  will-change: transform;
+@keyframes ambientSailLeft {
+  0% {
+    transform: translate3d(calc(100vw + 200px), 0, 0) scaleX(-1);
+  }
+  100% {
+    transform: translate3d(-200px, 0, 0) scaleX(-1);
+  }
 }
 
-.anim-streak-burn {
-  animation: streakBurn 1.4s ease-in-out infinite;
-  will-change: transform, filter;
+@keyframes ambientEscortPatrol {
+  0% {
+    transform: translate3d(-180px, 0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate3d(28vw, -16px, 0) rotate(-2.5deg);
+  }
+  55% {
+    transform: translate3d(60vw, 14px, 0) rotate(2deg);
+  }
+  80% {
+    transform: translate3d(85vw, -8px, 0) rotate(-1deg);
+  }
+  100% {
+    transform: translate3d(calc(100vw + 180px), 0, 0) rotate(0deg);
+  }
 }
 
-.anim-podium-rise {
-  animation: podiumRise 0.75s cubic-bezier(0.2, 1.2, 0.3, 1) both;
-  will-change: transform, opacity;
+@keyframes ambientSubmarineDive {
+  0% {
+    transform: translate3d(-140px, 20px, 0);
+    opacity: 0.12;
+    filter: drop-shadow(0 0 0 transparent);
+  }
+  35% {
+    transform: translate3d(35vw, -6px, 0);
+    opacity: 0.42;
+    filter: drop-shadow(0 0 16px rgba(0, 210, 255, 0.6));
+  }
+  65% {
+    transform: translate3d(65vw, 6px, 0);
+    opacity: 0.38;
+    filter: drop-shadow(0 0 12px rgba(0, 210, 255, 0.4));
+  }
+  100% {
+    transform: translate3d(calc(100vw + 140px), 30px, 0);
+    opacity: 0.08;
+    filter: drop-shadow(0 0 0 transparent);
+  }
 }
 
-.anim-pop-in {
-  animation: popIn 0.35s cubic-bezier(0.2, 1.25, 0.3, 1) both;
+@keyframes ambientPilotDash {
+  0% {
+    transform: translate3d(calc(100vw + 120px), 0, 0) scaleX(-1);
+  }
+  45% {
+    transform: translate3d(55vw, -10px, 0) scaleX(-1) rotate(2deg);
+  }
+  75% {
+    transform: translate3d(25vw, 6px, 0) scaleX(-1) rotate(-1deg);
+  }
+  100% {
+    transform: translate3d(-140px, 0, 0) scaleX(-1);
+  }
 }
 
-.anim-fade-in {
-  animation: fadeIn 0.4s ease both;
+@keyframes ambientWakeFlow {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scaleX(0.85) translate3d(0, 0, 0);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scaleX(1.25) translate3d(-6px, 0, 0);
+  }
 }
 
-.anim-slide-up {
-  animation: slideUp 0.4s cubic-bezier(0.2, 0.9, 0.3, 1) both;
+@keyframes navLightBlink {
+  0%, 100% { opacity: 0.85; }
+  50% { opacity: 0.25; }
 }
