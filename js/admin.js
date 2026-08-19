@@ -11,18 +11,18 @@ let editingQuestionId = null;
 // ===========================================================================
 const TEMPLATES = {
   summit: {
-    title: 'Summit de Seguridad Marítima y Remolcadores',
-    description: 'Trivia de seguridad, maniobras de remolcadores, Snap-Back Zone, EPP y ronda final de Marea Alta 2x.',
-    badge: 'Trivia Competitiva',
+    title: 'SHEQ Summit 2026 · Remolcadores & Maniobras Seguras',
+    description: 'Dinámica integral de seguridad operacional a bordo: EPP, Snap-Back Zone, Emergencia por Girting, Marea Alta 2x, Toolbox Talk, Espacios Confinados, Priorización y Feedback en vivo.',
+    badge: 'Summit SHEQ Completo',
     questions: [
       {
         type: 'multiple_choice',
-        question_text: '¿Cuál es el elemento primordial del EPP obligatorio antes de ingresar a la cubierta de maniobras de un remolcador?',
+        question_text: '🦺 Antes de poner un pie en la cubierta de maniobras de un remolcador en faena, ¿cuál es el EPP primordial y no negociable?',
         options: [
-          'Casco de seguridad, chaleco autoinflable y calzado de seguridad con puntera',
-          'Únicamente chaleco salvavidas estándar',
-          'Guantes de descarne y gafas de sol',
-          'Botas de agua y ropa impermeable sin chaleco'
+          'Casco con barboquejo, chaleco inflable 275N, calzado con puntera y guantes anti-corte',
+          'Solo chaleco salvavidas y lentes oscuros para el sol',
+          'Botas de agua amarillas y una buena taza de café caliente',
+          'Traje de buceo completo con patas de rana'
         ],
         correct_index: 0,
         correct_option: 0,
@@ -32,10 +32,10 @@ const TEMPLATES = {
       },
       {
         type: 'true_false',
-        question_text: '¿Es seguro permanecer dentro del seno o línea de tiro de un cabo de remolque sintético cuando está bajo tensión extrema (Snap-Back Zone)?',
+        question_text: '⚠️ ¿Es seguro permanecer dentro del seno (\'bight\') de un cabo sintético de remolque si la maniobra parece tranquila?',
         options: [
-          'Verdadero (Si se mantiene distancia de 1 metro)',
-          'Falso (Es zona de peligro mortal por latigazo)'
+          'Verdadero (Si mantienes un pie apoyado en la bita)',
+          '¡Falso! Toda la cubierta es zona de peligro mortal por latigazo (Snap-Back)'
         ],
         correct_index: 1,
         correct_option: 1,
@@ -45,27 +45,27 @@ const TEMPLATES = {
       },
       {
         type: 'sequence',
-        question_text: 'Ordena la secuencia cronológica correcta para la maniobra de aproximación y conexión de cabo de remolque a un buque:',
+        question_text: '🔄 ¡Alerta de Girondaje (Girting)! El buque asistido vira bruscamente y arrastra al remolcador de banda. Ordena la secuencia de salvamento:',
         options: [
-          '1. Establecer comunicación radial VHF con práctico y puente',
-          '2. Aproximarse en ángulo seguro manteniendo distancia de la hélice',
-          '3. Recibir y cobrar la línea mensajera o guía',
-          '4. Hacer firme el cabo principal en la bita y comprobar tensión'
+          '1. Disparar de inmediato el Desenganche Rápido del Gancho/Freno (Quick Release)',
+          '2. Cantar por radio VHF al Práctico y Buque: \'¡Línea liberada / Remolque soltado!\'',
+          '3. Maniobrar propulsores azimutales para adrizar y estabilizar el buque',
+          '4. Evaluar integridad de la tripulación y recoger cabos sueltos fuera de hélices'
         ],
         correct_index: 0,
         correct_option: 0,
         correct_order: [0, 1, 2, 3],
-        time_limit: 30,
+        time_limit: 35,
         is_high_tide: false
       },
       {
         type: 'multiple_choice',
-        question_text: '🌊 En caso de emergencia por escora crítica del remolcador ("girting / tripped by tow"), ¿cuál es la acción inmediata y prioritaria del patrón?',
+        question_text: '🌊 [MAREA ALTA 2X] Durante una escolta a popa a 10 nudos, ¿por qué está terminantemente prohibido cruzar bajo la línea de remolque tensada?',
         options: [
-          'Accionar el desenganche rápido del gancho de remolque (Quick Release)',
-          'Aumentar máxima potencia en ambos propulsores azimutales',
-          'Girar todo el timón hacia la banda de la escora',
-          'Cortar el suministro eléctrico general de la nave'
+          'Porque ante rotura el cabo acumula energía elástica y retrocede a más de 800 km/h',
+          'Porque el roce del cabo ensucia los uniformes de la guardia',
+          'Porque solo está prohibido cuando llueve con truenos',
+          'Porque espanta a los pelícanos y gaviotas de la bahía'
         ],
         correct_index: 0,
         correct_option: 0,
@@ -74,16 +74,66 @@ const TEMPLATES = {
         is_high_tide: true
       },
       {
-        type: 'true_false',
-        question_text: 'Antes de autorizar el ingreso a espacios confinados (tanques de lastre o combustible), ¿es mandatorio ventilar y medir la atmósfera con oxímetro/explosímetro?',
+        type: 'sequence',
+        question_text: '🔄 Ordena los 4 pasos clave de una Charla de Seguridad de 5 Minutos (Toolbox Talk) antes de zarpar a una maniobra:',
         options: [
-          'Verdadero (Obligatorio con permiso de trabajo seguro)',
-          'Falso (Solo necesario si se percibe olor a gases)'
+          '1. Evaluar condiciones meteomarinas (viento, corriente y visibilidad)',
+          '2. Definir roles en cubierta, puntos ciegos y línea de escape segura',
+          '3. Probar comunicación radial VHF y verificar botón de parada de emergencia',
+          '4. Confirmar \'Listo a Zarpar\' y asegurar chalecos inflables abrochados'
         ],
         correct_index: 0,
         correct_option: 0,
+        correct_order: [0, 1, 2, 3],
+        time_limit: 30,
+        is_high_tide: false
+      },
+      {
+        type: 'true_false',
+        question_text: '🧭 En inspecciones de tanques de lastre o dobles fondos, ¿basta con dejar abierta la tapa 10 minutos para entrar sin medir atmósfera?',
+        options: [
+          'Verdadero (Con 10 minutos se ventila suficiente)',
+          '¡Falso! Se exige medición obligatoria con oxímetro/explosímetro y Permiso de Trabajo Seguro'
+        ],
+        correct_index: 1,
+        correct_option: 1,
         correct_order: null,
         time_limit: 15,
+        is_high_tide: false
+      },
+      {
+        type: 'poll_choice',
+        question_text: '📊 Como tripulante marítimo de remolcadores, ¿cuál iniciativa SHEQ consideras que tendría mayor impacto inmediato en tu seguridad diaria?',
+        options: [
+          'Entrenamientos periódicos y simulacros de desenganche rápido (Quick Release)',
+          'Cámaras y sensores en cubierta para eliminar puntos ciegos nocturnos',
+          'Nuevos chalecos salvavidas autoinflables más ligeros y ergonómicos',
+          'Programa de reconocimiento y premios \'Tripulante / Guardián SHEQ del Mes\''
+        ],
+        correct_index: null,
+        correct_option: null,
+        correct_order: null,
+        time_limit: 25,
+        is_high_tide: false
+      },
+      {
+        type: 'poll_rating',
+        question_text: '⭐ Del 1 al 10: ¿Qué tan respaldado te sientes por tu equipo y jefatura cuando ejerces la Autoridad de Detener el Trabajo (Stop Work Authority)?',
+        options: [],
+        correct_index: null,
+        correct_option: null,
+        correct_order: null,
+        time_limit: 25,
+        is_high_tide: false
+      },
+      {
+        type: 'poll_text',
+        question_text: '💬 En una frase o propuesta náutica: ¿Qué idea sugieres para que cada maniobra en nuestros remolcadores sea 100% segura y con Cero Incidentes?',
+        options: [],
+        correct_index: null,
+        correct_option: null,
+        correct_order: null,
+        time_limit: 60,
         is_high_tide: false
       }
     ]
